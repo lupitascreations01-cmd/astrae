@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="theme-color" content="#0D0A18">
-<meta name="description" content="Astrae · Compatibilidad astrológica real">
+<meta name="description" content="Duual · Compatibilidad astrológica real">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Astrae">
+<meta name="apple-mobile-web-app-title" content="Duual">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<title>Astrae · Tu amor, escrito en las estrellas</title>
+<title>Duual · Tu amor, escrito en las estrellas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -167,7 +167,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
   <div class="status"><span id="clock">9:41</span><span style="letter-spacing:2px">· · · ▮</span></div>
   <div class="scroll" style="padding-bottom:8px;">
     <div class="home-header">
-      <div class="app-logo">Astr<em>ae</em></div>
+      <div class="app-logo">Duu<em>al</em></div>
       <div class="app-tagline" data-es="✦ tu amor, escrito en las estrellas ✦" data-en="✦ your love, written in the stars ✦">✦ tu amor, escrito en las estrellas ✦</div>
       <div class="lang-toggle">
         <button class="lang-btn on" onclick="setLang('es')">ES</button>
@@ -268,7 +268,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
   <div class="scroll">
     <div class="paywall-hero">
       <div style="font-size:32px;margin-bottom:12px;">✦</div>
-      <div class="paywall-title">Astrae Premium</div>
+      <div class="paywall-title">Duual Premium</div>
       <div class="paywall-sub" data-es="Lee los astros sin límites. Cada conexión merece ser entendida en su totalidad." data-en="Read the stars without limits. Every connection deserves to be fully understood.">Lee los astros sin límites. Cada conexión merece ser entendida en su totalidad.</div>
     </div>
     <div class="feature-list">
@@ -322,9 +322,9 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 <div class="toast" id="toast"></div>
 
 <script>
-// LEMON SQUEEZY — reemplaza con tus URLs reales
-const LS_MONTHLY = "https://YOUR_STORE.lemonsqueezy.com/checkout/buy/YOUR_MONTHLY_ID";
-const LS_ANNUAL  = "https://YOUR_STORE.lemonsqueezy.com/checkout/buy/YOUR_ANNUAL_ID";
+// PAYPAL — URLs de checkout
+const LS_MONTHLY = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=2.99&currency_code=USD&item_name=Duual+Premium+Monthly";
+const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=19.99&currency_code=USD&item_name=Duual+Premium+Annual";
 
 const DEG=Math.PI/180;
 const SIGN_ELEM=["fire","earth","air","water","fire","earth","air","water","fire","earth","air","water"];
@@ -398,13 +398,13 @@ function goScreen(n){
 function goBack(){goScreen(prevScr||"input");}
 
 function isPremium(){
-  const p=localStorage.getItem("astrae_premium");
+  const p=localStorage.getItem("duual_premium");
   if(!p) return false;
   try{const{expiry}=JSON.parse(p);return Date.now()<expiry;}catch{return false;}
 }
 function setPremium(plan){
   const expiry=plan==="annual"?Date.now()+365*24*36e5:Date.now()+30*24*36e5;
-  localStorage.setItem("astrae_premium",JSON.stringify({plan,expiry}));
+  localStorage.setItem("duual_premium",JSON.stringify({plan,expiry}));
   updatePremiumUI();
 }
 function updatePremiumUI(){
@@ -414,8 +414,8 @@ function updatePremiumUI(){
   if(h) h.style.display=p?"none":"block";
 }
 
-function canRead(){return isPremium()||(()=>{const l=localStorage.getItem("astrae_last_read");return !l||(Date.now()-parseInt(l))/36e5>=24;})();}
-function markRead(){if(!isPremium()) localStorage.setItem("astrae_last_read",Date.now());}
+function canRead(){return isPremium()||(()=>{const l=localStorage.getItem("duual_last_read");return !l||(Date.now()-parseInt(l))/36e5>=24;})();}
+function markRead(){if(!isPremium()) localStorage.setItem("duual_last_read",Date.now());}
 
 function startCalc(){
   const dA=document.getElementById("dateA").value;
@@ -514,9 +514,9 @@ function updatePayBtn(){
 
 function handlePayment(){
   const url=selPlan==="annual"?LS_ANNUAL:LS_MONTHLY;
-  if(url.includes("YOUR_STORE")){
+  if(url.includes("YOUR_STORE_PLACEHOLDER")){
     setPremium(selPlan);
-    showToast(lang==="es"?"✦ Demo activado — configura Lemon Squeezy para cobros reales":"✦ Demo activated — configure Lemon Squeezy for real payments");
+    showToast(lang==="es"?"✦ Demo activado — PayPal configurado ✦":"✦ Demo activated — PayPal configured ✦");
     setTimeout(()=>goBack(),1500);
     return;
   }
@@ -537,14 +537,14 @@ function restorePurchase(){
 
 function saveToHistory(){
   if(!lastResult) return;
-  const h=JSON.parse(localStorage.getItem("astrae_history")||"[]");
+  const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
   h.unshift({nA:lastResult.nA,nB:lastResult.nB,score:document.getElementById("bigScore").textContent.replace("%","").trim(),verdict:document.getElementById("verdictBadge").textContent,saved:Date.now()});
   if(h.length>30) h.pop();
-  localStorage.setItem("astrae_history",JSON.stringify(h));
+  localStorage.setItem("duual_history",JSON.stringify(h));
   showToast(lang==="es"?"Guardado ✦":"Saved ✦");
 }
 function renderHistory(){
-  const h=JSON.parse(localStorage.getItem("astrae_history")||"[]");
+  const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
   const el=document.getElementById("historyScroll");
   if(!h.length){el.innerHTML=`<div class="hempty">${lang==="es"?"Tu historial aparecerá aquí.<br>Haz tu primera lectura ✦":"Your history will appear here.<br>Make your first reading ✦"}</div>`;return;}
   el.innerHTML=h.map(x=>`<div class="hcard"><div class="hcard-top"><div class="hnames">${x.nA} <span style="color:var(--rose-m)">&</span> ${x.nB}</div><div class="hscore">${x.score}%</div></div><div class="hdate">${x.verdict} · ${new Date(x.saved).toLocaleDateString(lang==="es"?"es-CL":"en-US")}</div></div>`).join("");
@@ -553,8 +553,8 @@ function renderHistory(){
 async function shareResult(){
   const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";
   const score=document.getElementById("bigScore").textContent;
-  const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Astrae\nDescúbrelo en astrae.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Astrae\nDiscover yours at astrae.app`;
-  if(navigator.share) try{await navigator.share({title:"Astrae",text});}catch(e){}
+  const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Duual\nDescúbrelo en duual.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Duual\nDiscover yours at duual.app`;
+  if(navigator.share) try{await navigator.share({title:"Duual",text});}catch(e){}
   else navigator.clipboard.writeText(text).then(()=>showToast(lang==="es"?"Copiado ✦":"Copied ✦"));
 }
 
