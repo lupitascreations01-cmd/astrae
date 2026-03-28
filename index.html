@@ -157,6 +157,13 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .hempty{text-align:center;padding:60px 20px;font-size:13px;color:var(--txt3);line-height:1.8;}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,24,48,0.95);border:0.5px solid var(--bord2);border-radius:20px;padding:10px 20px;font-size:13px;color:var(--txt2);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:99;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.natal-mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 14px 14px;}
+.natal-person{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:12px 14px;}
+.natal-pname{font-size:10px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--rose-m);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.natal-row{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:0.5px solid var(--bord);}
+.natal-row:last-child{border-bottom:none;}
+.natal-pl{font-size:11px;color:var(--txt3);}
+.natal-sg{font-size:11px;color:var(--txt);font-weight:500;}
 </style>
 </head>
 <body>
@@ -223,6 +230,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     </div>
     <div style="height:14px;"></div>
     <div class="verdict-card"><div class="vtitle" id="verdictTitle"></div><div class="vtext" id="verdictText"></div></div>
+    <div class="section"><div class="section-title" data-es="CARTAS NATALES" data-en="NATAL CHARTS">CARTAS NATALES</div></div>
+    <div class="natal-mini" id="natalMini"></div>
     <div class="share-row">
       <button class="share-btn" onclick="shareResult()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg><span data-es="Compartir" data-en="Share">Compartir</span></button>
       <button class="share-btn" onclick="saveToHistory()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span data-es="Guardar" data-en="Save">Guardar</span></button>
@@ -322,9 +331,15 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 <div class="toast" id="toast"></div>
 
 <script>
+// LEMON SQUEEZY — reemplaza con tus URLs reales
 // PAYPAL — URLs de checkout
 const LS_MONTHLY = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=2.99&currency_code=USD&item_name=Duual+Premium+Monthly";
 const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=19.99&currency_code=USD&item_name=Duual+Premium+Annual";
+
+// ACCESS CODES — agrega emails de clientas que pagaron
+const ACCESS_CODES = [
+  // "clienta@gmail.com",
+];
 
 const DEG=Math.PI/180;
 const SIGN_ELEM=["fire","earth","air","water","fire","earth","air","water","fire","earth","air","water"];
@@ -339,17 +354,78 @@ function jd(y,m,d){if(m<=2){y--;m+=12;}const A=Math.floor(y/100);return Math.flo
 function T(y,m,d){return(jd(y,m,d)-2451545)/36525;}
 function sun(t){const L=n360(280.46646+36000.76983*t),M=n360(357.52911+35999.05029*t-0.0001537*t*t),C=(1.914602-0.004817*t)*sinD(M)+(0.019993-0.000101*t)*sinD(2*M)+0.000289*sinD(3*M);return n360(L+C);}
 function moon(t){const Mp=n360(134.96298+477198.867398*t+0.0086972*t*t),D=n360(297.85036+445267.111480*t),M=n360(357.52772+35999.050340*t),F=n360(93.27191+483202.017538*t);return n360(218.3165+481267.8813*t+6.289*sinD(Mp)-1.274*sinD(Mp-2*D)+0.658*sinD(2*D)-0.214*sinD(2*Mp)-0.186*sinD(M)-0.114*sinD(2*F)+0.059*sinD(2*Mp-2*D)+0.041*sinD(Mp-M));}
-function merc(t){const L=n360(252.250906+149472.6746358*t),M=n360(174.7948+149472.5153*t);return n360(L+23.44*sinD(M)+2.9818*sinD(2*M)+0.5255*sinD(3*M));}
-function venus(t){const L=n360(181.979801+58517.8156760*t),M=n360(212.2606+58517.8039*t);return n360(L+0.7758*sinD(M)+0.0033*sinD(2*M));}
-function mars(t){const L=n360(355.433+19140.2993*t),M=n360(19.373+19140.3023*t);return n360(L+10.6912*sinD(M)+0.6228*sinD(2*M)+0.0503*sinD(3*M));}
-function jupit(t){const L=n360(34.351519+3034.9056606*t),M=n360(20.9+3034.906*t);return n360(L+5.5549*sinD(M)+0.1683*sinD(2*M));}
-function saturn(t){const L=n360(50.077444+1222.1138488*t),M=n360(317.0207+1221.5515*t);return n360(L+6.3585*sinD(M)+0.2204*sinD(2*M));}
-function uranus(t){const L=n360(314.055005+428.4669983*t),M=n360(143+428.467*t);return n360(L+5.3048*sinD(M));}
-function neptune(t){const L=n360(304.348665+218.4862002*t),M=n360(206+218.486*t);return n360(L+1.0236*sinD(M));}
+
+// Geocentric conversion helper
+function geoLon(hl,hr,el,er){
+  const x=hr*Math.cos(hl*DEG)-er*Math.cos(el*DEG);
+  const y=hr*Math.sin(hl*DEG)-er*Math.sin(el*DEG);
+  return n360(Math.atan2(y,x)/DEG);
+}
+function earthPos(t){
+  const M=n360(357.52911+35999.05029*t);
+  return{l:n360(sun(t)+180),r:1.0-0.01671*Math.cos(M*DEG)};
+}
+
+// Planets — now geocentric (heliocentric → subtract Earth position)
+function merc(t){
+  const L=n360(252.250906+149472.6746358*t),M=n360(174.7948+149472.5153*t);
+  const hl=n360(L+23.44*sinD(M)+2.9818*sinD(2*M)+0.5255*sinD(3*M));
+  const hr=0.387098*(1-0.20563*0.20563)/(1+0.20563*Math.cos(M*DEG));
+  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
+}
+function venus(t){
+  const L=n360(181.979801+58517.8156760*t),M=n360(212.2606+58517.8039*t);
+  const hl=n360(L+0.7758*sinD(M)+0.0033*sinD(2*M));
+  const hr=0.72333*(1-0.006773*0.006773)/(1+0.006773*Math.cos(M*DEG));
+  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
+}
+function mars(t){
+  const L=n360(355.433+19140.2993*t),M=n360(19.373+19140.3023*t);
+  const hl=n360(L+10.6912*sinD(M)+0.6228*sinD(2*M)+0.0503*sinD(3*M));
+  const hr=1.52366*(1-0.09341*0.09341)/(1+0.09341*Math.cos(M*DEG));
+  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
+}
+function jupit(t){
+  const L=n360(34.351519+3034.9056606*t),M=n360(20.9+3034.906*t);
+  const hl=n360(L+5.5549*sinD(M)+0.1683*sinD(2*M));
+  const hr=5.20336*(1-0.04839*0.04839)/(1+0.04839*Math.cos(M*DEG));
+  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
+}
+function saturn(t){
+  const L=n360(50.077444+1222.1138488*t),M=n360(317.0207+1221.5515*t);
+  const hl=n360(L+6.3585*sinD(M)+0.2204*sinD(2*M));
+  const hr=9.53707*(1-0.05415*0.05415)/(1+0.05415*Math.cos(M*DEG));
+  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
+}
+function uranus(t){
+  const L=n360(314.055005+428.4669983*t),M=n360(143+428.467*t);
+  const hl=n360(L+5.3048*sinD(M));
+  const hr=19.1913*(1-0.04717*0.04717)/(1+0.04717*Math.cos(M*DEG));
+  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
+}
+function neptune(t){
+  const L=n360(304.348665+218.4862002*t),M=n360(206+218.486*t);
+  const hl=n360(L+1.0236*sinD(M));
+  const hr=30.0690*(1-0.00859*0.00859)/(1+0.00859*Math.cos(M*DEG));
+  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
+}
 function pluto(t){const Jp=n360(34.35+3034.9057*t),Sp=n360(50.08+1222.1138*t),P=n360(238.9508+144.96*t);return n360(P+3.82*sinD(Jp-P)-2.46*sinD(2*Jp-P-Sp)+1.52*sinD(3*Jp-2*Sp));}
-function chiron(t){return n360(208.67+0.01977*t*36525);}
+function chiron(t){
+  const hl=n360(208.67+0.01977*t*36525);
+  const e=earthPos(t);return geoLon(hl,13.7,e.l,e.r);
+}
 function nnode(t){return n360(125.0445-1934.1363*t);}
 function planets(y,m,d){const t=T(y,m,d);return{Sun:sun(t),Moon:moon(t),Mercury:merc(t),Venus:venus(t),Mars:mars(t),Jupiter:jupit(t),Saturn:saturn(t),Uranus:uranus(t),Neptune:neptune(t),Pluto:pluto(t),Chiron:chiron(t),NNode:nnode(t)};}
+
+// Sign helpers
+const SIGN_ES=["Aries","Tauro","Géminis","Cáncer","Leo","Virgo","Libra","Escorpio","Sagitario","Capricornio","Acuario","Piscis"];
+const SIGN_EN=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+const SIGN_ABB_ES=["Ari","Tau","Gém","Cán","Leo","Vir","Lib","Esc","Sag","Cap","Acu","Pis"];
+const SIGN_ABB_EN=["Ari","Tau","Gem","Can","Leo","Vir","Lib","Sco","Sag","Cap","Aqu","Pis"];
+const SIGN_GLYPH=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
+function signOf(deg){return Math.floor(n360(deg)/30);}
+function signAbb(deg,l){return(l==="es"?SIGN_ABB_ES:SIGN_ABB_EN)[signOf(deg)];}
+function signFull(deg,l){return(l==="es"?SIGN_ES:SIGN_EN)[signOf(deg)];}
 
 const ASPS=[{es:"Conjunción",en:"Conjunction",s:"☌",a:0,o:8,sc:10,t:"harmonious"},{es:"Sextil",en:"Sextile",s:"⚹",a:60,o:6,sc:6,t:"harmonious"},{es:"Trígono",en:"Trine",s:"△",a:120,o:8,sc:9,t:"harmonious"},{es:"Cuadratura",en:"Square",s:"□",a:90,o:7,sc:3,t:"tense"},{es:"Oposición",en:"Opposition",s:"☍",a:180,o:8,sc:4,t:"neutral"}];
 function asp(l1,l2){let d=Math.abs(l1-l2);if(d>180)d=360-d;for(const a of ASPS){const o=Math.abs(d-a.a);if(o<=a.o)return{...a,orbe:o.toFixed(1)};} return null;}
@@ -454,6 +530,13 @@ function renderResults(r){
   document.getElementById("verdictTitle").textContent=vE[1];
   document.getElementById("verdictText").textContent=vE[2];
 
+  // Natal mini profiles
+  const pl = lang==="es"
+    ? {Sun:"☀ Sol",Moon:"☽ Luna",Venus:"♀ Venus",Mars:"♂ Marte",Mercury:"☿ Mercurio"}
+    : {Sun:"☀ Sun",Moon:"☽ Moon",Venus:"♀ Venus",Mars:"♂ Mars",Mercury:"☿ Mercury"};
+  const natalCard=(name,p)=>`<div class="natal-person"><div class="natal-pname">${name}</div>${["Sun","Moon","Venus","Mars","Mercury"].map(k=>`<div class="natal-row"><span class="natal-pl">${pl[k]}</span><span class="natal-sg">${signAbb(p[k],lang)} ${SIGN_GLYPH[signOf(p[k])]}</span></div>`).join("")}</div>`;
+  document.getElementById("natalMini").innerHTML=natalCard(nA,pA)+natalCard(nB,pB);
+
   const top=found.sort((a,b)=>b.pts-a.pts).slice(0,2);
   document.getElementById("constRow").innerHTML=top.map(x=>`<span class="const-tag">${PG[x.pa]} ${x.a.s} ${PG[x.pb]}</span>`).join("");
 
@@ -465,7 +548,8 @@ function renderResults(r){
   const pname=lang==="es"?PES:PEN;
   document.getElementById("aspList").innerHTML=sorted.slice(0,premium?10:6).map((x,i)=>{
     const aName=lang==="es"?x.a.es:x.a.en;
-    return `<div class="asp-row${!premium&&i>=3?" blurred":""}"><div class="asp-glyph">${PG[x.pa]}</div><div class="asp-body"><div class="asp-title">${pname[x.pa]} ${x.a.s} ${pname[x.pb]}</div><div class="asp-subtitle">${aName} · ${x.a.orbe}° ${lang==="es"?"orbe":"orb"}</div><div class="asp-interp">${x.interp}</div><span class="asp-badge ${x.a.t}">${x.a.s} ${aName}</span></div></div>`;
+    const sgA=signAbb(pA[x.pa],lang), sgB=signAbb(pB[x.pb],lang);
+    return `<div class="asp-row${!premium&&i>=3?" blurred":""}"><div class="asp-glyph">${PG[x.pa]}</div><div class="asp-body"><div class="asp-title">${pname[x.pa]} <span style="color:var(--txt3);font-size:11px">${sgA}</span> ${x.a.s} ${pname[x.pb]} <span style="color:var(--txt3);font-size:11px">${sgB}</span></div><div class="asp-subtitle">${aName} · ${x.a.orbe}° ${lang==="es"?"orbe":"orb"}</div><div class="asp-interp">${x.interp}</div><span class="asp-badge ${x.a.t}">${x.a.s} ${aName}</span></div></div>`;
   }).join("");
 
   if(premium){
@@ -489,7 +573,24 @@ function renderPremium(pA,pB){
   const vsA=Math.floor(pA.Venus/30),vsB=Math.floor(pB.Venus/30);
   const msA=Math.floor(pA.Mars/30),msB=Math.floor(pB.Mars/30);
   const vArr=l==="en"?VS.en:VS.es,mArr=l==="en"?MS.en:MS.es;
-  document.getElementById("venusSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">♀ Venus</div><div class="premium-card-body"><strong style="color:var(--txt)">A:</strong> ${vArr[vsA]}<br><br><strong style="color:var(--txt)">B:</strong> ${vArr[vsB]}</div></div><div class="premium-card"><div class="premium-card-title">♂ ${l==="es"?"Marte":"Mars"}</div><div class="premium-card-body"><strong style="color:var(--txt)">A:</strong> ${mArr[msA]}<br><br><strong style="color:var(--txt)">B:</strong> ${mArr[msB]}</div></div>`;
+  const vSign=l==="es"?SIGN_ES:SIGN_EN, mSign=l==="es"?SIGN_ES:SIGN_EN;
+  document.getElementById("venusSection").innerHTML=`
+    <div class="premium-card">
+      <div class="premium-card-title">♀ Venus</div>
+      <div class="premium-card-body">
+        <strong style="color:var(--rose-m)">${nA}: Venus en ${vSign[vsA]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsA]}</span>
+        <br><br>
+        <strong style="color:var(--rose-m)">${nB}: Venus en ${vSign[vsB]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsB]}</span>
+      </div>
+    </div>
+    <div class="premium-card">
+      <div class="premium-card-title">♂ ${l==="es"?"Marte":"Mars"}</div>
+      <div class="premium-card-body">
+        <strong style="color:var(--rose-m)">${nA}: ${l==="es"?"Marte":"Mars"} en ${mSign[msA]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msA]}</span>
+        <br><br>
+        <strong style="color:var(--rose-m)">${nB}: ${l==="es"?"Marte":"Mars"} en ${mSign[msB]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msB]}</span>
+      </div>
+    </div>`;
 
   const cAsp=asp(pA.Chiron,pB.Sun)||asp(pA.Sun,pB.Chiron)||asp(pA.Chiron,pB.Moon);
   const chText=l==="es"?"Quirón representa las heridas más profundas que llevamos — y el potencial de sanar a través de ellas. En sinastría, el contacto de Quirón de una persona con planetas de la otra revela si esta relación tiene la capacidad de sanar o reabrir viejas heridas. Una conexión con Quirón activo es una relación que transforma.":"Chiron represents our deepest wounds — and the potential to heal through them. In synastry, Chiron contacts reveal whether this relationship has the capacity to heal or reopen old wounds. An active Chiron connection is a transforming relationship.";
@@ -526,8 +627,14 @@ function handlePayment(){
 
 function restorePurchase(){
   const email=prompt(lang==="es"?"Ingresa el email con que pagaste:":"Enter the email you used to pay:");
-  if(email&&email.includes("@")){setPremium("monthly");showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");setTimeout(()=>goBack(),1000);}
-  else showToast(lang==="es"?"Email no válido":"Invalid email");
+  if(!email||!email.includes("@")){showToast(lang==="es"?"Email no válido":"Invalid email");return;}
+  if(ACCESS_CODES.includes(email.toLowerCase().trim())){
+    setPremium("annual");
+    showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");
+    setTimeout(()=>goBack(),1000);
+  } else {
+    showToast(lang==="es"?"Email no encontrado · Escríbenos":"Email not found · Contact support");
+  }
 }
 
 (function checkReturn(){
