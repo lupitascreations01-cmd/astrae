@@ -1,6 +1,7 @@
 {
-  "name": "Astrae · Tu amor en las estrellas",
-  "short_name": "Astrae",
+  "name": "Duual · Tu amor en las estrellas",
+  "short_name": "Duual",
+  "id": "/",
   "description": "Compatibilidad astrológica real basada en tu carta natal",
   "start_url": "/",
   "display": "standalone",
@@ -8,10 +9,11 @@
   "theme_color": "#0D0A18",
   "orientation": "portrait",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "categories": ["lifestyle", "entertainment"],
-  "lang": "es",
-  "screenshots": []
+  "lang": "es"
 }
