@@ -493,6 +493,24 @@ function updatePremiumUI(){
 function canRead(){return isPremium()||(()=>{const l=localStorage.getItem("duual_last_read");return !l||(Date.now()-parseInt(l))/36e5>=24;})();}
 function markRead(){if(!isPremium()) localStorage.setItem("duual_last_read",Date.now());}
 
+async function fetchPlanets(dateStr) {
+  try {
+    const r = await fetch(`/api/planets?date=${dateStr}`);
+    if (!r.ok) throw new Error('API error');
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    // Add Chiron and NNode locally (not in NASA Horizons basic)
+    const t = T(...dateStr.split('-').map(Number));
+    data.Chiron = chiron(t);
+    data.NNode = nnode(t);
+    return data;
+  } catch(e) {
+    // Fallback to local calculation
+    const [y,m,d] = dateStr.split('-').map(Number);
+    return planets(y,m,d);
+  }
+}
+
 function startCalc(){
   const dA=document.getElementById("dateA").value;
   const dB=document.getElementById("dateB").value;
@@ -501,15 +519,15 @@ function startCalc(){
   const nA=document.getElementById("nameA").value.trim()||(lang==="es"?"Persona A":"Person A");
   const nB=document.getElementById("nameB").value.trim()||(lang==="es"?"Persona B":"Person B");
   goScreen("loading");
-  setTimeout(()=>{
-    const [yA,mA,dAd]=dA.split("-").map(Number);
-    const [yB,mB,dBd]=dB.split("-").map(Number);
-    const pA=planets(yA,mA,dAd), pB=planets(yB,mB,dBd);
+  Promise.all([fetchPlanets(dA), fetchPlanets(dB)]).then(([pA, pB]) => {
     markRead();
     lastResult={pA,pB,nA,nB};
     renderResults(lastResult);
     goScreen("results");
-  },2600);
+  }).catch(() => {
+    showToast(lang==="es"?"Error de conexión":"Connection error");
+    goScreen("input");
+  });
 }
 
 function renderResults(r){
