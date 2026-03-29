@@ -812,7 +812,6 @@ function generateCard(){
   const nA=lastResult?.nA||"A", nB=lastResult?.nB||"B";
   const score=document.getElementById("bigScore").textContent.replace("%","").trim();
   const verdict=document.getElementById("verdictBadge").textContent.replace("✦","").trim();
-
   const W=1080, H=1920;
   const cv=document.createElement("canvas");
   cv.width=W; cv.height=H;
@@ -844,12 +843,15 @@ function generateCard(){
 
   // Score circle
   const cx=W/2, cy=H*0.38, cr=260;
+
   // Outer ring
   ctx.beginPath(); ctx.arc(cx,cy,cr+15,0,Math.PI*2);
   ctx.strokeStyle="rgba(201,75,114,0.25)"; ctx.lineWidth=2; ctx.stroke();
+
   // Inner ring
   ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2);
   ctx.strokeStyle="rgba(201,75,114,0.5)"; ctx.lineWidth=3; ctx.stroke();
+
   // Arc fill based on score
   const pct=parseInt(score)/100;
   ctx.beginPath(); ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);
@@ -868,38 +870,58 @@ function generateCard(){
   ctx.fillStyle="#ED93B1";
   ctx.fillText("%", cx+(score.length>2?170:195), cy-90);
 
-  // COMPATIBILIDAD label
-  ctx.font="500 42px 'Arial', sans-serif";
-  ctx.fillStyle="rgba(242,238,249,0.45)";
-  ctx.letterSpacing="12px";
-  ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY", cx, cy+cr*0.7);
+  // ✅ COMPATIBILIDAD — debajo del círculo, visible y destacable
+  ctx.font="600 44px 'Arial', sans-serif";
+  ctx.fillStyle="rgba(237,147,177,0.85)"; // rosa en lugar de casi-transparente
+  ctx.letterSpacing="10px";
+  ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY", cx, cy+cr+55);
+  ctx.letterSpacing="0px"; // reset para textos siguientes
 
-  // Names
-  ctx.font=`italic 300 88px 'Georgia', serif`;
-  ctx.fillStyle="rgba(242,238,249,0.85)";
-  ctx.fillText(`${nA} & ${nB}`, cx, H*0.62);
+  // ✅ Nombres — tamaño dinámico para que no se corten
+  const fullName=`${nA} & ${nB}`;
+  let nameFontSize=88;
+  ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;
+  while(ctx.measureText(fullName).width > W*0.88 && nameFontSize > 42){
+    nameFontSize -= 4;
+    ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;
+  }
+  ctx.fillStyle="rgba(242,238,249,0.9)";
+  ctx.fillText(fullName, cx, H*0.63);
 
   // Verdict
   ctx.font="300 52px 'Georgia', serif";
   ctx.fillStyle="#ED93B1";
-  ctx.fillText(verdict, cx, H*0.70);
+  ctx.fillText(verdict, cx, H*0.71);
 
   // Divider line
-  ctx.beginPath(); ctx.moveTo(W*0.3,H*0.755); ctx.lineTo(W*0.7,H*0.755);
+  ctx.beginPath(); ctx.moveTo(W*0.3,H*0.77); ctx.lineTo(W*0.7,H*0.77);
   ctx.strokeStyle="rgba(242,238,249,0.15)"; ctx.lineWidth=1; ctx.stroke();
 
-  // App name
-  ctx.font="300 52px 'Georgia', serif";
-  ctx.fillStyle="rgba(242,238,249,0.5)";
-  ctx.fillText("Duu", cx-30, H*0.81);
-  ctx.font="italic 300 52px 'Georgia', serif";
+  // ✅ "Duual" — centrado correcto midiendo el texto real
+  const duuFont="300 52px 'Georgia', serif";
+  const alFont="italic 300 52px 'Georgia', serif";
+  ctx.font=duuFont;
+  const duuW=ctx.measureText("Duu").width;
+  ctx.font=alFont;
+  const alW=ctx.measureText("al").width;
+  const totalW=duuW+alW;
+  const startX=cx - totalW/2;
+  const brandY=H*0.83;
+
+  ctx.font=duuFont;
+  ctx.fillStyle="rgba(242,238,249,0.6)";
+  ctx.textAlign="left";
+  ctx.fillText("Duu", startX, brandY);
+
+  ctx.font=alFont;
   ctx.fillStyle="#ED93B1";
-  ctx.fillText("al", cx+38, H*0.81);
+  ctx.fillText("al", startX+duuW, brandY);
 
   // URL
+  ctx.textAlign="center";
   ctx.font="400 38px 'Arial', sans-serif";
   ctx.fillStyle="rgba(242,238,249,0.3)";
-  ctx.fillText("duual.app", cx, H*0.87);
+  ctx.fillText("duual.app", cx, H*0.88);
 
   // Download
   const link=document.createElement("a");
