@@ -940,20 +940,21 @@ function generateCard(){
     const alW = ctx.measureText("al").width;
 
     // Logo pequeño a la izquierda del texto "Duual"
-    const logoSize = 52;
+    const logoSize = 90;
     const brandTextW = duuW + alW;
     const logoGap = 14;
-    const totalBrandW = (logoImg.complete && logoImg.naturalWidth > 0)
-      ? logoSize + logoGap + brandTextW
-      : brandTextW;
-    const brandStartX = cx - totalBrandW / 2;
-    const brandY = H * 0.818;
+    const totalBrandW = brandTextW;
+const brandStartX = cx - totalBrandW / 2;
+// Logo centrado arriba del texto
+const logoDrawX = cx - logoSize / 2;
+const logoDrawY = brandY - logoSize - 20;
+    const brandY = H * 0.835;
 
     // Logo alineado verticalmente al centro del texto
     if(logoImg.complete && logoImg.naturalWidth > 0){
       ctx.globalAlpha = 0.55;
       // Rounded clip for logo
-      const lx = brandStartX, ly = brandY - logoSize/2;
+      const lx = logoDrawX, ly = logoDrawY;
       const r = 12;
       ctx.save();
       ctx.beginPath();
@@ -970,9 +971,7 @@ function generateCard(){
     }
 
     // Texto "Duual" a la derecha del logo
-    const textStartX = (logoImg.complete && logoImg.naturalWidth > 0)
-      ? brandStartX + logoSize + logoGap
-      : brandStartX;
+    const textStartX = brandStartX;
 
     ctx.textAlign="left";
     ctx.textBaseline="middle";
