@@ -11,6 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <title>Duual · Tu amor, escrito en las estrellas</title>
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2/source/js/astronomy.browser.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -45,6 +46,11 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .ninput{width:100%;background:var(--surf2);border:0.5px solid var(--bord);border-radius:var(--r-md);padding:11px 14px;font-family:"DM Sans",sans-serif;font-size:14px;color:var(--txt);margin-bottom:10px;outline:none;-webkit-appearance:none;}
 .ninput::placeholder{color:var(--txt3);}
 .ninput[type="date"]{color-scheme:dark;}
+.ninput[type="time"]{color-scheme:dark;}
+.time-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.time-label{font-size:11px;color:var(--txt3);white-space:nowrap;flex-shrink:0;}
+.time-input{flex:1;background:var(--surf2);border:0.5px solid var(--bord);border-radius:var(--r-md);padding:8px 14px;font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt);outline:none;-webkit-appearance:none;}
+.time-input::placeholder{color:var(--txt3);}
 .connector{position:relative;display:flex;align-items:center;justify-content:center;padding:4px 0;}
 .cline{width:1px;height:20px;background:var(--bord);}
 .cicon{position:absolute;width:28px;height:28px;background:var(--rose-l);border:0.5px solid var(--rose-b);border-radius:50%;display:flex;align-items:center;justify-content:center;}
@@ -164,6 +170,10 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .natal-row:last-child{border-bottom:none;}
 .natal-pl{font-size:11px;color:var(--txt3);}
 .natal-sg{font-size:11px;color:var(--txt);font-weight:500;}
+.card-btn{background:linear-gradient(135deg,var(--rose),var(--plum));border:none;border-radius:var(--r-lg);padding:14px;width:calc(100% - 28px);margin:0 14px 8px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:500;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.natal-edit{font-size:9px;color:var(--txt3);background:none;border:none;cursor:pointer;padding:0 0 0 4px;font-family:"DM Sans",sans-serif;opacity:0.6;}
+.natal-edit:hover{opacity:1;color:var(--rose-m);}
+.natal-select{font-size:11px;background:var(--surf2);border:0.5px solid var(--bord);border-radius:4px;color:var(--txt);font-family:"DM Sans",sans-serif;padding:1px 3px;}
 </style>
 </head>
 <body>
@@ -188,20 +198,28 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <div class="plabel"><span class="pdot da"></span><span data-es="Primera persona" data-en="First person">Primera persona</span></div>
       <input class="ninput" type="text" id="nameA" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
       <input class="ninput" type="date" id="dateA" value="1997-03-15">
+      <div class="time-row">
+        <span class="time-label" data-es="Hora (opcional)" data-en="Time (optional)">Hora (opcional)</span>
+        <input class="time-input" type="time" id="timeA" placeholder="--:--">
+      </div>
     </div>
     <div class="connector"><div class="cline"></div><div class="cicon"><svg width="14" height="14" viewBox="0 0 24 24" fill="#C94B72"><path d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 11.91 3.81 13 5.08C14.09 3.81 15.76 3 17.5 3C20.58 3 23 5.42 23 8.5C23 14.5 12 21 12 21Z"/></svg></div></div>
     <div class="pcard">
       <div class="plabel"><span class="pdot db"></span><span data-es="Segunda persona" data-en="Second person">Segunda persona</span></div>
       <input class="ninput" type="text" id="nameB" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
       <input class="ninput" type="date" id="dateB" value="1994-09-22">
+      <div class="time-row">
+        <span class="time-label" data-es="Hora (opcional)" data-en="Time (optional)">Hora (opcional)</span>
+        <input class="time-input" type="time" id="timeB" placeholder="--:--">
+      </div>
     </div>
     <button class="cta-btn" onclick="startCalc()" data-es="Revelar compatibilidad ✦" data-en="Reveal compatibility ✦">Revelar compatibilidad ✦</button>
     <div class="free-hint" id="freeHint" data-es="1 lectura gratis por día · sin registro" data-en="1 free reading per day · no sign-up">1 lectura gratis por día · sin registro</div>
-    <div style="text-align:center;font-size:10px;color:var(--txt3);padding:0 20px 12px;line-height:1.6;" data-es="⚠ Sin hora de nacimiento, planetas en los primeros o últimos grados de un signo pueden variar. Para máxima precisión usa la hora exacta." data-en="⚠ Without birth time, planets near sign boundaries may vary slightly. For best accuracy, use exact birth time.">⚠ Sin hora de nacimiento, planetas en los primeros o últimos grados de un signo pueden variar.</div>
+
   </div>
   <div class="bnav">
     <button class="bitem on" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
-    <button class="bitem" onclick="goScreen('history')"><span class="bico">♡</span><span data-es="Historial" data-en="History">Historial</span></button>
+    <button class="bitem" onclick="goLastResult()"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
     <button class="bitem" onclick="goScreen('paywall')"><span class="bico">◎</span><span>Premium</span></button>
   </div>
 </div>
@@ -232,11 +250,18 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <div style="height:14px;"></div>
     <div class="verdict-card"><div class="vtitle" id="verdictTitle"></div><div class="vtext" id="verdictText"></div></div>
     <div class="section"><div class="section-title" data-es="CARTAS NATALES" data-en="NATAL CHARTS">CARTAS NATALES</div></div>
+    <div style="margin:0 14px 8px;font-size:10px;color:var(--txt3);opacity:0.75;line-height:1.5;">
+      <span data-es="✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna." data-en="✦ Add birth time for better accuracy, especially for the Moon.">✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna.</span>
+    </div>
     <div class="natal-mini" id="natalMini"></div>
     <div class="share-row">
-      <button class="share-btn" onclick="shareResult()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg><span data-es="Compartir" data-en="Share">Compartir</span></button>
+      <button class="share-btn" onclick="shareResult()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg><span data-es="Compartir ↗" data-en="Share ↗">Compartir ↗</span></button>
       <button class="share-btn" onclick="saveToHistory()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span data-es="Guardar" data-en="Save">Guardar</span></button>
     </div>
+    <button class="card-btn" onclick="generateCard()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+      <span data-es="✦ Crear tarjeta para Instagram / TikTok" data-en="✦ Create card for Instagram / TikTok">✦ Crear tarjeta para Instagram / TikTok</span>
+    </button>
     <div class="section"><div class="section-title" data-es="TU CONEXIÓN POR ÁREA" data-en="YOUR CONNECTION BY AREA">TU CONEXIÓN POR ÁREA</div></div>
     <div class="areas" id="areasGrid"></div>
     <div class="section"><div class="section-title" data-es="ASPECTOS PLANETARIOS" data-en="PLANETARY ASPECTS">ASPECTOS PLANETARIOS</div></div>
@@ -306,6 +331,10 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <span id="payBtnText" data-es="Empezar plan anual · $19.99" data-en="Start annual plan · $19.99">Empezar plan anual · $19.99</span>
     </button>
     <div class="pay-note" data-es="Sin sorpresas · Cancela cuando quieras · ES / EN" data-en="No surprises · Cancel anytime · ES / EN">Sin sorpresas · Cancela cuando quieras · ES / EN</div>
+    <div style="text-align:center;padding:0 16px 8px;display:flex;align-items:center;justify-content:center;gap:7px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#009cde" xmlns="http://www.w3.org/2000/svg"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.93 4.778-4.005 7.201-9.138 7.201h-2.19a.563.563 0 0 0-.556.479l-1.187 7.527h-.99l-.589 3.723a.349.349 0 0 0 .345.408H5.79c.346 0 .638-.252.692-.593l.108-.69.195-1.25.014-.072h.486l3.059-.003c3.624 0 6.457-1.471 7.288-5.726.378-1.913.183-3.512-.41-4.716z"/></svg>
+      <span style="font-size:11px;color:var(--txt3);" data-es="Pago seguro vía PayPal" data-en="Secure payment via PayPal">Pago seguro vía PayPal</span>
+    </div>
     <button class="restore-btn" onclick="restorePurchase()" data-es="¿Ya pagaste? Restaurar acceso" data-en="Already paid? Restore access">¿Ya pagaste? Restaurar acceso</button>
   </div>
   <div class="bnav">
@@ -421,6 +450,31 @@ function chiron(t){
 function nnode(t){return n360(125.0445-1934.1363*t);}
 function planets(y,m,d){const t=T(y,m,d);return{Sun:sun(t),Moon:moon(t),Mercury:merc(t),Venus:venus(t),Mars:mars(t),Jupiter:jupit(t),Saturn:saturn(t),Uranus:uranus(t),Neptune:neptune(t),Pluto:pluto(t),Chiron:chiron(t),NNode:nnode(t)};}
 
+// Accurate planet positions using Astronomy Engine
+function planetsPrecise(y,m,d,h){
+  try {
+    if(typeof Astronomy === 'undefined') throw new Error('no lib');
+    const hour = h||12;
+    const date = new Date(Date.UTC(y, m-1, d, Math.floor(hour), Math.round((hour%1)*60), 0));
+    const time = Astronomy.MakeTime(date);
+    const bodies = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'];
+    const result = {};
+    for(const body of bodies){
+      const vec = Astronomy.GeoVector(body, time, true);
+      const ecl = Astronomy.Ecliptic(vec);
+      result[body] = n360(ecl.elon);
+    }
+    // Chiron and NNode still use Meeus (not in Astronomy Engine)
+    const t = T(y,m,d+hour/24);
+    result.Chiron = chiron(t);
+    result.NNode = nnode(t);
+    return result;
+  } catch(e) {
+    // Fallback to Meeus if library not loaded
+    return planets(y,m,d+(h||12)/24);
+  }
+}
+
 // Sign helpers
 const SIGN_ES=["Aries","Tauro","Géminis","Cáncer","Leo","Virgo","Libra","Escorpio","Sagitario","Capricornio","Acuario","Piscis"];
 const SIGN_EN=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
@@ -477,6 +531,37 @@ function goScreen(n){
 }
 function goBack(){goScreen(prevScr||"input");}
 
+// Manual sign override
+const signOverrides={};
+function editSign(pid,planet,currentDeg,btn){
+  const l=lang==="es"?SIGN_ES:SIGN_EN;
+  const cur=signOf(currentDeg);
+  const select=document.createElement("select");
+  select.className="natal-select";
+  l.forEach((s,i)=>{const o=document.createElement("option");o.value=i*30+15;o.textContent=s;if(i===cur)o.selected=true;select.appendChild(o);});
+  select.onchange=()=>{
+    const newDeg=parseFloat(select.value);
+    if(!signOverrides[pid]) signOverrides[pid]={};
+    signOverrides[pid][planet]=newDeg;
+    if(lastResult) lastResult[pid==="A"?"pA":"pB"][planet]=newDeg;
+    const span=document.getElementById(`ns_${pid}_${planet}`);
+    if(span) span.textContent=signAbb(newDeg,lang)+" "+SIGN_GLYPH[signOf(newDeg)];
+    select.replaceWith(btn);
+    if(lastResult) try{renderResults(lastResult);}catch(e){}
+  };
+  select.onblur=()=>setTimeout(()=>select.replaceWith(btn),200);
+  btn.replaceWith(select);
+  select.focus();
+}
+function goLastResult(){
+  if(lastResult){
+    try{renderResults(lastResult);}catch(e){console.error(e);}
+    goScreen("results");
+  } else {
+    showToast(lang==="es"?"Haz una lectura primero ✦":"Make a reading first ✦");
+  }
+}
+
 function isPremium(){
   const p=localStorage.getItem("duual_premium");
   if(!p) return false;
@@ -494,8 +579,9 @@ function updatePremiumUI(){
   if(h) h.style.display=p?"none":"block";
 }
 
-function canRead(){return isPremium()||(()=>{const l=localStorage.getItem("duual_last_read");return !l||(Date.now()-parseInt(l))/36e5>=24;})();}
-function markRead(){if(!isPremium()) localStorage.setItem("duual_last_read",Date.now());}
+function todayKey(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;}
+function canRead(){return isPremium()||(localStorage.getItem("duual_last_read")!==todayKey());}
+function markRead(){if(!isPremium()) localStorage.setItem("duual_last_read",todayKey());}
 
 function startCalc(){
   const dA=document.getElementById("dateA").value;
@@ -508,7 +594,11 @@ function startCalc(){
   setTimeout(()=>{
     const [yA,mA,dAd]=dA.split("-").map(Number);
     const [yB,mB,dBd]=dB.split("-").map(Number);
-    const pA=planets(yA,mA,dAd),pB=planets(yB,mB,dBd);
+    const tA=document.getElementById("timeA").value;
+    const tB=document.getElementById("timeB").value;
+    const hA=tA?parseInt(tA.split(":")[0])+parseInt(tA.split(":")[1])/60:12;
+    const hB=tB?parseInt(tB.split(":")[0])+parseInt(tB.split(":")[1])/60:12;
+    const pA=planetsPrecise(yA,mA,dAd,hA),pB=planetsPrecise(yB,mB,dBd,hB);
     markRead();
     lastResult={pA,pB,nA,nB};
     try{renderResults(lastResult);}catch(e){console.error("Render error:",e);}
@@ -543,14 +633,37 @@ function renderResults(r){
   const pl = lang==="es"
     ? {Sun:"☀ Sol",Moon:"☽ Luna",Venus:"♀ Venus",Mars:"♂ Marte",Mercury:"☿ Mercurio"}
     : {Sun:"☀ Sun",Moon:"☽ Moon",Venus:"♀ Venus",Mars:"♂ Mars",Mercury:"☿ Mercury"};
-  const natalCard=(name,p)=>`<div class="natal-person"><div class="natal-pname">${name}</div>${["Sun","Moon","Venus","Mars","Mercury"].map(k=>`<div class="natal-row"><span class="natal-pl">${pl[k]}</span><span class="natal-sg">${signAbb(p[k],lang)} ${SIGN_GLYPH[signOf(p[k])]}</span></div>`).join("")}</div>`;
-  document.getElementById("natalMini").innerHTML=natalCard(nA,pA)+natalCard(nB,pB);
+  const natalCard=(name,pid,p)=>`<div class="natal-person"><div class="natal-pname">${name}</div>${["Sun","Moon","Venus","Mars","Mercury"].map(k=>`<div class="natal-row"><span class="natal-pl">${pl[k]}</span><span class="natal-sg" id="ns_${pid}_${k}">${signAbb(p[k],lang)} ${SIGN_GLYPH[signOf(p[k])]}</span><button class="natal-edit" onclick="editSign('${pid}','${k}',${Math.floor(p[k])},this)" title="Corregir">✎</button></div>`).join("")}</div>`;
+  document.getElementById("natalMini").innerHTML=natalCard(nA,"A",pA)+natalCard(nB,"B",pB);
 
   const top=found.sort((a,b)=>b.pts-a.pts).slice(0,2);
   document.getElementById("constRow").innerHTML=top.map(x=>`<span class="const-tag">${PG[x.pa]} ${x.a.s} ${PG[x.pb]}</span>`).join("");
 
   const aS={};
-  for(const[k,ad] of Object.entries(AREAS)){let s=0,mx=0;for(const pair of ad.pairs){const[pa,pb]=pair.split("-"),w=PW[pair]||1;mx+=w*10;const a=asp(pA[pa]||0,pB[pb]||0);if(a)s+=a.sc*w;}aS[k]=Math.round((s/mx)*100);}
+  // Extended planet sets per area for fairer scoring
+  const AREA_EXT={
+    romance:["Venus","Mars","Sun","Moon"],
+    emotion:["Moon","Sun","Venus","Jupiter"],
+    comms:["Mercury","Sun","Moon","Uranus"],
+    longterm:["Saturn","Sun","Jupiter","Moon"]
+  };
+  for(const[k,ad] of Object.entries(AREAS)){
+    let s=0,cnt=0;
+    const ps=AREA_EXT[k]||[];
+    // Check all combinations of relevant planets between persons
+    for(const pa of ps) for(const pb of ps){
+      if(pA[pa]===undefined||pB[pb]===undefined) continue;
+      const a=asp(pA[pa],pB[pb]);
+      cnt++;
+      if(a){
+        // harmonious aspects score high, tense score medium
+        const bonus=a.t==="harmonious"?a.sc:a.t==="tense"?a.sc*0.4:a.sc*0.6;
+        s+=bonus;
+      }
+    }
+    // Base score 30% + aspect bonus, so areas never show 0% unless truly empty
+    aS[k]=cnt>0?Math.min(100,Math.round(30+(s/cnt)*8)):30;
+  }
   document.getElementById("areasGrid").innerHTML=Object.entries(AREAS).map(([k,ad])=>{const p=aS[k],label=lang==="es"?ad.es:ad.en;return `<div class="acard"><div class="ahead"><div class="aname">${label}</div><div class="apct">${p}%</div></div><div class="track"><div class="bar" style="width:${p}%;background:${ad.c}"></div></div><div class="ainsight">${ai(k,p,lang)}</div></div>`;}).join("");
 
   const sorted=found.sort((a,b)=>b.pts-a.pts);
@@ -672,6 +785,128 @@ async function shareResult(){
   const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Duual\nDescúbrelo en duual.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Duual\nDiscover yours at duual.app`;
   if(navigator.share) try{await navigator.share({title:"Duual",text});}catch(e){}
   else navigator.clipboard.writeText(text).then(()=>showToast(lang==="es"?"Copiado ✦":"Copied ✦"));
+}
+function copyForInsta(){
+  const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";
+  const score=document.getElementById("bigScore").textContent;
+  const verdict=document.getElementById("verdictBadge").textContent;
+  const text=lang==="es"
+    ?`${verdict}\n\n${nA} & ${nB}\n${score} compatibilidad astrológica ✦\n\n¿Y tú? Descubre la tuya en duual.app\n\n#astrología #compatibilidad #cartonatal #duual`
+    :`${verdict}\n\n${nA} & ${nB}\n${score} astrological compatibility ✦\n\nDiscover yours at duual.app\n\n#astrology #compatibility #birthchart #duual`;
+  const msg=lang==="es"?"✦ Copiado — pega en Instagram":"✦ Copied — paste on Instagram";
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>showToast(msg)).catch(()=>fallbackCopy(text,msg));
+  } else {
+    fallbackCopy(text,msg);
+  }
+}
+function fallbackCopy(text,msg){
+  const ta=document.createElement("textarea");
+  ta.value=text;ta.style.cssText="position:fixed;top:0;left:0;opacity:0;";
+  document.body.appendChild(ta);ta.focus();ta.select();
+  try{document.execCommand("copy");showToast(msg);}catch(e){showToast(lang==="es"?"Copia el texto manualmente":"Copy text manually");}
+  document.body.removeChild(ta);
+}
+
+function generateCard(){
+  const nA=lastResult?.nA||"A", nB=lastResult?.nB||"B";
+  const score=document.getElementById("bigScore").textContent.replace("%","").trim();
+  const verdict=document.getElementById("verdictBadge").textContent.replace("✦","").trim();
+
+  const W=1080, H=1920;
+  const cv=document.createElement("canvas");
+  cv.width=W; cv.height=H;
+  const ctx=cv.getContext("2d");
+
+  // Background gradient
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,"#0D0A18");
+  bg.addColorStop(0.5,"#130B20");
+  bg.addColorStop(1,"#0A0812");
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Glow top left
+  const g1=ctx.createRadialGradient(W*0.15,H*0.2,0,W*0.15,H*0.2,W*0.6);
+  g1.addColorStop(0,"rgba(201,75,114,0.18)"); g1.addColorStop(1,"transparent");
+  ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+
+  // Glow bottom right
+  const g2=ctx.createRadialGradient(W*0.85,H*0.75,0,W*0.85,H*0.75,W*0.55);
+  g2.addColorStop(0,"rgba(107,99,204,0.15)"); g2.addColorStop(1,"transparent");
+  ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+
+  // Stars
+  ctx.fillStyle="rgba(255,252,255,0.7)";
+  for(let i=0;i<200;i++){
+    const x=Math.random()*W, y=Math.random()*H, r=Math.random()*2+0.5;
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  }
+
+  // Score circle
+  const cx=W/2, cy=H*0.38, cr=260;
+  // Outer ring
+  ctx.beginPath(); ctx.arc(cx,cy,cr+15,0,Math.PI*2);
+  ctx.strokeStyle="rgba(201,75,114,0.25)"; ctx.lineWidth=2; ctx.stroke();
+  // Inner ring
+  ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2);
+  ctx.strokeStyle="rgba(201,75,114,0.5)"; ctx.lineWidth=3; ctx.stroke();
+  // Arc fill based on score
+  const pct=parseInt(score)/100;
+  ctx.beginPath(); ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);
+  const arcG=ctx.createLinearGradient(cx-cr,cy,cx+cr,cy);
+  arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
+  ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
+
+  // Score number
+  ctx.fillStyle="#F2EEF9";
+  ctx.font=`300 ${score.length>2?220:260}px 'Georgia', serif`;
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(score, cx, cy-20);
+
+  // % sign
+  ctx.font="300 90px 'Georgia', serif";
+  ctx.fillStyle="#ED93B1";
+  ctx.fillText("%", cx+(score.length>2?170:195), cy-90);
+
+  // COMPATIBILIDAD label
+  ctx.font="500 42px 'Arial', sans-serif";
+  ctx.fillStyle="rgba(242,238,249,0.45)";
+  ctx.letterSpacing="12px";
+  ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY", cx, cy+cr*0.7);
+
+  // Names
+  ctx.font=`italic 300 88px 'Georgia', serif`;
+  ctx.fillStyle="rgba(242,238,249,0.85)";
+  ctx.fillText(`${nA} & ${nB}`, cx, H*0.62);
+
+  // Verdict
+  ctx.font="300 52px 'Georgia', serif";
+  ctx.fillStyle="#ED93B1";
+  ctx.fillText(verdict, cx, H*0.70);
+
+  // Divider line
+  ctx.beginPath(); ctx.moveTo(W*0.3,H*0.755); ctx.lineTo(W*0.7,H*0.755);
+  ctx.strokeStyle="rgba(242,238,249,0.15)"; ctx.lineWidth=1; ctx.stroke();
+
+  // App name
+  ctx.font="300 52px 'Georgia', serif";
+  ctx.fillStyle="rgba(242,238,249,0.5)";
+  ctx.fillText("Duu", cx-30, H*0.81);
+  ctx.font="italic 300 52px 'Georgia', serif";
+  ctx.fillStyle="#ED93B1";
+  ctx.fillText("al", cx+38, H*0.81);
+
+  // URL
+  ctx.font="400 38px 'Arial', sans-serif";
+  ctx.fillStyle="rgba(242,238,249,0.3)";
+  ctx.fillText("duual.app", cx, H*0.87);
+
+  // Download
+  const link=document.createElement("a");
+  link.download=`duual-${nA}-${nB}.png`;
+  link.href=cv.toDataURL("image/png");
+  link.click();
+  showToast(lang==="es"?"✦ Tarjeta descargada":"✦ Card downloaded");
 }
 
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
