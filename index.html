@@ -174,6 +174,18 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .natal-edit{font-size:9px;color:var(--txt3);background:none;border:none;cursor:pointer;padding:0 0 0 4px;font-family:"DM Sans",sans-serif;opacity:0.6;}
 .natal-edit:hover{opacity:1;color:var(--rose-m);}
 .natal-select{font-size:11px;background:var(--surf2);border:0.5px solid var(--bord);border-radius:4px;color:var(--txt);font-family:"DM Sans",sans-serif;padding:1px 3px;}
+/* CARD PREVIEW MODAL */
+.card-preview-overlay{position:fixed;inset:0;background:rgba(5,3,14,0.93);z-index:200;display:none;flex-direction:column;align-items:center;backdrop-filter:blur(12px);}
+.card-preview-overlay.open{display:flex;}
+.card-preview-header{width:100%;display:flex;justify-content:space-between;align-items:center;padding:env(safe-area-inset-top,16px) 20px 10px;flex-shrink:0;}
+.card-preview-title{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:400;color:var(--txt2);}
+.card-preview-close{background:none;border:none;color:var(--txt3);font-size:24px;cursor:pointer;padding:4px;line-height:1;font-family:"DM Sans",sans-serif;}
+.card-preview-scroll{flex:1;overflow-y:auto;width:100%;display:flex;flex-direction:column;align-items:center;padding:4px 20px 0;}
+.card-preview-scroll::-webkit-scrollbar{display:none;}
+.card-preview-img{width:100%;max-width:320px;border-radius:12px;box-shadow:0 8px 40px rgba(201,75,114,0.25);}
+.card-preview-actions{width:100%;max-width:320px;padding:16px 0 calc(env(safe-area-inset-bottom,0px)+20px);display:flex;flex-direction:column;gap:10px;flex-shrink:0;}
+.card-dl-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--rose),var(--plum));border:none;border-radius:var(--r-lg);font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;}
+.card-share-native{width:100%;padding:12px;background:var(--surf2);border:0.5px solid var(--bord2);border-radius:var(--r-lg);font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt2);cursor:pointer;}
 </style>
 </head>
 <body>
@@ -254,6 +266,9 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <span data-es="✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna." data-en="✦ Add birth time for better accuracy, especially for the Moon.">✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna.</span>
     </div>
     <div class="natal-mini" id="natalMini"></div>
+    <div style="margin:-2px 14px 12px;font-size:10px;color:var(--txt3);opacity:0.6;line-height:1.55;">
+      <span data-es="✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente." data-en="✎ Any planet off? Tap the icon to correct it — the score recalculates automatically.">✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente.</span>
+    </div>
     <div class="share-row">
       <button class="share-btn" onclick="shareResult()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg><span data-es="Compartir ↗" data-en="Share ↗">Compartir ↗</span></button>
       <button class="share-btn" onclick="saveToHistory()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span data-es="Guardar" data-en="Save">Guardar</span></button>
@@ -359,9 +374,21 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 
 </div>
 <div class="toast" id="toast"></div>
+<div class="card-preview-overlay" id="cardPreviewOverlay">
+  <div class="card-preview-header">
+    <span class="card-preview-title" data-es="u2746 Vista previa" data-en="u2746 Preview">u2746 Vista previa</span>
+    <button class="card-preview-close" onclick="closeCardPreview()">&#215;</button>
+  </div>
+  <div class="card-preview-scroll">
+    <img class="card-preview-img" id="cardPreviewImg" src="" alt="preview">
+    <div class="card-preview-actions">
+      <button class="card-dl-btn" id="cardDlBtn" onclick="downloadCard()" data-es="u2193 Descargar imagen" data-en="u2193 Download image">u2193 Descargar imagen</button>
+      <button class="card-share-native" onclick="shareCardNative()" data-es="Compartir u2197" data-en="Share u2197">Compartir u2197</button>
+    </div>
+  </div>
+</div>
 
 <script>
-// LEMON SQUEEZY — reemplaza con tus URLs reales
 // PAYPAL — URLs de checkout
 const LS_MONTHLY = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=2.99&currency_code=USD&item_name=Duual+Premium+Monthly";
 const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=19.99&currency_code=USD&item_name=Duual+Premium+Annual";
@@ -385,7 +412,6 @@ function T(y,m,d){return(jd(y,m,d)-2451545)/36525;}
 function sun(t){const L=n360(280.46646+36000.76983*t),M=n360(357.52911+35999.05029*t-0.0001537*t*t),C=(1.914602-0.004817*t)*sinD(M)+(0.019993-0.000101*t)*sinD(2*M)+0.000289*sinD(3*M);return n360(L+C);}
 function moon(t){const Mp=n360(134.96298+477198.867398*t+0.0086972*t*t),D=n360(297.85036+445267.111480*t),M=n360(357.52772+35999.050340*t),F=n360(93.27191+483202.017538*t);return n360(218.3165+481267.8813*t+6.289*sinD(Mp)-1.274*sinD(Mp-2*D)+0.658*sinD(2*D)-0.214*sinD(2*Mp)-0.186*sinD(M)-0.114*sinD(2*F)+0.059*sinD(2*Mp-2*D)+0.041*sinD(Mp-M));}
 
-// Geocentric conversion helper
 function geoLon(hl,hr,el,er){
   const x=hr*Math.cos(hl*DEG)-er*Math.cos(el*DEG);
   const y=hr*Math.sin(hl*DEG)-er*Math.sin(el*DEG);
@@ -396,7 +422,6 @@ function earthPos(t){
   return{l:n360(sun(t)+180),r:1.0-0.01671*Math.cos(M*DEG)};
 }
 
-// Planets — now geocentric (heliocentric → subtract Earth position)
 function merc(t){
   const L=n360(252.250906+149472.6746358*t),M=n360(174.7948+149472.5153*t);
   const e2=0.20563;
@@ -407,7 +432,6 @@ function merc(t){
 function venus(t){
   const L=n360(181.979801+58517.8156760*t),M=n360(212.2606+58517.8039*t);
   const e2=0.006773;
-  // More correction terms for Venus heliocentric longitude
   const hl=n360(L+0.7758*sinD(M)+0.0033*sinD(2*M)-0.0235*sinD(M-n360(357.52911+35999.05029*t)));
   const hr=0.72333*(1-e2*e2)/(1+e2*Math.cos(M*DEG));
   const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
@@ -450,7 +474,6 @@ function chiron(t){
 function nnode(t){return n360(125.0445-1934.1363*t);}
 function planets(y,m,d){const t=T(y,m,d);return{Sun:sun(t),Moon:moon(t),Mercury:merc(t),Venus:venus(t),Mars:mars(t),Jupiter:jupit(t),Saturn:saturn(t),Uranus:uranus(t),Neptune:neptune(t),Pluto:pluto(t),Chiron:chiron(t),NNode:nnode(t)};}
 
-// Accurate planet positions using Astronomy Engine
 function planetsPrecise(y,m,d,h){
   try {
     if(typeof Astronomy === 'undefined') throw new Error('no lib');
@@ -464,18 +487,15 @@ function planetsPrecise(y,m,d,h){
       const ecl = Astronomy.Ecliptic(vec);
       result[body] = n360(ecl.elon);
     }
-    // Chiron and NNode still use Meeus (not in Astronomy Engine)
     const t = T(y,m,d+hour/24);
     result.Chiron = chiron(t);
     result.NNode = nnode(t);
     return result;
   } catch(e) {
-    // Fallback to Meeus if library not loaded
     return planets(y,m,d+(h||12)/24);
   }
 }
 
-// Sign helpers
 const SIGN_ES=["Aries","Tauro","Géminis","Cáncer","Leo","Virgo","Libra","Escorpio","Sagitario","Capricornio","Acuario","Piscis"];
 const SIGN_EN=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
 const SIGN_ABB_ES=["Ari","Tau","Gém","Cán","Leo","Vir","Lib","Esc","Sag","Cap","Acu","Pis"];
@@ -531,7 +551,6 @@ function goScreen(n){
 }
 function goBack(){goScreen(prevScr||"input");}
 
-// Manual sign override
 const signOverrides={};
 function editSign(pid,planet,currentDeg,btn){
   const l=lang==="es"?SIGN_ES:SIGN_EN;
@@ -616,11 +635,8 @@ function renderResults(r){
     maxP+=w*10;const a=asp(pA[pa],pB[pb]);
     if(a){total+=a.sc*w;found.push({pa,pb,a,pts:a.sc*w,interp:interp(k,a.es,lang)});}
   }
-  // Score only against found pairs (like Co-Star approach)
-  // maxFound = best possible score for pairs that actually formed aspects
   const maxFound=found.reduce((s,x)=>s+ASPS[0].sc*(PW[x.pa+"-"+x.pb]||1),0)||1;
   const rawPct=total/maxFound*100;
-  // Apply realistic curve: good synastry = 60-75%, exceptional = 85%+
   const pct=Math.min(99,Math.max(5,Math.round(30+rawPct*0.7)));
   const vList=VRD[lang],vE=vList.find(v=>pct>=v[0]);
   document.getElementById("bigScore").innerHTML=`${pct}<span class="pct">%</span>`;
@@ -629,7 +645,6 @@ function renderResults(r){
   document.getElementById("verdictTitle").textContent=vE[1];
   document.getElementById("verdictText").textContent=vE[2];
 
-  // Natal mini profiles
   const pl = lang==="es"
     ? {Sun:"☀ Sol",Moon:"☽ Luna",Venus:"♀ Venus",Mars:"♂ Marte",Mercury:"☿ Mercurio"}
     : {Sun:"☀ Sun",Moon:"☽ Moon",Venus:"♀ Venus",Mars:"♂ Mars",Mercury:"☿ Mercury"};
@@ -640,7 +655,6 @@ function renderResults(r){
   document.getElementById("constRow").innerHTML=top.map(x=>`<span class="const-tag">${PG[x.pa]} ${x.a.s} ${PG[x.pb]}</span>`).join("");
 
   const aS={};
-  // Extended planet sets per area for fairer scoring
   const AREA_EXT={
     romance:["Venus","Mars","Sun","Moon"],
     emotion:["Moon","Sun","Venus","Jupiter"],
@@ -650,18 +664,15 @@ function renderResults(r){
   for(const[k,ad] of Object.entries(AREAS)){
     let s=0,cnt=0;
     const ps=AREA_EXT[k]||[];
-    // Check all combinations of relevant planets between persons
     for(const pa of ps) for(const pb of ps){
       if(pA[pa]===undefined||pB[pb]===undefined) continue;
       const a=asp(pA[pa],pB[pb]);
       cnt++;
       if(a){
-        // harmonious aspects score high, tense score medium
         const bonus=a.t==="harmonious"?a.sc:a.t==="tense"?a.sc*0.4:a.sc*0.6;
         s+=bonus;
       }
     }
-    // Base score 30% + aspect bonus, so areas never show 0% unless truly empty
     aS[k]=cnt>0?Math.min(100,Math.round(30+(s/cnt)*8)):30;
   }
   document.getElementById("areasGrid").innerHTML=Object.entries(AREAS).map(([k,ad])=>{const p=aS[k],label=lang==="es"?ad.es:ad.en;return `<div class="acard"><div class="ahead"><div class="aname">${label}</div><div class="apct">${p}%</div></div><div class="track"><div class="bar" style="width:${p}%;background:${ad.c}"></div></div><div class="ainsight">${ai(k,p,lang)}</div></div>`;}).join("");
@@ -808,6 +819,9 @@ function fallbackCopy(text,msg){
   document.body.removeChild(ta);
 }
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// GENERATE CARD — versión mejorada
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function generateCard(){
   const nA=lastResult?.nA||"A", nB=lastResult?.nB||"B";
   const score=document.getElementById("bigScore").textContent.replace("%","").trim();
@@ -817,118 +831,203 @@ function generateCard(){
   cv.width=W; cv.height=H;
   const ctx=cv.getContext("2d");
 
-  // Background gradient
-  const bg=ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,"#0D0A18");
-  bg.addColorStop(0.5,"#130B20");
-  bg.addColorStop(1,"#0A0812");
-  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  const drawAll = () => {
+    // Background gradient
+    const bg=ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,"#0D0A18");
+    bg.addColorStop(0.5,"#130B20");
+    bg.addColorStop(1,"#0A0812");
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
-  // Glow top left
-  const g1=ctx.createRadialGradient(W*0.15,H*0.2,0,W*0.15,H*0.2,W*0.6);
-  g1.addColorStop(0,"rgba(201,75,114,0.18)"); g1.addColorStop(1,"transparent");
-  ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+    // Glow top left
+    const g1=ctx.createRadialGradient(W*0.15,H*0.2,0,W*0.15,H*0.2,W*0.6);
+    g1.addColorStop(0,"rgba(201,75,114,0.18)"); g1.addColorStop(1,"transparent");
+    ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
 
-  // Glow bottom right
-  const g2=ctx.createRadialGradient(W*0.85,H*0.75,0,W*0.85,H*0.75,W*0.55);
-  g2.addColorStop(0,"rgba(107,99,204,0.15)"); g2.addColorStop(1,"transparent");
-  ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+    // Glow bottom right
+    const g2=ctx.createRadialGradient(W*0.85,H*0.75,0,W*0.85,H*0.75,W*0.55);
+    g2.addColorStop(0,"rgba(107,99,204,0.15)"); g2.addColorStop(1,"transparent");
+    ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
 
-  // Stars
-  ctx.fillStyle="rgba(255,252,255,0.7)";
-  for(let i=0;i<200;i++){
-    const x=Math.random()*W, y=Math.random()*H, r=Math.random()*2+0.5;
-    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
-  }
+    // Stars
+    ctx.fillStyle="rgba(255,252,255,0.7)";
+    for(let i=0;i<200;i++){
+      const x=Math.random()*W, y=Math.random()*H, r=Math.random()*2+0.5;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    }
 
-  // Score circle
-  const cx=W/2, cy=H*0.38, cr=260;
+    // Score circle
+    const cx=W/2, cy=H*0.38, cr=260;
 
-  // Outer ring
-  ctx.beginPath(); ctx.arc(cx,cy,cr+15,0,Math.PI*2);
-  ctx.strokeStyle="rgba(201,75,114,0.25)"; ctx.lineWidth=2; ctx.stroke();
+    // Outer ring
+    ctx.beginPath(); ctx.arc(cx,cy,cr+15,0,Math.PI*2);
+    ctx.strokeStyle="rgba(201,75,114,0.25)"; ctx.lineWidth=2; ctx.stroke();
 
-  // Inner ring
-  ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2);
-  ctx.strokeStyle="rgba(201,75,114,0.5)"; ctx.lineWidth=3; ctx.stroke();
+    // Inner ring
+    ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2);
+    ctx.strokeStyle="rgba(201,75,114,0.5)"; ctx.lineWidth=3; ctx.stroke();
 
-  // Arc fill based on score
-  const pct=parseInt(score)/100;
-  ctx.beginPath(); ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);
-  const arcG=ctx.createLinearGradient(cx-cr,cy,cx+cr,cy);
-  arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
-  ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
+    // Arc fill based on score
+    const pct=parseInt(score)/100;
+    ctx.beginPath(); ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);
+    const arcG=ctx.createLinearGradient(cx-cr,cy,cx+cr,cy);
+    arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
+    ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
 
-  // Score number
-  ctx.fillStyle="#F2EEF9";
-  ctx.font=`300 ${score.length>2?220:260}px 'Georgia', serif`;
-  ctx.textAlign="center"; ctx.textBaseline="middle";
-  ctx.fillText(score, cx, cy-20);
+    // ✅ Score + % perfectamente centrados en el círculo
+    const scoreFontSize = score.length > 2 ? 210 : 250;
+    const pctFontSize = Math.round(scoreFontSize * 0.36);
 
-  // % sign
-  ctx.font="300 90px 'Georgia', serif";
-  ctx.fillStyle="#ED93B1";
-  ctx.fillText("%", cx+(score.length>2?170:195), cy-90);
+    // Medir ambos textos para calcular ancho total real
+    ctx.font=`300 ${scoreFontSize}px 'Georgia', serif`;
+    const scoreW = ctx.measureText(score).width;
+    ctx.font=`300 ${pctFontSize}px 'Georgia', serif`;
+    const pctW = ctx.measureText("%").width;
 
-  // ✅ COMPATIBILIDAD — debajo del círculo, visible y destacable
-  ctx.font="600 44px 'Arial', sans-serif";
-  ctx.fillStyle="rgba(237,147,177,0.85)"; // rosa en lugar de casi-transparente
-  ctx.letterSpacing="10px";
-  ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY", cx, cy+cr+55);
-  ctx.letterSpacing="0px"; // reset para textos siguientes
+    const gap = 8;
+    const totalW = scoreW + gap + pctW;
+    const scoreStartX = cx - totalW / 2;
 
-  // ✅ Nombres — tamaño dinámico para que no se corten
-  const fullName=`${nA} & ${nB}`;
-  let nameFontSize=88;
-  ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;
-  while(ctx.measureText(fullName).width > W*0.88 && nameFontSize > 42){
-    nameFontSize -= 4;
+    // Dibujar número — centrado verticalmente en cy
+    ctx.textAlign="left";
+    ctx.textBaseline="middle";
+    ctx.font=`300 ${scoreFontSize}px 'Georgia', serif`;
+    ctx.fillStyle="#F2EEF9";
+   ctx.fillText(score, scoreStartX, cy + scoreFontSize * 0.08);
+
+    // Dibujar % — superscript: alineado al top del número
+    ctx.font=`300 ${pctFontSize}px 'Georgia', serif`;
+    ctx.fillStyle="#ED93B1";
+    ctx.textBaseline="top";
+    ctx.fillText("%", scoreStartX + scoreW + gap, cy - scoreFontSize * 0.38);
+    ctx.textBaseline="middle";
+
+    // ✅ COMPATIBILIDAD — debajo del círculo, fuera del borde
+    ctx.textAlign="center";
+    ctx.font="600 44px 'Arial', sans-serif";
+    ctx.fillStyle="rgba(237,147,177,0.9)";
+    ctx.letterSpacing="10px";
+    ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY", cx, cy+cr+58);
+    ctx.letterSpacing="0px";
+
+    // ✅ Nombres — tamaño dinámico para que no se corten
+    const fullName=`${nA} & ${nB}`;
+    let nameFontSize=88;
     ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;
-  }
-  ctx.fillStyle="rgba(242,238,249,0.9)";
-  ctx.fillText(fullName, cx, H*0.63);
+    while(ctx.measureText(fullName).width > W*0.86 && nameFontSize > 40){
+      nameFontSize -= 4;
+      ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;
+    }
+    ctx.fillStyle="rgba(242,238,249,0.92)";
+    ctx.fillText(fullName, cx, H*0.635);
 
-  // Verdict
-  ctx.font="300 52px 'Georgia', serif";
-  ctx.fillStyle="#ED93B1";
-  ctx.fillText(verdict, cx, H*0.71);
+    // Verdict
+    ctx.font="300 50px 'Georgia', serif";
+    ctx.fillStyle="#ED93B1";
+    ctx.fillText(verdict, cx, H*0.715);
 
-  // Divider line
-  ctx.beginPath(); ctx.moveTo(W*0.3,H*0.77); ctx.lineTo(W*0.7,H*0.77);
-  ctx.strokeStyle="rgba(242,238,249,0.15)"; ctx.lineWidth=1; ctx.stroke();
+    // Divider line
+    ctx.beginPath(); ctx.moveTo(W*0.32,H*0.772); ctx.lineTo(W*0.68,H*0.772);
+    ctx.strokeStyle="rgba(242,238,249,0.15)"; ctx.lineWidth=1; ctx.stroke();
 
-  // ✅ "Duual" — centrado correcto midiendo el texto real
-  const duuFont="300 52px 'Georgia', serif";
-  const alFont="italic 300 52px 'Georgia', serif";
-  ctx.font=duuFont;
-  const duuW=ctx.measureText("Duu").width;
-  ctx.font=alFont;
-  const alW=ctx.measureText("al").width;
-  const totalW=duuW+alW;
-  const startX=cx - totalW/2;
-  const brandY=H*0.83;
+    // ✅ Logo + "Duual" — agrupados y centrados
+    const duuFont = "300 50px 'Georgia', serif";
+    const alFont  = "italic 300 50px 'Georgia', serif";
+    ctx.font = duuFont;
+    const duuW = ctx.measureText("Duu").width;
+    ctx.font = alFont;
+    ctx.font = alFont;
+    const alW = ctx.measureText("al").width;
 
-  ctx.font=duuFont;
-  ctx.fillStyle="rgba(242,238,249,0.6)";
-  ctx.textAlign="left";
-  ctx.fillText("Duu", startX, brandY);
+    // Logo pequeño a la izquierda del texto "Duual"
+    const logoSize = 52;
+    const brandTextW = duuW + alW;
+    const logoGap = 14;
+    const totalBrandW = (logoImg.complete && logoImg.naturalWidth > 0)
+      ? logoSize + logoGap + brandTextW
+      : brandTextW;
+    const brandStartX = cx - totalBrandW / 2;
+    const brandY = H * 0.818;
 
-  ctx.font=alFont;
-  ctx.fillStyle="#ED93B1";
-  ctx.fillText("al", startX+duuW, brandY);
+    // Logo alineado verticalmente al centro del texto
+    if(logoImg.complete && logoImg.naturalWidth > 0){
+      ctx.globalAlpha = 0.55;
+      // Rounded clip for logo
+      const lx = brandStartX, ly = brandY - logoSize/2;
+      const r = 12;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(lx+r, ly); ctx.lineTo(lx+logoSize-r, ly);
+      ctx.quadraticCurveTo(lx+logoSize, ly, lx+logoSize, ly+r);
+      ctx.lineTo(lx+logoSize, ly+logoSize-r);
+      ctx.quadraticCurveTo(lx+logoSize, ly+logoSize, lx+logoSize-r, ly+logoSize);
+      ctx.lineTo(lx+r, ly+logoSize); ctx.quadraticCurveTo(lx, ly+logoSize, lx, ly+logoSize-r);
+      ctx.lineTo(lx, ly+r); ctx.quadraticCurveTo(lx, ly, lx+r, ly);
+      ctx.closePath(); ctx.clip();
+      ctx.drawImage(logoImg, lx, ly, logoSize, logoSize);
+      ctx.restore();
+      ctx.globalAlpha = 1.0;
+    }
 
-  // URL
-  ctx.textAlign="center";
-  ctx.font="400 38px 'Arial', sans-serif";
-  ctx.fillStyle="rgba(242,238,249,0.3)";
-  ctx.fillText("duual.app", cx, H*0.88);
+    // Texto "Duual" a la derecha del logo
+    const textStartX = (logoImg.complete && logoImg.naturalWidth > 0)
+      ? brandStartX + logoSize + logoGap
+      : brandStartX;
 
-  // Download
-  const link=document.createElement("a");
-  link.download=`duual-${nA}-${nB}.png`;
-  link.href=cv.toDataURL("image/png");
+    ctx.textAlign="left";
+    ctx.textBaseline="middle";
+    ctx.font = duuFont;
+    ctx.fillStyle = "rgba(242,238,249,0.6)";
+    ctx.fillText("Duu", textStartX, brandY);
+
+    ctx.font = alFont;
+    ctx.fillStyle = "#ED93B1";
+    ctx.fillText("al", textStartX + duuW, brandY);
+
+    // URL
+    ctx.textAlign="center";
+    ctx.font="400 32px 'Arial', sans-serif";
+    ctx.fillStyle="rgba(242,238,249,0.25)";
+    ctx.fillText("duual.app", cx, brandY + 50);
+
+    // ✅ Show preview instead of immediate download
+    _cardDataURL = cv.toDataURL("image/png");
+    _cardFileName = `duual-${nA}-${nB}.png`;
+    document.getElementById("cardPreviewImg").src = _cardDataURL;
+    document.getElementById("cardPreviewOverlay").classList.add("open");
+  };
+
+  // Carga el logo antes de dibujar
+  const logoImg = new Image();
+  logoImg.onload = drawAll;
+  logoImg.onerror = drawAll;
+  logoImg.src = "icons/icon-192.png";
+}
+
+let _cardDataURL = null, _cardFileName = "duual-card.png";
+
+function closeCardPreview(){
+  document.getElementById("cardPreviewOverlay").classList.remove("open");
+}
+function downloadCard(){
+  const link = document.createElement("a");
+  link.download = _cardFileName;
+  link.href = _cardDataURL;
   link.click();
   showToast(lang==="es"?"✦ Tarjeta descargada":"✦ Card downloaded");
+}
+async function shareCardNative(){
+  if(!_cardDataURL) return;
+  try {
+    const res = await fetch(_cardDataURL);
+    const blob = await res.blob();
+    const file = new File([blob], _cardFileName, {type:"image/png"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:"Duual"});
+    } else {
+      downloadCard();
+    }
+  } catch(e){ downloadCard(); }
 }
 
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
