@@ -369,14 +369,17 @@ function earthPos(t){
 // Planets — now geocentric (heliocentric → subtract Earth position)
 function merc(t){
   const L=n360(252.250906+149472.6746358*t),M=n360(174.7948+149472.5153*t);
-  const hl=n360(L+23.44*sinD(M)+2.9818*sinD(2*M)+0.5255*sinD(3*M));
-  const hr=0.387098*(1-0.20563*0.20563)/(1+0.20563*Math.cos(M*DEG));
+  const e2=0.20563;
+  const hl=n360(L+(2*e2-0.25*e2*e2*e2)*sinD(M)+(1.25*e2*e2)*sinD(2*M)+(13/12*e2*e2*e2)*sinD(3*M));
+  const hr=0.387098*(1-e2*e2)/(1+e2*Math.cos(M*DEG));
   const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
 }
 function venus(t){
   const L=n360(181.979801+58517.8156760*t),M=n360(212.2606+58517.8039*t);
-  const hl=n360(L+0.7758*sinD(M)+0.0033*sinD(2*M));
-  const hr=0.72333*(1-0.006773*0.006773)/(1+0.006773*Math.cos(M*DEG));
+  const e2=0.006773;
+  // More correction terms for Venus heliocentric longitude
+  const hl=n360(L+0.7758*sinD(M)+0.0033*sinD(2*M)-0.0235*sinD(M-n360(357.52911+35999.05029*t)));
+  const hr=0.72333*(1-e2*e2)/(1+e2*Math.cos(M*DEG));
   const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
 }
 function mars(t){
@@ -522,7 +525,9 @@ function renderResults(r){
     maxP+=w*10;const a=asp(pA[pa],pB[pb]);
     if(a){total+=a.sc*w;found.push({pa,pb,a,pts:a.sc*w,interp:interp(k,a.es,lang)});}
   }
-  const pct=Math.round((total/maxP)*100);
+  const rawPct=(total/maxP)*100;
+  // Scale so realistic matches spread across 0-100 range
+  const pct=Math.min(100,Math.round(rawPct*4.5));
   const vList=VRD[lang],vE=vList.find(v=>pct>=v[0]);
   document.getElementById("bigScore").innerHTML=`${pct}<span class="pct">%</span>`;
   document.getElementById("rpair").innerHTML=`${nA} <span class="ramp">&</span> ${nB}`;
