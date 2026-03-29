@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Duual">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>Duual · Tu amor, escrito en las estrellas</title>
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2/source/js/astronomy.browser.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -893,7 +893,7 @@ function generateCard(){
     ctx.textBaseline="middle";
     ctx.font=`300 ${scoreFontSize}px 'Georgia', serif`;
     ctx.fillStyle="#F2EEF9";
-   ctx.fillText(score, scoreStartX, cy + scoreFontSize * 0.08);
+    ctx.fillText(score, scoreStartX, cy);
 
     // Dibujar % — superscript: alineado al top del número
     ctx.font=`300 ${pctFontSize}px 'Georgia', serif`;
@@ -999,9 +999,10 @@ function generateCard(){
 
   // Carga el logo antes de dibujar
   const logoImg = new Image();
+  logoImg.crossOrigin = "anonymous";
   logoImg.onload = drawAll;
   logoImg.onerror = drawAll;
-  logoImg.src = "icons/icon-192.png";
+  logoImg.src = "icon-192.png";
 }
 
 let _cardDataURL = null, _cardFileName = "duual-card.png";
