@@ -197,6 +197,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     </div>
     <button class="cta-btn" onclick="startCalc()" data-es="Revelar compatibilidad ✦" data-en="Reveal compatibility ✦">Revelar compatibilidad ✦</button>
     <div class="free-hint" id="freeHint" data-es="1 lectura gratis por día · sin registro" data-en="1 free reading per day · no sign-up">1 lectura gratis por día · sin registro</div>
+    <div style="text-align:center;font-size:10px;color:var(--txt3);padding:0 20px 12px;line-height:1.6;" data-es="⚠ Sin hora de nacimiento, planetas en los primeros o últimos grados de un signo pueden variar. Para máxima precisión usa la hora exacta." data-en="⚠ Without birth time, planets near sign boundaries may vary slightly. For best accuracy, use exact birth time.">⚠ Sin hora de nacimiento, planetas en los primeros o últimos grados de un signo pueden variar.</div>
   </div>
   <div class="bnav">
     <button class="bitem on" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
@@ -525,9 +526,12 @@ function renderResults(r){
     maxP+=w*10;const a=asp(pA[pa],pB[pb]);
     if(a){total+=a.sc*w;found.push({pa,pb,a,pts:a.sc*w,interp:interp(k,a.es,lang)});}
   }
-  const rawPct=(total/maxP)*100;
-  // Scale so realistic matches spread across 0-100 range
-  const pct=Math.min(100,Math.round(rawPct*4.5));
+  // Score only against found pairs (like Co-Star approach)
+  // maxFound = best possible score for pairs that actually formed aspects
+  const maxFound=found.reduce((s,x)=>s+ASPS[0].sc*(PW[x.pa+"-"+x.pb]||1),0)||1;
+  const rawPct=total/maxFound*100;
+  // Apply realistic curve: good synastry = 60-75%, exceptional = 85%+
+  const pct=Math.min(99,Math.max(5,Math.round(30+rawPct*0.7)));
   const vList=VRD[lang],vE=vList.find(v=>pct>=v[0]);
   document.getElementById("bigScore").innerHTML=`${pct}<span class="pct">%</span>`;
   document.getElementById("rpair").innerHTML=`${nA} <span class="ramp">&</span> ${nB}`;
