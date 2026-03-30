@@ -232,6 +232,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
   <div class="bnav">
     <button class="bitem on" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
     <button class="bitem" onclick="goLastResult()"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
+    <button class="bitem" onclick="goScreen('history')"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
     <button class="bitem" onclick="goScreen('paywall')"><span class="bico">◎</span><span>Premium</span></button>
   </div>
 </div>
@@ -306,6 +307,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
   <div class="bnav">
     <button class="bitem" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
     <button class="bitem on"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
+    <button class="bitem" onclick="goScreen('history')"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
     <button class="bitem" onclick="goScreen('paywall')"><span class="bico">◎</span><span>Premium</span></button>
   </div>
 </div>
@@ -354,7 +356,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
   </div>
   <div class="bnav">
     <button class="bitem" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
-    <button class="bitem" onclick="goScreen('history')"><span class="bico">♡</span><span data-es="Historial" data-en="History">Historial</span></button>
+    <button class="bitem" onclick="goLastResult()"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
+    <button class="bitem" onclick="goScreen('history')"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
     <button class="bitem on"><span class="bico">◎</span><span>Premium</span></button>
   </div>
 </div>
@@ -367,7 +370,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
   <div class="scroll" id="historyScroll" style="padding:0 14px 16px;"></div>
   <div class="bnav">
     <button class="bitem" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
-    <button class="bitem on"><span class="bico">♡</span><span data-es="Historial" data-en="History">Historial</span></button>
+    <button class="bitem" onclick="goLastResult()"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
+    <button class="bitem on"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
     <button class="bitem" onclick="goScreen('paywall')"><span class="bico">◎</span><span>Premium</span></button>
   </div>
 </div>
@@ -788,7 +792,7 @@ function renderHistory(){
   const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
   const el=document.getElementById("historyScroll");
   if(!h.length){el.innerHTML=`<div class="hempty">${lang==="es"?"Tu historial aparecerá aquí.<br>Haz tu primera lectura ✦":"Your history will appear here.<br>Make your first reading ✦"}</div>`;return;}
-  el.innerHTML=h.map(x=>`<div class="hcard"><div class="hcard-top"><div class="hnames">${x.nA} <span style="color:var(--rose-m)">&</span> ${x.nB}</div><div class="hscore">${x.score}%</div></div><div class="hdate">${x.verdict} · ${new Date(x.saved).toLocaleDateString(lang==="es"?"es-CL":"en-US")}</div></div>`).join("");
+  el.innerHTML=h.map((x,i)=>`<div class="hcard"><div class="hcard-top"><div class="hnames">${x.nA} <span style="color:var(--rose-m)">&</span> ${x.nB}</div><div style="display:flex;align-items:center;gap:10px;"><div class="hscore">${x.score}%</div><button onclick="deleteHistory(${i})" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;padding:4px;opacity:0.6;" title="Borrar">✕</button></div></div><div class="hdate">${x.verdict} · ${new Date(x.saved).toLocaleDateString(lang==="es"?"es-CL":"en-US")}</div></div>`).join("");
 }
 
 async function shareResult(){
@@ -883,7 +887,7 @@ function generateCard(){
     ctx.textBaseline = "middle";
     ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
     ctx.fillStyle = "#F2EEF9";
-ctx.fillText(score, cx - 30, cy + 18);
+    ctx.fillText(score, cx - 30, cy);
 
     // % superscript arriba a la derecha
     ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
@@ -1023,6 +1027,13 @@ async function shareCardNative(){
   } catch(e){ downloadCard(); }
 }
 
+function deleteHistory(index){
+  const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
+  h.splice(index,1);
+  localStorage.setItem("duual_history",JSON.stringify(h));
+  renderHistory();
+  showToast(lang==="es"?"Eliminado":"Deleted");
+}
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
 function updateClock(){const n=new Date();document.getElementById("clock").textContent=n.getHours()+":"+(n.getMinutes()<10?"0":"")+n.getMinutes();}
 updateClock();setInterval(updateClock,30000);
