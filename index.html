@@ -395,6 +395,7 @@ const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=z
 
 // ACCESS CODES — agrega emails de clientas que pagaron
 const ACCESS_CODES = [
+  "lupitascreations.01@gmail.com",
   // "clienta@gmail.com",
 ];
 
@@ -940,21 +941,20 @@ function generateCard(){
     const alW = ctx.measureText("al").width;
 
     // Logo pequeño a la izquierda del texto "Duual"
-    const logoSize = 90;
+    const logoSize = 52;
     const brandTextW = duuW + alW;
     const logoGap = 14;
-    const totalBrandW = brandTextW;
-const brandStartX = cx - totalBrandW / 2;
-// Logo centrado arriba del texto
-const logoDrawX = cx - logoSize / 2;
-const logoDrawY = brandY - logoSize - 20;
-    const brandY = H * 0.835;
+    const totalBrandW = (logoImg.complete && logoImg.naturalWidth > 0)
+      ? logoSize + logoGap + brandTextW
+      : brandTextW;
+    const brandStartX = cx - totalBrandW / 2;
+    const brandY = H * 0.818;
 
     // Logo alineado verticalmente al centro del texto
     if(logoImg.complete && logoImg.naturalWidth > 0){
       ctx.globalAlpha = 0.55;
       // Rounded clip for logo
-      const lx = logoDrawX, ly = logoDrawY;
+      const lx = brandStartX, ly = brandY - logoSize/2;
       const r = 12;
       ctx.save();
       ctx.beginPath();
@@ -971,7 +971,9 @@ const logoDrawY = brandY - logoSize - 20;
     }
 
     // Texto "Duual" a la derecha del logo
-    const textStartX = brandStartX;
+    const textStartX = (logoImg.complete && logoImg.naturalWidth > 0)
+      ? brandStartX + logoSize + logoGap
+      : brandStartX;
 
     ctx.textAlign="left";
     ctx.textBaseline="middle";
@@ -1010,10 +1012,14 @@ function closeCardPreview(){
   document.getElementById("cardPreviewOverlay").classList.remove("open");
 }
 function downloadCard(){
+  if(!_cardDataURL) return;
   const link = document.createElement("a");
   link.download = _cardFileName;
   link.href = _cardDataURL;
+  link.style.display = "none";
+  document.body.appendChild(link);
   link.click();
+  document.body.removeChild(link);
   showToast(lang==="es"?"✦ Tarjeta descargada":"✦ Card downloaded");
 }
 async function shareCardNative(){
