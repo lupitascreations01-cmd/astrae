@@ -80,10 +80,10 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 @keyframes lpulse{0%,80%,100%{opacity:.2;transform:scale(.7);}40%{opacity:1;transform:scale(1);}}
 .rhero{text-align:center;padding:22px 20px 16px;border-bottom:0.5px solid var(--bord);}
 .score-wrap{position:relative;display:inline-block;}
-.score-ring{position:absolute;inset:-10px;border-radius:50%;border:1px solid var(--rose-b);animation:pulse-ring 3s ease-in-out infinite;}
+.score-ring{position:absolute;inset:-22px;border-radius:50%;border:1px solid var(--rose-b);animation:pulse-ring 3s ease-in-out infinite;}
 @keyframes pulse-ring{0%,100%{opacity:.4;transform:scale(1);}50%{opacity:.8;transform:scale(1.04);}}
-.big-score{font-family:"Cormorant Garamond",serif;font-size:88px;font-weight:300;color:var(--txt);line-height:1;}
-.big-score .pct{font-size:40px;color:var(--rose-m);}
+.big-score{font-family:"Cormorant Garamond",serif;font-size:104px;font-weight:400;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;gap:2px;}
+.big-score .pct{font-size:42px;color:var(--rose-m);align-self:flex-start;margin-top:14px;}
 .slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:4px;}
 .rpair{font-family:"Cormorant Garamond",serif;font-size:18px;font-style:italic;color:var(--txt2);margin-top:10px;}
 .ramp{color:var(--rose-m);}
@@ -875,33 +875,27 @@ function generateCard(){
     arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
     ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
 
-    // ✅ Score + % perfectamente centrados en el círculo
+    // ✅ Score centrado con textAlign center — más confiable cross-device
     const scoreFontSize = score.length > 2 ? 210 : 250;
-    const pctFontSize = Math.round(scoreFontSize * 0.36);
+    const pctFontSize = Math.round(scoreFontSize * 0.32);
 
-    // Medir ambos textos para calcular ancho total real
-    ctx.font=`300 ${scoreFontSize}px 'Georgia', serif`;
-    const scoreW = ctx.measureText(score).width;
-    ctx.font=`300 ${pctFontSize}px 'Georgia', serif`;
-    const pctW = ctx.measureText("%").width;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
+    ctx.fillStyle = "#F2EEF9";
+    ctx.fillText(score, cx - 30, cy);
 
-    const gap = 8;
-    const totalW = scoreW + gap + pctW;
-    const scoreStartX = cx - totalW / 2;
-
-    // Dibujar número — centrado verticalmente en cy
-    ctx.textAlign="left";
-    ctx.textBaseline="middle";
-    ctx.font=`300 ${scoreFontSize}px 'Georgia', serif`;
-    ctx.fillStyle="#F2EEF9";
-    ctx.fillText(score, scoreStartX, cy);
-
-    // Dibujar % — superscript: alineado al top del número
-    ctx.font=`300 ${pctFontSize}px 'Georgia', serif`;
-    ctx.fillStyle="#ED93B1";
-    ctx.textBaseline="top";
-    ctx.fillText("%", scoreStartX + scoreW + gap, cy - scoreFontSize * 0.38);
-    ctx.textBaseline="middle";
+    // % superscript arriba a la derecha
+    ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
+    ctx.fillStyle = "#ED93B1";
+    ctx.textBaseline = "top";
+    const scoreHalfW = ctx.measureText(score).width * 0.5 + 
+                       ctx.font && ctx.measureText(score).width;
+    ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
+    const numW = ctx.measureText(score).width;
+    ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
+    ctx.fillText("%", cx - 30 + numW/2 + 10, cy - scoreFontSize * 0.38);
+    ctx.textBaseline = "middle";
 
     // ✅ COMPATIBILIDAD — debajo del círculo, fuera del borde
     ctx.textAlign="center";
@@ -937,26 +931,18 @@ function generateCard(){
     ctx.font = duuFont;
     const duuW = ctx.measureText("Duu").width;
     ctx.font = alFont;
-    ctx.font = alFont;
     const alW = ctx.measureText("al").width;
 
-    // Logo pequeño a la izquierda del texto "Duual"
-    const logoSize = 52;
-    const brandTextW = duuW + alW;
-    const logoGap = 14;
-    const totalBrandW = (logoImg.complete && logoImg.naturalWidth > 0)
-      ? logoSize + logoGap + brandTextW
-      : brandTextW;
-    const brandStartX = cx - totalBrandW / 2;
-    const brandY = H * 0.818;
+    // ✅ Logo grande centrado arriba del texto
+    const logoSize = 110;
+    const logoY = H * 0.785;
 
-    // Logo alineado verticalmente al centro del texto
     if(logoImg.complete && logoImg.naturalWidth > 0){
-      ctx.globalAlpha = 0.55;
-      // Rounded clip for logo
-      const lx = brandStartX, ly = brandY - logoSize/2;
-      const r = 12;
+      const lx = cx - logoSize/2;
+      const ly = logoY;
+      const r = 22;
       ctx.save();
+      ctx.globalAlpha = 0.8;
       ctx.beginPath();
       ctx.moveTo(lx+r, ly); ctx.lineTo(lx+logoSize-r, ly);
       ctx.quadraticCurveTo(lx+logoSize, ly, lx+logoSize, ly+r);
@@ -970,26 +956,27 @@ function generateCard(){
       ctx.globalAlpha = 1.0;
     }
 
-    // Texto "Duual" a la derecha del logo
-    const textStartX = (logoImg.complete && logoImg.naturalWidth > 0)
-      ? brandStartX + logoSize + logoGap
-      : brandStartX;
+    // "Duual" centrado debajo del logo
+    const brandY = (logoImg.complete && logoImg.naturalWidth > 0)
+      ? logoY + logoSize + 40
+      : H * 0.855;
+    const brandStartX = cx - (duuW + alW) / 2;
 
-    ctx.textAlign="left";
-    ctx.textBaseline="middle";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
     ctx.font = duuFont;
-    ctx.fillStyle = "rgba(242,238,249,0.6)";
-    ctx.fillText("Duu", textStartX, brandY);
+    ctx.fillStyle = "rgba(242,238,249,0.65)";
+    ctx.fillText("Duu", brandStartX, brandY);
 
     ctx.font = alFont;
     ctx.fillStyle = "#ED93B1";
-    ctx.fillText("al", textStartX + duuW, brandY);
+    ctx.fillText("al", brandStartX + duuW, brandY);
 
     // URL
-    ctx.textAlign="center";
-    ctx.font="400 32px 'Arial', sans-serif";
-    ctx.fillStyle="rgba(242,238,249,0.25)";
-    ctx.fillText("duual.app", cx, brandY + 50);
+    ctx.textAlign = "center";
+    ctx.font = "400 32px 'Arial', sans-serif";
+    ctx.fillStyle = "rgba(242,238,249,0.28)";
+    ctx.fillText("duual.app", cx, brandY + 52);
 
     // ✅ Show preview instead of immediate download
     _cardDataURL = cv.toDataURL("image/png");
