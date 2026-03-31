@@ -80,8 +80,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 @keyframes lpulse{0%,80%,100%{opacity:.2;transform:scale(.7);}40%{opacity:1;transform:scale(1);}}
 .rhero{text-align:center;padding:22px 20px 16px;border-bottom:0.5px solid var(--bord);}
 .score-wrap{position:relative;display:inline-block;}
-.score-ring{position:absolute;inset:-14px;border-radius:50%;border:1.5px solid var(--rose-m);animation:pulse-ring 2s ease-in-out infinite;}
-@keyframes pulse-ring{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
+.score-ring{position:absolute;inset:-22px;border-radius:50%;border:1px solid var(--rose-b);animation:pulse-ring 3s ease-in-out infinite;}
+@keyframes pulse-ring{0%,100%{opacity:.4;transform:scale(1);}50%{opacity:.8;transform:scale(1.04);}}
 .big-score{font-family:"Cormorant Garamond",serif;font-size:104px;font-weight:400;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;gap:2px;}
 .big-score .pct{font-size:42px;color:var(--rose-m);align-self:flex-start;margin-top:14px;}
 .slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:4px;}
@@ -174,6 +174,15 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .natal-edit{font-size:9px;color:var(--txt3);background:none;border:none;cursor:pointer;padding:0 0 0 4px;font-family:"DM Sans",sans-serif;opacity:0.6;}
 .natal-edit:hover{opacity:1;color:var(--rose-m);}
 .natal-select{font-size:11px;background:var(--surf2);border:0.5px solid var(--bord);border-radius:4px;color:var(--txt);font-family:"DM Sans",sans-serif;padding:1px 3px;}
+.compat-section{margin:0 14px 14px;background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:16px 18px;}
+.compat-title{font-family:"Cormorant Garamond",serif;font-size:17px;color:var(--rose-m);margin-bottom:12px;}
+.compat-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--bord);}
+.compat-row:last-child{border-bottom:none;}
+.compat-planet{font-size:16px;flex-shrink:0;width:24px;}
+.compat-body{flex:1;}
+.compat-label{font-size:11px;color:var(--txt3);margin-bottom:3px;}
+.compat-signs{font-size:13px;color:var(--txt);font-weight:500;}
+.compat-tip{font-size:11px;color:var(--txt2);margin-top:3px;line-height:1.5;}
 /* CARD PREVIEW MODAL */
 .card-preview-overlay{position:fixed;inset:0;background:rgba(5,3,14,0.93);z-index:200;display:none;flex-direction:column;align-items:center;backdrop-filter:blur(12px);}
 .card-preview-overlay.open{display:flex;}
@@ -292,6 +301,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <div class="section"><div class="section-title">✦ <span data-es="NODO NORTE — PROPÓSITO" data-en="NORTH NODE — PURPOSE">NODO NORTE — PROPÓSITO</span></div></div>
       <div id="nodeSection"></div>
     </div>
+    <div id="compatSection" class="compat-section" style="display:none;"></div>
     <div id="unlockCard" class="unlock-card">
       <div class="utitle" data-es="¿Quieres el cuadro completo? ✦" data-en="Want the full picture? ✦">¿Quieres el cuadro completo? ✦</div>
       <ul class="ulist">
@@ -649,6 +659,7 @@ function renderResults(r){
   document.getElementById("verdictBadge").textContent=vE[1];
   document.getElementById("verdictTitle").textContent=vE[1];
   document.getElementById("verdictText").textContent=vE[2];
+  renderCompatSection(pA);
 
   const pl = lang==="es"
     ? {Sun:"☀ Sol",Moon:"☽ Luna",Venus:"♀ Venus",Mars:"♂ Marte",Mercury:"☿ Mercurio"}
@@ -1025,6 +1036,65 @@ async function shareCardNative(){
       downloadCard();
     }
   } catch(e){ downloadCard(); }
+}
+
+// ✦ COMPATIBILIDAD SUGERIDA — lógica fija por elemento
+const ELEM_COMPAT = {
+  fire:  { best: ["fire","air"],   signs: [0,4,8,2,6,10] },   // Aries,Leo,Sag + Géminis,Libra,Acuario
+  earth: { best: ["earth","water"], signs: [1,5,9,3,7,11] },  // Tauro,Virgo,Cap + Cáncer,Escorpio,Piscis
+  air:   { best: ["air","fire"],   signs: [2,6,10,0,4,8] },   // Géminis,Libra,Acu + Aries,Leo,Sag
+  water: { best: ["water","earth"], signs: [3,7,11,1,5,9] }   // Cáncer,Esc,Piscis + Tauro,Virgo,Cap
+};
+const SIGN_ELEM_MAP = ["fire","earth","air","water","fire","earth","air","water","fire","earth","air","water"];
+
+const COMPAT_TIPS = {
+  es: {
+    Sun:  ["Tu Sol busca una llama afín — alguien que comparta tu energía vital.", "Tu Sol florece con quien lo estabilice y dé forma a su luz.", "Tu Sol conecta a través de las ideas y la libertad.", "Tu Sol encuentra hogar en la profundidad emocional."],
+    Moon: ["Tu Luna se siente segura con quien comparta su fuego interior.", "Tu Luna necesita estabilidad y presencia constante.", "Tu Luna disfruta la variedad y la conversación.", "Tu Luna busca fusión emocional y comprensión sin palabras."],
+    Venus:["Tu Venus ama con pasión y necesita chispa.", "Tu Venus valora la lealtad y el afecto físico.", "Tu Venus se enamora de las mentes brillantes.", "Tu Venus ama profundo y busca almas que sientan igual."]
+  },
+  en: {
+    Sun:  ["Your Sun seeks a kindred flame — someone who matches your vital energy.", "Your Sun thrives when grounded and given form.", "Your Sun connects through ideas and freedom.", "Your Sun finds home in emotional depth."],
+    Moon: ["Your Moon feels safe with shared inner fire.", "Your Moon needs stability and consistent presence.", "Your Moon enjoys variety and conversation.", "Your Moon seeks emotional fusion and wordless understanding."],
+    Venus:["Your Venus loves with passion and needs a spark.", "Your Venus values loyalty and physical affection.", "Your Venus falls for brilliant minds.", "Your Venus loves deeply and seeks kindred souls."]
+  }
+};
+
+function renderCompatSection(pA) {
+  const el = document.getElementById("compatSection");
+  if(!el || !pA) return;
+  const l = lang;
+  const signs = l === "es" ? SIGN_ES : SIGN_EN;
+
+  const planets = [
+    { key: "Sun",   glyph: "☀", label: l==="es"?"Tu Sol":"Your Sun" },
+    { key: "Venus", glyph: "♀", label: l==="es"?"Tu Venus":"Your Venus" },
+    { key: "Moon",  glyph: "☽", label: l==="es"?"Tu Luna":"Your Moon" }
+  ];
+
+  const rows = planets.map(p => {
+    const deg = pA[p.key];
+    if(deg === undefined) return "";
+    const signIdx = Math.floor(((deg % 360) + 360) % 360 / 30);
+    const elem = SIGN_ELEM_MAP[signIdx];
+    const elemGroup = Math.floor(["fire","earth","air","water"].indexOf(elem));
+    const tip = COMPAT_TIPS[l][p.key][elemGroup];
+    // Get top 3 compatible signs
+    const compatSignIdxs = ELEM_COMPAT[elem].signs.filter(s => s !== signIdx).slice(0, 3);
+    const compatNames = compatSignIdxs.map(i => signs[i]).join(", ");
+    return `<div class="compat-row">
+      <div class="compat-planet">${p.glyph}</div>
+      <div class="compat-body">
+        <div class="compat-label">${p.label} ${l==="es"?"en":"in"} ${signs[signIdx]}</div>
+        <div class="compat-signs">✦ ${compatNames}</div>
+        <div class="compat-tip">${tip}</div>
+      </div>
+    </div>`;
+  }).join("");
+
+  const title = l==="es" ? "¿Con quién conectas mejor? ✦" : "Who do you connect with best? ✦";
+  el.innerHTML = `<div class="compat-title">${title}</div>${rows}`;
+  el.style.display = "block";
 }
 
 function deleteHistory(index){
