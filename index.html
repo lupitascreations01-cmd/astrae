@@ -1,1125 +1,1219 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#0D0A18">
-<meta name="description" content="Duual · Compatibilidad astrológica real">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Duual">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<title>Duual · Tu amor, escrito en las estrellas</title>
-<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2/source/js/astronomy.browser.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-:root{--rose:#C94B72;--rose-l:rgba(201,75,114,0.12);--rose-b:rgba(201,75,114,0.35);--rose-m:#ED93B1;--plum:#6B63CC;--plum-l:rgba(107,99,204,0.12);--plum-b:rgba(107,99,204,0.35);--gold:#D4920E;--gold-l:rgba(212,146,14,0.12);--gold-b:rgba(212,146,14,0.4);--teal:#1B9E78;--ink:#0D0A18;--txt:#F2EEF9;--txt2:rgba(242,238,249,0.62);--txt3:rgba(242,238,249,0.35);--bord:rgba(242,238,249,0.1);--bord2:rgba(242,238,249,0.22);--surf:rgba(255,255,255,0.045);--surf2:rgba(255,255,255,0.08);--r-lg:16px;--r-md:10px;}
-html,body{height:100%;overflow:hidden;background:var(--ink);}
-body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:antialiased;}
-#cosmosCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
-#app{position:fixed;inset:0;display:flex;flex-direction:column;max-width:430px;margin:0 auto;z-index:1;}
-.screen{display:none;flex-direction:column;flex:1;overflow:hidden;}
-.screen.active{display:flex;}
-.status{display:flex;justify-content:space-between;align-items:center;padding:env(safe-area-inset-top,14px) 22px 6px;font-size:11px;font-weight:500;color:var(--txt3);flex-shrink:0;}
-.bnav{display:flex;border-top:0.5px solid var(--bord);padding:10px 0 calc(env(safe-area-inset-bottom,0px) + 16px);background:rgba(13,10,24,0.9);backdrop-filter:blur(12px);flex-shrink:0;}
-.bitem{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--txt3);cursor:pointer;background:none;border:none;font-family:"DM Sans",sans-serif;}
-.bitem.on{color:var(--rose-m);}
-.bico{font-size:18px;line-height:1;}
-.scroll{flex:1;overflow-y:auto;}
-.scroll::-webkit-scrollbar{display:none;}
-.home-header{padding:28px 24px 14px;text-align:center;}
-.app-logo{font-family:"Cormorant Garamond",serif;font-size:46px;font-weight:300;letter-spacing:2px;color:var(--txt);line-height:1;}
-.app-logo em{font-style:italic;color:var(--rose-m);}
-.app-tagline{font-size:12px;color:var(--txt3);margin-top:8px;letter-spacing:1px;}
-.lang-toggle{display:inline-flex;background:var(--surf);border:0.5px solid var(--bord);border-radius:20px;padding:3px;margin-top:12px;}
-.lang-btn{padding:5px 16px;border-radius:16px;border:none;background:transparent;font-family:"DM Sans",sans-serif;font-size:11px;color:var(--txt3);cursor:pointer;}
-.lang-btn.on{background:var(--rose);color:#fff;}
-.premium-badge-header{display:none;margin-top:8px;}
-.pbadge{display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;background:var(--gold-l);border:0.5px solid var(--gold-b);font-size:11px;color:var(--gold);}
-.pcard{margin:0 16px 10px;background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:16px;backdrop-filter:blur(8px);}
-.plabel{font-size:10px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--txt3);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
-.pdot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;}
-.da{background:var(--rose-m);}.db{background:#9E97F0;}
-.ninput{width:100%;background:var(--surf2);border:0.5px solid var(--bord);border-radius:var(--r-md);padding:11px 14px;font-family:"DM Sans",sans-serif;font-size:14px;color:var(--txt);margin-bottom:10px;outline:none;-webkit-appearance:none;}
-.ninput::placeholder{color:var(--txt3);}
-.ninput[type="date"]{color-scheme:dark;}
-.ninput[type="time"]{color-scheme:dark;}
-.time-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.time-label{font-size:11px;color:var(--txt3);white-space:nowrap;flex-shrink:0;}
-.time-input{flex:1;background:var(--surf2);border:0.5px solid var(--bord);border-radius:var(--r-md);padding:8px 14px;font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt);outline:none;-webkit-appearance:none;}
-.time-input::placeholder{color:var(--txt3);}
-.connector{position:relative;display:flex;align-items:center;justify-content:center;padding:4px 0;}
-.cline{width:1px;height:20px;background:var(--bord);}
-.cicon{position:absolute;width:28px;height:28px;background:var(--rose-l);border:0.5px solid var(--rose-b);border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.cta-btn{margin:4px 16px 6px;width:calc(100% - 32px);padding:16px;background:var(--rose);border:none;border-radius:var(--r-lg);font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;-webkit-appearance:none;}
-.free-hint{text-align:center;font-size:11px;color:var(--txt3);padding:0 16px 20px;}
-.loading-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;}
-.orbit-system{position:relative;width:150px;height:150px;margin:0 auto 36px;}
-.oring{position:absolute;border:1px solid var(--bord);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);}
-.or1{width:40px;height:40px;border-color:rgba(237,147,177,0.5);}
-.or2{width:84px;height:84px;border-color:rgba(107,99,204,0.3);animation:spin 5s linear infinite;}
-.or3{width:130px;height:130px;border-color:rgba(237,147,177,0.12);animation:spin-r 8s linear infinite;}
-.ocenter{position:absolute;width:18px;height:18px;background:var(--rose-l);border:1px solid var(--rose-b);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);}
-.oplanet{position:absolute;border-radius:50%;top:50%;left:50%;}
-.op1{width:9px;height:9px;background:var(--rose-m);animation:orbit1 3.5s linear infinite;}
-.op2{width:7px;height:7px;background:#9E97F0;animation:orbit2 6s linear infinite;}
-.op3{width:5px;height:5px;background:var(--gold);opacity:.8;animation:orbit3 9s linear infinite;}
-@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
-@keyframes spin-r{to{transform:translate(-50%,-50%) rotate(-360deg);}}
-@keyframes orbit1{to{transform:translate(-50%,-50%) rotate(360deg) translateX(42px);}}
-@keyframes orbit2{to{transform:translate(-50%,-50%) rotate(450deg) translateX(65px);}}
-@keyframes orbit3{to{transform:translate(-50%,-50%) rotate(-360deg) translateX(20px);}}
-.ltitle{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:300;color:var(--txt);margin-bottom:10px;}
-.lsub{font-size:13px;color:var(--txt2);line-height:1.75;}
-.ldots{display:flex;gap:7px;justify-content:center;margin-top:28px;}
-.ld{width:6px;height:6px;border-radius:50%;background:var(--rose-m);animation:lpulse 1.4s ease-in-out infinite;}
-.ld:nth-child(2){animation-delay:.22s;}.ld:nth-child(3){animation-delay:.44s;}
-@keyframes lpulse{0%,80%,100%{opacity:.2;transform:scale(.7);}40%{opacity:1;transform:scale(1);}}
-.rhero{text-align:center;padding:22px 20px 16px;border-bottom:0.5px solid var(--bord);}
-.score-wrap{position:relative;display:inline-block;}
-.score-ring{position:absolute;inset:-14px;border-radius:50%;border:1.5px solid var(--rose-m);animation:pulse-ring 2s ease-in-out infinite;}
-@keyframes pulse-ring{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
-.big-score{font-family:"Cormorant Garamond",serif;font-size:104px;font-weight:400;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;gap:2px;}
-.big-score .pct{font-size:42px;color:var(--rose-m);align-self:flex-start;margin-top:14px;}
-.slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:4px;}
-.rpair{font-family:"Cormorant Garamond",serif;font-size:18px;font-style:italic;color:var(--txt2);margin-top:10px;}
-.ramp{color:var(--rose-m);}
-.verdict-badge{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 16px;border-radius:20px;background:var(--rose-l);border:0.5px solid var(--rose-b);font-size:12px;color:var(--rose-m);}
-.const-row{margin-top:10px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;}
-.const-tag{font-size:10px;padding:3px 10px;border-radius:10px;background:var(--surf2);border:0.5px solid var(--bord);color:var(--txt3);}
-.section{padding:14px 16px 6px;}
-.section-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px;}
-.verdict-card{margin:0 14px 14px;background:var(--rose-l);border:0.5px solid var(--rose-b);border-radius:var(--r-lg);padding:16px 18px;}
-.vtitle{font-family:"Cormorant Garamond",serif;font-size:19px;color:var(--rose-m);margin-bottom:7px;}
-.vtext{font-size:13px;color:rgba(237,147,177,0.8);line-height:1.75;}
-.areas{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 14px 14px;}
-.acard{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:12px 14px;}
-.ahead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
-.aname{font-size:12px;font-weight:500;color:var(--txt);}
-.apct{font-size:12px;color:var(--txt2);}
-.track{height:3px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;margin-bottom:6px;}
-.bar{height:100%;border-radius:2px;}
-.ainsight{font-size:11px;color:var(--txt3);line-height:1.55;}
-.asp-list{display:flex;flex-direction:column;gap:7px;margin:0 14px 14px;}
-.asp-row{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;}
-.asp-row.blurred{filter:blur(3.5px);pointer-events:none;user-select:none;}
-.asp-glyph{font-size:18px;line-height:1;flex-shrink:0;padding-top:1px;}
-.asp-body{flex:1;}
-.asp-title{font-size:13px;font-weight:500;color:var(--txt);margin-bottom:3px;}
-.asp-subtitle{font-size:11px;color:var(--txt3);margin-bottom:5px;}
-.asp-interp{font-size:12px;color:var(--txt2);line-height:1.6;}
-.asp-badge{display:inline-block;font-size:10px;padding:2px 9px;border-radius:10px;margin-top:5px;}
-.harmonious{background:rgba(27,158,120,0.15);color:#3DB88A;}
-.tense{background:var(--rose-l);color:var(--rose-m);}
-.neutral{background:var(--surf2);color:var(--txt3);}
-.premium-card{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:14px 16px;margin:0 14px 8px;}
-.premium-card-title{font-family:"Cormorant Garamond",serif;font-size:16px;color:var(--gold);margin-bottom:8px;}
-.premium-card-body{font-size:12px;color:var(--txt2);line-height:1.75;}
-.element-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
-.elem-tag{background:var(--surf2);border:0.5px solid var(--bord);border-radius:8px;padding:8px 10px;text-align:center;}
-.elem-name{font-size:11px;font-weight:500;color:var(--txt);margin-bottom:2px;}
-.elem-val{font-size:10px;color:var(--txt3);}
-/* PAYWALL */
-.paywall-hero{text-align:center;padding:32px 24px 20px;}
-.paywall-title{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:300;color:var(--txt);margin-bottom:8px;}
-.paywall-sub{font-size:13px;color:var(--txt2);line-height:1.7;}
-.feature-list{margin:16px 16px 20px;}
-.feat-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--bord);}
-.feat-row:last-child{border-bottom:none;}
-.feat-icon{font-size:18px;flex-shrink:0;line-height:1.2;}
-.feat-title{font-size:13px;font-weight:500;color:var(--txt);margin-bottom:2px;}
-.feat-desc{font-size:12px;color:var(--txt3);line-height:1.5;}
-.pricing-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 20px;}
-.price-card{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:16px 14px;text-align:center;cursor:pointer;position:relative;}
-.price-card.featured{border:1.5px solid var(--gold);background:var(--gold-l);}
-.best-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:10px;font-weight:500;padding:3px 12px;border-radius:10px;white-space:nowrap;}
-.price-period{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--txt3);margin-bottom:6px;}
-.price-amount{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:300;color:var(--txt);line-height:1;}
-.price-amount span{font-size:16px;}
-.price-per{font-size:10px;color:var(--txt3);margin-top:3px;}
-.price-save{font-size:11px;color:var(--gold);margin-top:5px;font-weight:500;}
-.pay-btn{margin:0 16px 10px;width:calc(100% - 32px);padding:15px;border:none;border-radius:var(--r-lg);font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;}
-.pay-btn-monthly{background:var(--rose);}
-.pay-btn-annual{background:var(--gold);}
-.pay-note{text-align:center;font-size:11px;color:var(--txt3);padding:0 16px 16px;}
-.restore-btn{display:block;text-align:center;font-size:12px;color:var(--txt3);padding:8px 16px 24px;background:none;border:none;font-family:"DM Sans",sans-serif;cursor:pointer;width:100%;}
-.unlock-card{margin:0 14px 14px;background:var(--plum-l);border:0.5px solid var(--plum-b);border-radius:var(--r-lg);padding:18px;text-align:center;}
-.utitle{font-family:"Cormorant Garamond",serif;font-size:20px;color:#B0AAEE;margin-bottom:7px;}
-.ulist{font-size:12px;color:rgba(176,170,238,0.75);line-height:1.8;margin-bottom:14px;text-align:left;}
-.ulist li{list-style:none;padding-left:16px;position:relative;}
-.ulist li::before{content:"✦";position:absolute;left:0;font-size:9px;top:2px;color:#9E97F0;}
-.unlock-btn{width:100%;padding:14px;background:var(--plum);border:none;border-radius:var(--r-md);font-family:"DM Sans",sans-serif;font-size:14px;font-weight:500;color:#fff;cursor:pointer;}
-.uprice{font-size:11px;color:rgba(176,170,238,0.5);margin-top:8px;}
-.share-row{display:flex;gap:8px;margin:0 14px 14px;}
-.share-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;background:var(--surf);border:0.5px solid var(--bord2);border-radius:var(--r-md);padding:11px 12px;font-size:12px;color:var(--txt2);cursor:pointer;font-family:"DM Sans",sans-serif;}
-.hcard{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:8px;cursor:pointer;}
-.hcard-top{display:flex;justify-content:space-between;align-items:center;}
-.hnames{font-family:"Cormorant Garamond",serif;font-size:17px;font-style:italic;color:var(--txt);}
-.hscore{font-size:20px;font-weight:300;color:var(--rose-m);font-family:"Cormorant Garamond",serif;}
-.hdate{font-size:11px;color:var(--txt3);margin-top:4px;}
-.hempty{text-align:center;padding:60px 20px;font-size:13px;color:var(--txt3);line-height:1.8;}
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,24,48,0.95);border:0.5px solid var(--bord2);border-radius:20px;padding:10px 20px;font-size:13px;color:var(--txt2);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:99;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.natal-mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 14px 14px;}
-.natal-person{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:12px 14px;}
-.natal-pname{font-size:10px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--rose-m);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.natal-row{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:0.5px solid var(--bord);}
-.natal-row:last-child{border-bottom:none;}
-.natal-pl{font-size:11px;color:var(--txt3);}
-.natal-sg{font-size:11px;color:var(--txt);font-weight:500;}
-.card-btn{background:linear-gradient(135deg,var(--rose),var(--plum));border:none;border-radius:var(--r-lg);padding:14px;width:calc(100% - 28px);margin:0 14px 8px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:500;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.natal-edit{font-size:9px;color:var(--txt3);background:none;border:none;cursor:pointer;padding:0 0 0 4px;font-family:"DM Sans",sans-serif;opacity:0.6;}
-.natal-edit:hover{opacity:1;color:var(--rose-m);}
-.natal-select{font-size:11px;background:var(--surf2);border:0.5px solid var(--bord);border-radius:4px;color:var(--txt);font-family:"DM Sans",sans-serif;padding:1px 3px;}
-.compat-section{margin:0 14px 14px;background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:16px 18px;}
-.compat-title{font-family:"Cormorant Garamond",serif;font-size:17px;color:var(--rose-m);margin-bottom:12px;}
-.compat-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--bord);}
-.compat-row:last-child{border-bottom:none;}
-.compat-planet{font-size:16px;flex-shrink:0;width:24px;}
-.compat-body{flex:1;}
-.compat-label{font-size:11px;color:var(--txt3);margin-bottom:3px;}
-.compat-signs{font-size:13px;color:var(--txt);font-weight:500;}
-.compat-tip{font-size:11px;color:var(--txt2);margin-top:3px;line-height:1.5;}
-/* CARD PREVIEW MODAL */
-.card-preview-overlay{position:fixed;inset:0;background:rgba(5,3,14,0.93);z-index:200;display:none;flex-direction:column;align-items:center;backdrop-filter:blur(12px);}
-.card-preview-overlay.open{display:flex;}
-.card-preview-header{width:100%;display:flex;justify-content:space-between;align-items:center;padding:env(safe-area-inset-top,16px) 20px 10px;flex-shrink:0;}
-.card-preview-title{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:400;color:var(--txt2);}
-.card-preview-close{background:none;border:none;color:var(--txt3);font-size:24px;cursor:pointer;padding:4px;line-height:1;font-family:"DM Sans",sans-serif;}
-.card-preview-scroll{flex:1;overflow-y:auto;width:100%;display:flex;flex-direction:column;align-items:center;padding:4px 20px 0;}
-.card-preview-scroll::-webkit-scrollbar{display:none;}
-.card-preview-img{width:100%;max-width:320px;border-radius:12px;box-shadow:0 8px 40px rgba(201,75,114,0.25);}
-.card-preview-actions{width:100%;max-width:320px;padding:16px 0 calc(env(safe-area-inset-bottom,0px)+20px);display:flex;flex-direction:column;gap:10px;flex-shrink:0;}
-.card-dl-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--rose),var(--plum));border:none;border-radius:var(--r-lg);font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;}
-.card-share-native{width:100%;padding:12px;background:var(--surf2);border:0.5px solid var(--bord2);border-radius:var(--r-lg);font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt2);cursor:pointer;}
-</style>
-</head>
-<body>
-<canvas id="cosmosCanvas"></canvas>
-<div id="app">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RLD — Revenue Leak Detection</title>
+  <meta name="description" content="We analyze your CRM, billing, and payment data to detect revenue loss companies typically miss — without integrations or system access. Results in 72h." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
-<div class="screen active" id="s-input">
-  <div class="status"><span id="clock">9:41</span><span style="letter-spacing:2px">· · · ▮</span></div>
-  <div class="scroll" style="padding-bottom:8px;">
-    <div class="home-header">
-      <div class="app-logo">Duu<em>al</em></div>
-      <div class="app-tagline" data-es="✦ tu amor, escrito en las estrellas ✦" data-en="✦ your love, written in the stars ✦">✦ tu amor, escrito en las estrellas ✦</div>
-      <div class="lang-toggle">
-        <button class="lang-btn on" onclick="setLang('es')">ES</button>
-        <button class="lang-btn" onclick="setLang('en')">EN</button>
-      </div>
-      <div class="premium-badge-header" id="premiumBadgeHeader">
-        <span class="pbadge">✦ <span data-es="Premium activo" data-en="Premium active">Premium activo</span></span>
-      </div>
-    </div>
-    <div class="pcard">
-      <div class="plabel"><span class="pdot da"></span><span data-es="Primera persona" data-en="First person">Primera persona</span></div>
-      <input class="ninput" type="text" id="nameA" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
-      <input class="ninput" type="date" id="dateA" value="1997-03-15">
-      <div class="time-row">
-        <span class="time-label" data-es="Hora (opcional)" data-en="Time (optional)">Hora (opcional)</span>
-        <input class="time-input" type="time" id="timeA" placeholder="--:--">
-      </div>
-    </div>
-    <div class="connector"><div class="cline"></div><div class="cicon"><svg width="14" height="14" viewBox="0 0 24 24" fill="#C94B72"><path d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 11.91 3.81 13 5.08C14.09 3.81 15.76 3 17.5 3C20.58 3 23 5.42 23 8.5C23 14.5 12 21 12 21Z"/></svg></div></div>
-    <div class="pcard">
-      <div class="plabel"><span class="pdot db"></span><span data-es="Segunda persona" data-en="Second person">Segunda persona</span></div>
-      <input class="ninput" type="text" id="nameB" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
-      <input class="ninput" type="date" id="dateB" value="1994-09-22">
-      <div class="time-row">
-        <span class="time-label" data-es="Hora (opcional)" data-en="Time (optional)">Hora (opcional)</span>
-        <input class="time-input" type="time" id="timeB" placeholder="--:--">
-      </div>
-    </div>
-    <button class="cta-btn" onclick="startCalc()" data-es="Revelar compatibilidad ✦" data-en="Reveal compatibility ✦">Revelar compatibilidad ✦</button>
-    <div class="free-hint" id="freeHint" data-es="1 lectura gratis por día · sin registro" data-en="1 free reading per day · no sign-up">1 lectura gratis por día · sin registro</div>
-
-  </div>
-  <div class="bnav">
-    <button class="bitem on" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
-    <button class="bitem" onclick="goLastResult()"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
-    <button class="bitem" onclick="goScreen('history')"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
-    <button class="bitem" onclick="goScreen('paywall')"><span class="bico">◎</span><span>Premium</span></button>
-  </div>
-</div>
-
-<div class="screen" id="s-loading">
-  <div class="status"><span></span></div>
-  <div class="loading-wrap">
-    <div class="orbit-system"><div class="oring or3"></div><div class="oring or2"></div><div class="oring or1"></div><div class="ocenter"></div><div class="oplanet op1"></div><div class="oplanet op2"></div><div class="oplanet op3"></div></div>
-    <div class="ltitle" data-es="Leyendo los astros…" data-en="Reading the stars…">Leyendo los astros…</div>
-    <div class="lsub" data-es="Comparando Venus y Marte,<br>alineando sus lunas,<br>decodificando su historia." data-en="Comparing Venus & Mars,<br>aligning your moons,<br>decoding your story.">Comparando Venus y Marte,<br>alineando sus lunas,<br>decodificando su historia.</div>
-    <div class="ldots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>
-  </div>
-</div>
-
-<div class="screen" id="s-results">
-  <div class="status">
-    <button onclick="goScreen('input')" style="background:none;border:none;color:var(--txt3);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;">← <span data-es="Nueva" data-en="New">Nueva</span></button>
-    <span style="letter-spacing:2px">· · · ▮</span>
-  </div>
-  <div class="scroll">
-    <div class="rhero">
-      <div class="score-wrap"><div class="score-ring"></div><div class="big-score" id="bigScore">—<span class="pct">%</span></div></div>
-      <div class="slabel" data-es="COMPATIBILIDAD" data-en="COMPATIBILITY">COMPATIBILIDAD</div>
-      <div class="rpair" id="rpair">A <span class="ramp">&</span> B</div>
-      <div class="verdict-badge" id="verdictBadge">✦</div>
-      <div class="const-row" id="constRow"></div>
-    </div>
-    <div style="height:14px;"></div>
-    <div class="verdict-card"><div class="vtitle" id="verdictTitle"></div><div class="vtext" id="verdictText"></div></div>
-    <div class="section"><div class="section-title" data-es="CARTAS NATALES" data-en="NATAL CHARTS">CARTAS NATALES</div></div>
-    <div style="margin:0 14px 8px;font-size:10px;color:var(--txt3);opacity:0.75;line-height:1.5;">
-      <span data-es="✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna." data-en="✦ Add birth time for better accuracy, especially for the Moon.">✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna.</span>
-    </div>
-    <div class="natal-mini" id="natalMini"></div>
-    <div style="margin:-2px 14px 12px;font-size:10px;color:var(--txt3);opacity:0.6;line-height:1.55;">
-      <span data-es="✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente." data-en="✎ Any planet off? Tap the icon to correct it — the score recalculates automatically.">✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente.</span>
-    </div>
-    <div class="share-row">
-      <button class="share-btn" onclick="shareResult()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg><span data-es="Compartir ↗" data-en="Share ↗">Compartir ↗</span></button>
-      <button class="share-btn" onclick="saveToHistory()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span data-es="Guardar" data-en="Save">Guardar</span></button>
-    </div>
-    <button class="card-btn" onclick="generateCard()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-      <span data-es="✦ Crear tarjeta para Instagram / TikTok" data-en="✦ Create card for Instagram / TikTok">✦ Crear tarjeta para Instagram / TikTok</span>
-    </button>
-    <div class="section"><div class="section-title" data-es="TU CONEXIÓN POR ÁREA" data-en="YOUR CONNECTION BY AREA">TU CONEXIÓN POR ÁREA</div></div>
-    <div class="areas" id="areasGrid"></div>
-    <div class="section"><div class="section-title" data-es="ASPECTOS PLANETARIOS" data-en="PLANETARY ASPECTS">ASPECTOS PLANETARIOS</div></div>
-    <div class="asp-list" id="aspList"></div>
-    <div id="premiumResults" style="display:none;">
-      <div class="section"><div class="section-title">✦ <span data-es="ANÁLISIS DE ELEMENTOS" data-en="ELEMENT ANALYSIS">ANÁLISIS DE ELEMENTOS</span></div></div>
-      <div id="elemSection"></div>
-      <div class="section"><div class="section-title">✦ <span data-es="VENUS & MARTE PROFUNDO" data-en="DEEP VENUS & MARS">VENUS & MARTE PROFUNDO</span></div></div>
-      <div id="venusSection"></div>
-      <div class="section"><div class="section-title">✦ <span data-es="QUIRÓN — HERIDAS Y SANACIÓN" data-en="CHIRON — WOUNDS & HEALING">QUIRÓN — HERIDAS Y SANACIÓN</span></div></div>
-      <div id="chironSection"></div>
-      <div class="section"><div class="section-title">✦ <span data-es="NODO NORTE — PROPÓSITO" data-en="NORTH NODE — PURPOSE">NODO NORTE — PROPÓSITO</span></div></div>
-      <div id="nodeSection"></div>
-    </div>
-    <div id="compatSection" class="compat-section" style="display:none;"></div>
-    <div id="unlockCard" class="unlock-card">
-      <div class="utitle" data-es="¿Quieres el cuadro completo? ✦" data-en="Want the full picture? ✦">¿Quieres el cuadro completo? ✦</div>
-      <ul class="ulist">
-        <li data-es="Todos los aspectos sin límite" data-en="All aspects, no limit">Todos los aspectos sin límite</li>
-        <li data-es="Venus, Marte, Quirón y Nodo Norte" data-en="Venus, Mars, Chiron & North Node">Venus, Marte, Quirón y Nodo Norte</li>
-        <li data-es="Análisis de elementos (Fuego, Tierra, Aire, Agua)" data-en="Element analysis">Análisis de elementos</li>
-        <li data-es="Lecturas ilimitadas cada día" data-en="Unlimited daily readings">Lecturas ilimitadas cada día</li>
-      </ul>
-      <button class="unlock-btn" onclick="goScreen('paywall')" data-es="Ver planes · desde $2.99/mes" data-en="See plans · from $2.99/mo">Ver planes · desde $2.99/mes</button>
-      <div class="uprice" data-es="Cancela cuando quieras" data-en="Cancel anytime">Cancela cuando quieras</div>
-    </div>
-  </div>
-  <div class="bnav">
-    <button class="bitem" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
-    <button class="bitem on"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
-    <button class="bitem" onclick="goScreen('history')"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
-    <button class="bitem" onclick="goScreen('paywall')"><span class="bico">◎</span><span>Premium</span></button>
-  </div>
-</div>
-
-<div class="screen" id="s-paywall">
-  <div class="status">
-    <button onclick="goBack()" style="background:none;border:none;color:var(--txt3);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;">← <span data-es="Volver" data-en="Back">Volver</span></button>
-    <span style="letter-spacing:2px">· · · ▮</span>
-  </div>
-  <div class="scroll">
-    <div class="paywall-hero">
-      <div style="font-size:32px;margin-bottom:12px;">✦</div>
-      <div class="paywall-title">Duual Premium</div>
-      <div class="paywall-sub" data-es="Lee los astros sin límites. Cada conexión merece ser entendida en su totalidad." data-en="Read the stars without limits. Every connection deserves to be fully understood.">Lee los astros sin límites. Cada conexión merece ser entendida en su totalidad.</div>
-    </div>
-    <div class="feature-list">
-      <div class="feat-row"><div class="feat-icon">♾️</div><div><div class="feat-title" data-es="Lecturas ilimitadas" data-en="Unlimited readings">Lecturas ilimitadas</div><div class="feat-desc" data-es="Sin límite diario. Lee todas las compatibilidades que quieras." data-en="No daily limit. Read as many charts as you want.">Sin límite diario.</div></div></div>
-      <div class="feat-row"><div class="feat-icon">🪐</div><div><div class="feat-title" data-es="12 planetas completos" data-en="Full 12 planets">12 planetas completos</div><div class="feat-desc" data-es="Quirón y Nodo Norte incluidos." data-en="Chiron and North Node included.">Quirón y Nodo Norte incluidos.</div></div></div>
-      <div class="feat-row"><div class="feat-icon">♀</div><div><div class="feat-title" data-es="Venus & Marte profundo" data-en="Deep Venus & Mars">Venus & Marte profundo</div><div class="feat-desc" data-es="Análisis completo de la química romántica." data-en="Full analysis of romantic chemistry.">Análisis completo de la química romántica.</div></div></div>
-      <div class="feat-row"><div class="feat-icon">🔥</div><div><div class="feat-title" data-es="Balance de elementos" data-en="Element balance">Balance de elementos</div><div class="feat-desc" data-es="Fuego, Tierra, Aire y Agua." data-en="Fire, Earth, Air and Water.">Fuego, Tierra, Aire y Agua.</div></div></div>
-      <div class="feat-row"><div class="feat-icon">🌀</div><div><div class="feat-title">Quirón & Nodo Norte</div><div class="feat-desc" data-es="Las heridas kármicas y el propósito compartido." data-en="Karmic wounds and shared purpose.">Las heridas kármicas y el propósito compartido.</div></div></div>
-    </div>
-    <div class="pricing-wrap">
-      <div class="price-card" id="cardMonthly" onclick="selectPlan('monthly')">
-        <div class="price-period" data-es="MENSUAL" data-en="MONTHLY">MENSUAL</div>
-        <div class="price-amount"><span>$</span>2.99</div>
-        <div class="price-per" data-es="por mes" data-en="per month">por mes</div>
-      </div>
-      <div class="price-card featured" id="cardAnnual" onclick="selectPlan('annual')">
-        <div class="best-badge" data-es="Mejor valor" data-en="Best value">Mejor valor</div>
-        <div class="price-period" data-es="ANUAL" data-en="ANNUAL">ANUAL</div>
-        <div class="price-amount"><span>$</span>19.99</div>
-        <div class="price-per" data-es="por año" data-en="per year">por año</div>
-        <div class="price-save" data-es="Ahorras $15.89" data-en="Save $15.89">Ahorras $15.89</div>
-      </div>
-    </div>
-    <button class="pay-btn pay-btn-annual" id="payBtn" onclick="handlePayment()">
-      <span id="payBtnText" data-es="Empezar plan anual · $19.99" data-en="Start annual plan · $19.99">Empezar plan anual · $19.99</span>
-    </button>
-    <div class="pay-note" data-es="Sin sorpresas · Cancela cuando quieras · ES / EN" data-en="No surprises · Cancel anytime · ES / EN">Sin sorpresas · Cancela cuando quieras · ES / EN</div>
-    <div style="text-align:center;padding:0 16px 8px;display:flex;align-items:center;justify-content:center;gap:7px;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="#009cde" xmlns="http://www.w3.org/2000/svg"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.93 4.778-4.005 7.201-9.138 7.201h-2.19a.563.563 0 0 0-.556.479l-1.187 7.527h-.99l-.589 3.723a.349.349 0 0 0 .345.408H5.79c.346 0 .638-.252.692-.593l.108-.69.195-1.25.014-.072h.486l3.059-.003c3.624 0 6.457-1.471 7.288-5.726.378-1.913.183-3.512-.41-4.716z"/></svg>
-      <span style="font-size:11px;color:var(--txt3);" data-es="Pago seguro vía PayPal" data-en="Secure payment via PayPal">Pago seguro vía PayPal</span>
-    </div>
-    <button class="restore-btn" onclick="restorePurchase()" data-es="¿Ya pagaste? Restaurar acceso" data-en="Already paid? Restore access">¿Ya pagaste? Restaurar acceso</button>
-  </div>
-  <div class="bnav">
-    <button class="bitem" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
-    <button class="bitem" onclick="goLastResult()"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
-    <button class="bitem" onclick="goScreen('history')"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
-    <button class="bitem on"><span class="bico">◎</span><span>Premium</span></button>
-  </div>
-</div>
-
-<div class="screen" id="s-history">
-  <div class="status">
-    <span style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:var(--txt)" data-es="Historial" data-en="History">Historial</span>
-    <span style="letter-spacing:2px">· · · ▮</span>
-  </div>
-  <div class="scroll" id="historyScroll" style="padding:0 14px 16px;"></div>
-  <div class="bnav">
-    <button class="bitem" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
-    <button class="bitem" onclick="goLastResult()"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
-    <button class="bitem on"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
-    <button class="bitem" onclick="goScreen('paywall')"><span class="bico">◎</span><span>Premium</span></button>
-  </div>
-</div>
-
-</div>
-<div class="toast" id="toast"></div>
-<div class="card-preview-overlay" id="cardPreviewOverlay">
-  <div class="card-preview-header">
-    <span class="card-preview-title" data-es="u2746 Vista previa" data-en="u2746 Preview">u2746 Vista previa</span>
-    <button class="card-preview-close" onclick="closeCardPreview()">&#215;</button>
-  </div>
-  <div class="card-preview-scroll">
-    <img class="card-preview-img" id="cardPreviewImg" src="" alt="preview">
-    <div class="card-preview-actions">
-      <button class="card-dl-btn" id="cardDlBtn" onclick="downloadCard()" data-es="u2193 Descargar imagen" data-en="u2193 Download image">u2193 Descargar imagen</button>
-      <button class="card-share-native" onclick="shareCardNative()" data-es="Compartir u2197" data-en="Share u2197">Compartir u2197</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// PAYPAL — URLs de checkout
-const LS_MONTHLY = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=2.99&currency_code=USD&item_name=Duual+Premium+Monthly";
-const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=19.99&currency_code=USD&item_name=Duual+Premium+Annual";
-
-// ACCESS CODES — agrega emails de clientas que pagaron
-const ACCESS_CODES = [
-  "lupitascreations.01@gmail.com",
-  // "clienta@gmail.com",
-];
-
-const DEG=Math.PI/180;
-const SIGN_ELEM=["fire","earth","air","water","fire","earth","air","water","fire","earth","air","water"];
-const SIGN_SHORT=["Ari","Tau","Gem","Can","Leo","Vir","Lib","Sco","Sag","Cap","Aqu","Pis"];
-const PG={Sun:"☀",Moon:"☽",Mercury:"☿",Venus:"♀",Mars:"♂",Jupiter:"♃",Saturn:"♄",Uranus:"⛢",Neptune:"♆",Pluto:"♇",Chiron:"⚷",NNode:"☊"};
-const PES={Sun:"Sol",Moon:"Luna",Mercury:"Mercurio",Venus:"Venus",Mars:"Marte",Jupiter:"Júpiter",Saturn:"Saturno",Uranus:"Urano",Neptune:"Neptuno",Pluto:"Plutón",Chiron:"Quirón",NNode:"Nodo Norte"};
-const PEN={Sun:"Sun",Moon:"Moon",Mercury:"Mercury",Venus:"Venus",Mars:"Mars",Jupiter:"Jupiter",Saturn:"Saturn",Uranus:"Uranus",Neptune:"Neptune",Pluto:"Pluto",Chiron:"Chiron",NNode:"North Node"};
-
-function n360(x){return((x%360)+360)%360;}
-function sinD(d){return Math.sin(d*DEG);}
-function jd(y,m,d){if(m<=2){y--;m+=12;}const A=Math.floor(y/100);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+2-A+Math.floor(A/4)-1524.5;}
-function T(y,m,d){return(jd(y,m,d)-2451545)/36525;}
-function sun(t){const L=n360(280.46646+36000.76983*t),M=n360(357.52911+35999.05029*t-0.0001537*t*t),C=(1.914602-0.004817*t)*sinD(M)+(0.019993-0.000101*t)*sinD(2*M)+0.000289*sinD(3*M);return n360(L+C);}
-function moon(t){const Mp=n360(134.96298+477198.867398*t+0.0086972*t*t),D=n360(297.85036+445267.111480*t),M=n360(357.52772+35999.050340*t),F=n360(93.27191+483202.017538*t);return n360(218.3165+481267.8813*t+6.289*sinD(Mp)-1.274*sinD(Mp-2*D)+0.658*sinD(2*D)-0.214*sinD(2*Mp)-0.186*sinD(M)-0.114*sinD(2*F)+0.059*sinD(2*Mp-2*D)+0.041*sinD(Mp-M));}
-
-function geoLon(hl,hr,el,er){
-  const x=hr*Math.cos(hl*DEG)-er*Math.cos(el*DEG);
-  const y=hr*Math.sin(hl*DEG)-er*Math.sin(el*DEG);
-  return n360(Math.atan2(y,x)/DEG);
-}
-function earthPos(t){
-  const M=n360(357.52911+35999.05029*t);
-  return{l:n360(sun(t)+180),r:1.0-0.01671*Math.cos(M*DEG)};
-}
-
-function merc(t){
-  const L=n360(252.250906+149472.6746358*t),M=n360(174.7948+149472.5153*t);
-  const e2=0.20563;
-  const hl=n360(L+(2*e2-0.25*e2*e2*e2)*sinD(M)+(1.25*e2*e2)*sinD(2*M)+(13/12*e2*e2*e2)*sinD(3*M));
-  const hr=0.387098*(1-e2*e2)/(1+e2*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function venus(t){
-  const L=n360(181.979801+58517.8156760*t),M=n360(212.2606+58517.8039*t);
-  const e2=0.006773;
-  const hl=n360(L+0.7758*sinD(M)+0.0033*sinD(2*M)-0.0235*sinD(M-n360(357.52911+35999.05029*t)));
-  const hr=0.72333*(1-e2*e2)/(1+e2*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function mars(t){
-  const L=n360(355.433+19140.2993*t),M=n360(19.373+19140.3023*t);
-  const hl=n360(L+10.6912*sinD(M)+0.6228*sinD(2*M)+0.0503*sinD(3*M));
-  const hr=1.52366*(1-0.09341*0.09341)/(1+0.09341*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function jupit(t){
-  const L=n360(34.351519+3034.9056606*t),M=n360(20.9+3034.906*t);
-  const hl=n360(L+5.5549*sinD(M)+0.1683*sinD(2*M));
-  const hr=5.20336*(1-0.04839*0.04839)/(1+0.04839*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function saturn(t){
-  const L=n360(50.077444+1222.1138488*t),M=n360(317.0207+1221.5515*t);
-  const hl=n360(L+6.3585*sinD(M)+0.2204*sinD(2*M));
-  const hr=9.53707*(1-0.05415*0.05415)/(1+0.05415*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function uranus(t){
-  const L=n360(314.055005+428.4669983*t),M=n360(143+428.467*t);
-  const hl=n360(L+5.3048*sinD(M));
-  const hr=19.1913*(1-0.04717*0.04717)/(1+0.04717*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function neptune(t){
-  const L=n360(304.348665+218.4862002*t),M=n360(206+218.486*t);
-  const hl=n360(L+1.0236*sinD(M));
-  const hr=30.0690*(1-0.00859*0.00859)/(1+0.00859*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function pluto(t){const Jp=n360(34.35+3034.9057*t),Sp=n360(50.08+1222.1138*t),P=n360(238.9508+144.96*t);return n360(P+3.82*sinD(Jp-P)-2.46*sinD(2*Jp-P-Sp)+1.52*sinD(3*Jp-2*Sp));}
-function chiron(t){
-  const hl=n360(208.67+0.01977*t*36525);
-  const e=earthPos(t);return geoLon(hl,13.7,e.l,e.r);
-}
-function nnode(t){return n360(125.0445-1934.1363*t);}
-function planets(y,m,d){const t=T(y,m,d);return{Sun:sun(t),Moon:moon(t),Mercury:merc(t),Venus:venus(t),Mars:mars(t),Jupiter:jupit(t),Saturn:saturn(t),Uranus:uranus(t),Neptune:neptune(t),Pluto:pluto(t),Chiron:chiron(t),NNode:nnode(t)};}
-
-function planetsPrecise(y,m,d,h){
-  try {
-    if(typeof Astronomy === 'undefined') throw new Error('no lib');
-    const hour = h||12;
-    const date = new Date(Date.UTC(y, m-1, d, Math.floor(hour), Math.round((hour%1)*60), 0));
-    const time = Astronomy.MakeTime(date);
-    const bodies = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'];
-    const result = {};
-    for(const body of bodies){
-      const vec = Astronomy.GeoVector(body, time, true);
-      const ecl = Astronomy.Ecliptic(vec);
-      result[body] = n360(ecl.elon);
+  <style>
+    /* ─── RESET ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      color: #1a2636;
+      background: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
-    const t = T(y,m,d+hour/24);
-    result.Chiron = chiron(t);
-    result.NNode = nnode(t);
-    return result;
-  } catch(e) {
-    return planets(y,m,d+(h||12)/24);
-  }
-}
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
 
-const SIGN_ES=["Aries","Tauro","Géminis","Cáncer","Leo","Virgo","Libra","Escorpio","Sagitario","Capricornio","Acuario","Piscis"];
-const SIGN_EN=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
-const SIGN_ABB_ES=["Ari","Tau","Gém","Cán","Leo","Vir","Lib","Esc","Sag","Cap","Acu","Pis"];
-const SIGN_ABB_EN=["Ari","Tau","Gem","Can","Leo","Vir","Lib","Sco","Sag","Cap","Aqu","Pis"];
-const SIGN_GLYPH=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
-function signOf(deg){return Math.floor(n360(deg)/30);}
-function signAbb(deg,l){return(l==="es"?SIGN_ABB_ES:SIGN_ABB_EN)[signOf(deg)];}
-function signFull(deg,l){return(l==="es"?SIGN_ES:SIGN_EN)[signOf(deg)];}
+    /* ─── COLOURS ────────────────────────────────── */
+    /* dark bg: #0c1928  |  light bg: #e6edf7  |  white: #ffffff
+       pricing card: #3e4f62  |  teal: #2bbfaa  |  text-muted: #6b7f96  */
 
-const ASPS=[{es:"Conjunción",en:"Conjunction",s:"☌",a:0,o:8,sc:10,t:"harmonious"},{es:"Sextil",en:"Sextile",s:"⚹",a:60,o:6,sc:6,t:"harmonious"},{es:"Trígono",en:"Trine",s:"△",a:120,o:8,sc:9,t:"harmonious"},{es:"Cuadratura",en:"Square",s:"□",a:90,o:7,sc:3,t:"tense"},{es:"Oposición",en:"Opposition",s:"☍",a:180,o:8,sc:4,t:"neutral"}];
-function asp(l1,l2){let d=Math.abs(l1-l2);if(d>180)d=360-d;for(const a of ASPS){const o=Math.abs(d-a.a);if(o<=a.o)return{...a,orbe:o.toFixed(1)};} return null;}
+    /* ─── LANG BAR ───────────────────────────────── */
+    .lang-bar {
+      background: #0c1928;
+      display: flex;
+      justify-content: flex-end;
+      padding: 6px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .lang-toggle {
+      display: flex;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: #2bbfaa;
+      color: #ffffff;
+    }
 
-const PW={"Sun-Moon":4,"Moon-Sun":4,"Venus-Mars":5,"Mars-Venus":5,"Sun-Venus":3,"Venus-Sun":3,"Sun-Sun":3,"Moon-Moon":3,"Mercury-Mercury":2,"Sun-Mercury":2,"Mercury-Sun":2,"Venus-Venus":2,"Mars-Mars":1,"Sun-Mars":2,"Mars-Sun":2,"Moon-Venus":2,"Venus-Moon":2,"Saturn-Sun":2,"Sun-Saturn":2,"Moon-Jupiter":1,"Jupiter-Moon":1,"Moon-Mars":2,"Mars-Moon":2,"Chiron-Sun":1,"Chiron-Moon":1,"NNode-Sun":1,"NNode-Venus":1};
+    /* ─── NAV / HEADER ───────────────────────────── */
+    .site-header {
+      background: #0c1928;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.04em;
+    }
+    .logo span { color: #2bbfaa; }
+    .header-nav a {
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 28px;
+      transition: color 0.2s;
+    }
+    .header-nav a:hover { color: #ffffff; }
+    .header-nav { display: none; }
 
-const AREAS={romance:{es:"Romance",en:"Romance",pairs:["Venus-Mars","Mars-Venus","Sun-Venus","Venus-Sun","Venus-Venus"],c:"#C94B72"},emotion:{es:"Vínculo emocional",en:"Emotional bond",pairs:["Sun-Moon","Moon-Sun","Moon-Moon","Moon-Venus","Venus-Moon"],c:"#1B9E78"},comms:{es:"Comunicación",en:"Communication",pairs:["Mercury-Mercury","Sun-Mercury","Mercury-Sun"],c:"#6B63CC"},longterm:{es:"Largo plazo",en:"Long-term",pairs:["Saturn-Sun","Sun-Saturn","Jupiter-Moon","Moon-Jupiter"],c:"#D4920E"}};
+    /* ─── HERO ───────────────────────────────────── */
+    .hero {
+      background: #0c1928;
+      position: relative;
+      overflow: hidden;
+      padding: 72px 24px 80px;
+      text-align: center;
+    }
+    /* Planos diagonales rectos */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; left: -10%;
+      width: 70%; height: 340px;
+      background: rgba(255,255,255,0.025);
+      transform: skewY(-7deg);
+      transform-origin: top left;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; right: -5%;
+      width: 60%; height: 280px;
+      background: rgba(255,255,255,0.02);
+      transform: skewY(6deg);
+      transform-origin: bottom right;
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #2bbfaa;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 48px);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 18px);
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      max-width: 580px;
+      margin: 0 auto 12px;
+    }
+    .hero-note {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 32px;
+    }
+    .hero-checks {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 28px;
+      margin-top: 28px;
+    }
+    .hero-checks span {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hero-checks span::before {
+      content: '✔';
+      color: #2bbfaa;
+      font-size: 13px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(43,191,170,0.1);
+      border: 1px solid rgba(43,191,170,0.3);
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 20px;
+    }
+    .hero-badge strong { color: #2bbfaa; }
 
-const IT={"Venus-Mars":{es:{conj:"Química instantánea e intensa. Este aspecto es la atracción en su forma más pura.",trig:"La atracción fluye de manera natural — un romance sin esfuerzo.",sext:"Una química suave pero persistente. Se sienten atraídos sin saber exactamente por qué.",sq:"Tensión erótica presente. La atracción existe pero puede tornarse competitiva.",opp:"Polaridad magnética. Se atraen como opuestos en formas que pueden volverse intensas."},en:{conj:"Instant, intense chemistry. This aspect is attraction in its purest form.",trig:"Attraction flows naturally — an effortless romance.",sext:"A soft but persistent chemistry. You feel drawn to each other without knowing why.",sq:"Erotic tension is present. Attraction exists but can become competitive.",opp:"Magnetic polarity. You attract each other as opposites in intense ways."}},"Sun-Moon":{es:{conj:"Una comprensión rara y profunda. Sienten que se conocen desde siempre.",trig:"Fluyen emocionalmente juntos sin esfuerzo aparente.",sext:"Se entienden bien en el día a día. Hay confort mutuo.",sq:"Estilos emocionales distintos que requieren trabajo consciente.",opp:"El Sol ilumina lo que la Luna siente pero no siempre dice."},en:{conj:"A rare and deep understanding. You feel like you've known each other forever.",trig:"You flow together emotionally without apparent effort.",sext:"You understand each other well day to day.",sq:"Different emotional styles that require conscious work.",opp:"The Sun illuminates what the Moon feels but doesn't always say."}},"Mercury-Mercury":{es:{conj:"Piensan de forma similar. Las conversaciones son fluidas e intuitivas.",trig:"La comunicación es natural y placentera.",sext:"Se entienden bien verbalmente.",sq:"Estilos de pensar distintos. Pueden surgir malentendidos.",opp:"Perspectivas opuestas que se enriquecen si se respetan."},en:{conj:"You think similarly. Conversations are fluid and intuitive.",trig:"Communication is natural and enjoyable.",sext:"You understand each other verbally.",sq:"Different thinking styles. Misunderstandings can arise.",opp:"Opposing perspectives that enrich each other if respected."}},"Saturn-Sun":{es:{conj:"Un vínculo serio con potencial de permanencia.",trig:"Saturno da estabilidad sin ahogar. Construyen cosas que duran.",sext:"Hay una seriedad creciente en esta relación.",sq:"Saturno puede sentirse limitante para el Sol.",opp:"Tensión entre libertad y compromiso que puede definir la relación."},en:{conj:"A serious bond with real potential for permanence.",trig:"Saturn gives stability without smothering. You build things that last.",sext:"There's a growing seriousness to this relationship.",sq:"Saturn can feel limiting to the Sun's expression.",opp:"Tension between freedom and commitment that can define the relationship."}},default:{es:{conj:"Energías fusionadas. Conexión fuerte.",trig:"Flujo armonioso. Se potencian mutuamente.",sext:"Apoyo gentil y natural.",sq:"Fricción que puede generar crecimiento.",opp:"Polaridad que puede crear atracción o tensión."},en:{conj:"Fused energies. Strong connection.",trig:"Harmonious flow. You enhance each other.",sext:"Gentle, natural support.",sq:"Friction that can generate growth.",opp:"Polarity that can create attraction or tension."}}};
-function interp(pair,aspEs,l){const k=IT[pair]?pair:"default";const m={"Conjunción":"conj","Trígono":"trig","Sextil":"sext","Cuadratura":"sq","Oposición":"opp"};return IT[k][l][m[aspEs]]||"";}
+    /* ─── BUTTON ─────────────────────────────────── */
+    .btn {
+      display: inline-block;
+      background: #2bbfaa;
+      color: #ffffff;
+      font-family: 'Roboto', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 36px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 18px rgba(43,191,170,0.3);
+      letter-spacing: 0.02em;
+    }
+    .btn:hover {
+      background: #24a896;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(43,191,170,0.4);
+    }
 
-const VRD={es:[[88,"✦ Almas gemelas cósmicas","Esta conexión es excepcional. Los planetas rara vez se alinean así. Lo que tienen juntos es profundo, real y merece ser cuidado con atención."],[75,"✦ Una conexión que arde lento","Su vínculo es magnético y capas — no de los que estallan de inmediato, sino de los que echan raíces. Hay una cadencia natural entre ustedes."],[60,"✦ Complementos con potencial","Tienen diferencias que pueden ser regalos si se trabajan. Lo que a uno le falta, el otro lo tiene."],[45,"✦ Caminos que se cruzan","Esta relación enseña. Puede tener momentos de gran intensidad pero requiere trabajo de ambas partes."],[0,"✦ Un desafío que transforma","Los planetas muestran fricción, pero la fricción pule. Esta relación tiene potencial de transformar a ambos."]],en:[[88,"✦ Cosmic soulmates","This connection is exceptional. The planets rarely align like this. What you have together is deep, real and deserves careful attention."],[75,"✦ A slow burn that ignites","Your bond is magnetic and layered — not the kind that explodes instantly, but the kind that grows roots."],[60,"✦ Complements with potential","You have differences that can be gifts if worked through. What one lacks, the other has."],[45,"✦ Paths that cross","This relationship teaches. It can have moments of great intensity but requires work from both sides."],[0,"✦ A transforming challenge","The planets show friction, but friction polishes. This relationship has the potential to transform you both."]]};
+    /* ─── SECTION WRAPPER ────────────────────────── */
+    .section { padding: 64px 24px; }
+    .section-light { background: #e6edf7; }
+    .section-dark  { background: #0c1928; }
+    .section-white { background: #ffffff; }
 
-const AI={romance:{es:[[80,"Atracción potente y natural."],[60,"Química presente con espacio para crecer."],[0,"La atracción requiere cultivo consciente."]],en:[[80,"Powerful, natural attraction."],[60,"Chemistry present with room to grow."],[0,"Attraction needs conscious nurturing."]]},emotion:{es:[[80,"Se entienden emocionalmente sin esfuerzo."],[60,"Conexión emocional real con algunas diferencias."],[0,"Mundos emocionales distintos — enriquecedor si se trabaja."]],en:[[80,"You understand each other emotionally with ease."],[60,"Real emotional connection with some differences."],[0,"Different emotional worlds — enriching if worked through."]]},comms:{es:[[80,"Comunicación fluida e intuitiva."],[60,"Se entienden bien en lo cotidiano."],[0,"Estilos distintos. Requiere paciencia."]],en:[[80,"Fluid, intuitive communication."],[60,"You understand each other well in daily life."],[0,"Different styles. Patience required."]]},longterm:{es:[[80,"Bases sólidas para construir juntos."],[60,"Potencial de permanencia con trabajo."],[0,"La estabilidad hay que construirla activamente."]],en:[[80,"Solid foundations to build on together."],[60,"Potential for permanence with work."],[0,"Stability must be actively built."]]}};
-function ai(k,p,l){const t=AI[k][l];for(const[th,tx]of t)if(p>=th)return tx;return t[t.length-1][1];}
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
 
-const ELEM_NAMES={es:{fire:"Fuego 🔥",earth:"Tierra 🌿",air:"Aire 💨",water:"Agua 🌊"},en:{fire:"Fire 🔥",earth:"Earth 🌿",air:"Air 💨",water:"Water 🌊"}};
-const ELEM_DESC={es:{"fire-fire":"Dos llamas que se avivan mutuamente. Energía, pasión y acción constante.","earth-earth":"Estabilidad y construcción a largo plazo. Una base sólida y confiable.","air-air":"Conexión mental profunda. Las conversaciones nunca se agotan.","water-water":"Sensibilidad emocional compartida. Se entienden sin palabras.","fire-earth":"El fuego da dirección, la tierra da forma. Se complementan si hay respeto.","fire-air":"El aire aviva el fuego. Entusiasmo, ideas y movimiento constante.","fire-water":"Pasión intensa con tensión también. El calor y la profundidad pueden fundirse.","earth-water":"La tierra contiene el agua. Relación nutritiva y emocionalmente segura.","earth-air":"Lo práctico y lo intelectual. Aprenden mucho el uno del otro.","air-water":"El pensamiento y el sentimiento. Complementarios si aprenden a escucharse."},en:{"fire-fire":"Two flames that ignite each other. Energy, passion and constant action.","earth-earth":"Stability and long-term building. A solid and reliable foundation.","air-air":"Deep mental connection. Conversations never run dry.","water-water":"Shared emotional sensitivity. You understand each other without words.","fire-earth":"Fire gives direction, earth gives form. Complementary with mutual respect.","fire-air":"Air fans the fire. Enthusiasm, ideas and constant movement.","fire-water":"Intense passion but also tension. Heat and depth can merge.","earth-water":"Earth contains water. A nurturing and emotionally secure relationship.","earth-air":"The practical and intellectual. Much to learn from each other.","air-water":"Thought and feeling. Complementary if they learn to listen."}};
-function elemKey(a,b){return ELEM_DESC.es[`${a}-${b}`]?`${a}-${b}`:ELEM_DESC.es[`${b}-${a}`]?`${b}-${a}`:"fire-water";}
+    .section-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #2bbfaa;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(22px, 3.5vw, 34px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .section-title.on-dark { color: #ffffff; }
+    .section-sub {
+      font-size: 15px;
+      color: #6b7f96;
+      line-height: 1.7;
+      max-width: 600px;
+    }
 
-const VS={es:["Venus en Aries: ama con intensidad y espontaneidad.","Venus en Tauro: busca estabilidad, lujo y afecto físico.","Venus en Géminis: necesita variedad, conversación y juego.","Venus en Cáncer: ama profundamente y busca seguridad emocional.","Venus en Leo: generosa, apasionada y necesita admiración.","Venus en Virgo: demuestra amor en detalles y actos de servicio.","Venus en Libra: busca armonía, belleza y equilibrio.","Venus en Escorpio: ama con intensidad transformadora.","Venus en Sagitario: necesita libertad y aventura juntos.","Venus en Capricornio: amor maduro, leal y orientado al futuro.","Venus en Acuario: amor libre, amistoso e intelectual.","Venus en Piscis: amor incondicional, romántico e idealizador."],en:["Venus in Aries: loves with intensity and spontaneity.","Venus in Taurus: seeks stability, luxury and physical affection.","Venus in Gemini: needs variety, conversation and playfulness.","Venus in Cancer: loves deeply and seeks emotional security.","Venus in Leo: generous, passionate, needs admiration.","Venus in Virgo: shows love through details and acts of service.","Venus in Libra: seeks harmony, beauty and balance.","Venus in Scorpio: loves with transformative intensity.","Venus in Sagittarius: needs freedom and adventure together.","Venus in Capricorn: mature, loyal, future-oriented love.","Venus in Aquarius: free, friendly, intellectually stimulating love.","Venus in Pisces: unconditional, romantic, idealistic love."]};
-const MS={es:["Marte en Aries: directo, impulsivo y competitivo.","Marte en Tauro: lento para encenderse pero muy persistente.","Marte en Géminis: deseo intelectual, variado y comunicativo.","Marte en Cáncer: deseo emocional y protector.","Marte en Leo: pasional, dramático y busca ser el centro.","Marte en Virgo: meticuloso y orientado al detalle.","Marte en Libra: busca equilibrio pero puede ser indeciso.","Marte en Escorpio: intenso, estratégico y magnético.","Marte en Sagitario: entusiasta y aventurero.","Marte en Capricornio: ambicioso y disciplinado.","Marte en Acuario: rebelde, original e impredecible.","Marte en Piscis: intuitivo, empático y a veces escurridizo."],en:["Mars in Aries: direct, impulsive and competitive.","Mars in Taurus: slow to ignite but very persistent.","Mars in Gemini: intellectual, varied, communicative desire.","Mars in Cancer: emotional, protective desire.","Mars in Leo: passionate, dramatic, seeks the spotlight.","Mars in Virgo: meticulous and detail-oriented.","Mars in Libra: seeks balance but can be indecisive.","Mars in Scorpio: intense, strategic and magnetic.","Mars in Sagittarius: enthusiastic and adventurous.","Mars in Capricorn: ambitious and disciplined.","Mars in Aquarius: rebellious, original and unpredictable.","Mars in Pisces: intuitive, empathetic and elusive."]};
+    /* ─── 3-COL: PROBLEM / ANALYZE / RECEIVE ─────── */
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      margin-top: 40px;
+    }
+    .col-card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 28px 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .col-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #2bbfaa;
+      margin-bottom: 14px;
+    }
+    .col-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #0c1928;
+      margin-bottom: 14px;
+    }
+    .col-card ul {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .col-card ul li {
+      font-size: 14px;
+      color: #4a5f75;
+      line-height: 1.55;
+      padding-left: 16px;
+      position: relative;
+    }
+    .col-card ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: #2bbfaa;
+      font-size: 12px;
+    }
 
-let lang="es", lastResult=null, prevScr="input", selPlan="annual";
+    /* ─── HOW IT WORKS ───────────────────────────── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .step-card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 28px 24px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e6edf7;
+      border: 2px solid #2bbfaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: #2bbfaa;
+      flex-shrink: 0;
+    }
+    .step-body {}
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0c1928;
+      margin-bottom: 6px;
+    }
+    .step-desc {
+      font-size: 13px;
+      color: #6b7f96;
+      line-height: 1.6;
+    }
+    .how-note {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 14px;
+      color: #6b7f96;
+      font-style: italic;
+    }
 
-function setLang(l){
-  lang=l;
-  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("on",b.textContent===l.toUpperCase()));
-  document.querySelectorAll("[data-"+l+"]").forEach(el=>{
-    if(el.tagName==="INPUT") el.placeholder=el.getAttribute("data-placeholder-"+l)||"";
-    else el.innerHTML=el.dataset[l]||el.innerHTML;
-  });
-  document.querySelectorAll("[data-placeholder-"+l+"]").forEach(el=>el.placeholder=el.getAttribute("data-placeholder-"+l)||"");
-  if(lastResult) renderResults(lastResult);
-  updatePayBtn();
-}
+    /* ─── PRICING ────────────────────────────────── */
+    .pricing-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+    .pricing-card {
+      background: #3e4f62;
+      border-radius: 14px;
+      padding: 36px 32px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 8px 36px rgba(0,0,0,0.25);
+    }
+    .pricing-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #2bbfaa;
+      margin-bottom: 8px;
+    }
+    .pricing-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .pricing-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 28px;
+    }
+    .pricing-price {
+      font-size: 52px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .pricing-price sup {
+      font-size: 24px;
+      vertical-align: super;
+      font-weight: 400;
+    }
+    .pricing-period {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 28px;
+    }
+    .pricing-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin: 24px 0;
+    }
+    .pricing-features {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .pricing-features li {
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .pricing-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #2bbfaa;
+      font-weight: 700;
+    }
+    .pricing-note-text {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+    .pricing-recovery {
+      margin-top: 20px;
+      background: rgba(43,191,170,0.1);
+      border: 1px solid rgba(43,191,170,0.25);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+    }
 
-function goScreen(n){
-  const cur=document.querySelector(".screen.active");
-  if(cur) prevScr=cur.id.replace("s-","");
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById("s-"+n).classList.add("active");
-  if(n==="history") renderHistory();
-  updatePremiumUI();
-}
-function goBack(){goScreen(prevScr||"input");}
+    /* ─── SECURITY ───────────────────────────────── */
+    .security-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 36px 28px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      margin-top: 0;
+    }
+    .security-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    .security-left h2 {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 700;
+      color: #0c1928;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .security-left p {
+      font-size: 14px;
+      color: #6b7f96;
+      line-height: 1.7;
+    }
+    .security-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .security-bullets li {
+      font-size: 14px;
+      color: #4a5f75;
+      padding-left: 22px;
+      position: relative;
+      line-height: 1.55;
+    }
+    .security-bullets li::before {
+      content: '•';
+      position: absolute;
+      left: 6px;
+      color: #2bbfaa;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+    .security-footer-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #9aabb8;
+      font-style: italic;
+    }
 
-const signOverrides={};
-function editSign(pid,planet,currentDeg,btn){
-  const l=lang==="es"?SIGN_ES:SIGN_EN;
-  const cur=signOf(currentDeg);
-  const select=document.createElement("select");
-  select.className="natal-select";
-  l.forEach((s,i)=>{const o=document.createElement("option");o.value=i*30+15;o.textContent=s;if(i===cur)o.selected=true;select.appendChild(o);});
-  select.onchange=()=>{
-    const newDeg=parseFloat(select.value);
-    if(!signOverrides[pid]) signOverrides[pid]={};
-    signOverrides[pid][planet]=newDeg;
-    if(lastResult) lastResult[pid==="A"?"pA":"pB"][planet]=newDeg;
-    const span=document.getElementById(`ns_${pid}_${planet}`);
-    if(span) span.textContent=signAbb(newDeg,lang)+" "+SIGN_GLYPH[signOf(newDeg)];
-    select.replaceWith(btn);
-    if(lastResult) try{renderResults(lastResult);}catch(e){}
-  };
-  select.onblur=()=>setTimeout(()=>select.replaceWith(btn),200);
-  btn.replaceWith(select);
-  select.focus();
-}
-function goLastResult(){
-  if(lastResult){
-    try{renderResults(lastResult);}catch(e){console.error(e);}
-    goScreen("results");
-  } else {
-    showToast(lang==="es"?"Haz una lectura primero ✦":"Make a reading first ✦");
-  }
-}
+    /* ─── WHY RLD ────────────────────────────────── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 36px;
+    }
+    .why-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .why-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(43,191,170,0.12);
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .why-body {}
+    .why-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0c1928;
+      margin-bottom: 5px;
+    }
+    .why-desc {
+      font-size: 14px;
+      color: #6b7f96;
+      line-height: 1.6;
+    }
+    .why-analyst {
+      margin-top: 36px;
+      padding: 20px 22px;
+      background: #e6edf7;
+      border-radius: 8px;
+      border-left: 3px solid #2bbfaa;
+      font-size: 13px;
+      color: #4a5f75;
+      line-height: 1.65;
+    }
+    .why-compat {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .why-compat span {
+      font-size: 12px;
+      background: #e6edf7;
+      color: #3e5268;
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
 
-function isPremium(){
-  const p=localStorage.getItem("duual_premium");
-  if(!p) return false;
-  try{const{expiry}=JSON.parse(p);return Date.now()<expiry;}catch{return false;}
-}
-function setPremium(plan){
-  const expiry=plan==="annual"?Date.now()+365*24*36e5:Date.now()+30*24*36e5;
-  localStorage.setItem("duual_premium",JSON.stringify({plan,expiry}));
-  updatePremiumUI();
-}
-function updatePremiumUI(){
-  const p=isPremium();
-  document.getElementById("premiumBadgeHeader").style.display=p?"block":"none";
-  const h=document.getElementById("freeHint");
-  if(h) h.style.display=p?"none":"block";
-}
+    /* ─── CTA BAND ───────────────────────────────── */
+    .cta-band {
+      background: linear-gradient(135deg, #0c1928 0%, #112540 100%);
+      text-align: center;
+      padding: 72px 24px;
+    }
+    .cta-band h2 {
+      font-size: clamp(20px, 3.5vw, 32px);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+      max-width: 560px;
+      margin: 0 auto 16px;
+    }
+    .cta-band p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.55);
+      max-width: 440px;
+      margin: 0 auto 32px;
+      line-height: 1.65;
+    }
+    .limited-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+    }
 
-function todayKey(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;}
-function canRead(){return isPremium()||(localStorage.getItem("duual_last_read")!==todayKey());}
-function markRead(){if(!isPremium()) localStorage.setItem("duual_last_read",todayKey());}
+    /* ─── FAQ ────────────────────────────────────── */
+    .faq-section {
+      background: #0c1928;
+      padding: 64px 24px;
+    }
+    .faq-header {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+    .faq-cols {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .faq-item:first-child {
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .faq-q {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 18px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      text-align: left;
+      font-family: 'Roboto', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      transition: color 0.2s;
+    }
+    .faq-q:hover { color: #2bbfaa; }
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: #2bbfaa;
+      transition: transform 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(45deg); }
+    .faq-a {
+      display: none;
+      padding: 0 0 18px 0;
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-a { display: block; }
 
-function startCalc(){
-  const dA=document.getElementById("dateA").value;
-  const dB=document.getElementById("dateB").value;
-  if(!dA||!dB){showToast(lang==="es"?"Ingresa ambas fechas":"Enter both dates");return;}
-  if(!canRead()){showToast(lang==="es"?"Lectura de hoy usada · ¡Vuelve mañana!":"Today's reading used · Come back tomorrow!");setTimeout(()=>goScreen("paywall"),1200);return;}
-  const nA=document.getElementById("nameA").value.trim()||(lang==="es"?"Persona A":"Person A");
-  const nB=document.getElementById("nameB").value.trim()||(lang==="es"?"Persona B":"Person B");
-  goScreen("loading");
-  setTimeout(()=>{
-    const [yA,mA,dAd]=dA.split("-").map(Number);
-    const [yB,mB,dBd]=dB.split("-").map(Number);
-    const tA=document.getElementById("timeA").value;
-    const tB=document.getElementById("timeB").value;
-    const hA=tA?parseInt(tA.split(":")[0])+parseInt(tA.split(":")[1])/60:12;
-    const hB=tB?parseInt(tB.split(":")[0])+parseInt(tB.split(":")[1])/60:12;
-    const pA=planetsPrecise(yA,mA,dAd,hA),pB=planetsPrecise(yB,mB,dBd,hB);
-    markRead();
-    lastResult={pA,pB,nA,nB};
-    try{renderResults(lastResult);}catch(e){console.error("Render error:",e);}
-    goScreen("results");
-  },2600);
-}
+    /* ─── FOOTER ─────────────────────────────────── */
+    .site-footer {
+      background: #0c1928;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 32px 24px;
+    }
+    .footer-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      text-align: center;
+    }
+    .footer-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .footer-logo span { color: #2bbfaa; }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .footer-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #ffffff; }
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+    }
 
-function renderResults(r){
-  const{pA,pB,nA,nB}=r;
-  const premium=isPremium();
-  const keys=["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune","Pluto"];
-  let found=[],total=0,maxP=0;
-  for(const pa of keys) for(const pb of keys){
-    const k=`${pa}-${pb}`,w=PW[k]||0;if(!w) continue;
-    maxP+=w*10;const a=asp(pA[pa],pB[pb]);
-    if(a){total+=a.sc*w;found.push({pa,pb,a,pts:a.sc*w,interp:interp(k,a.es,lang)});}
-  }
-  const maxFound=found.reduce((s,x)=>s+ASPS[0].sc*(PW[x.pa+"-"+x.pb]||1),0)||1;
-  const rawPct=total/maxFound*100;
-  const pct=Math.min(99,Math.max(5,Math.round(30+rawPct*0.7)));
-  const vList=VRD[lang],vE=vList.find(v=>pct>=v[0]);
-  document.getElementById("bigScore").innerHTML=`${pct}<span class="pct">%</span>`;
-  document.getElementById("rpair").innerHTML=`${nA} <span class="ramp">&</span> ${nB}`;
-  document.getElementById("verdictBadge").textContent=vE[1];
-  document.getElementById("verdictTitle").textContent=vE[1];
-  document.getElementById("verdictText").textContent=vE[2];
-  renderCompatSection(pA);
-
-  const pl = lang==="es"
-    ? {Sun:"☀ Sol",Moon:"☽ Luna",Venus:"♀ Venus",Mars:"♂ Marte",Mercury:"☿ Mercurio"}
-    : {Sun:"☀ Sun",Moon:"☽ Moon",Venus:"♀ Venus",Mars:"♂ Mars",Mercury:"☿ Mercury"};
-  const natalCard=(name,pid,p)=>`<div class="natal-person"><div class="natal-pname">${name}</div>${["Sun","Moon","Venus","Mars","Mercury"].map(k=>`<div class="natal-row"><span class="natal-pl">${pl[k]}</span><span class="natal-sg" id="ns_${pid}_${k}">${signAbb(p[k],lang)} ${SIGN_GLYPH[signOf(p[k])]}</span><button class="natal-edit" onclick="editSign('${pid}','${k}',${Math.floor(p[k])},this)" title="Corregir">✎</button></div>`).join("")}</div>`;
-  document.getElementById("natalMini").innerHTML=natalCard(nA,"A",pA)+natalCard(nB,"B",pB);
-
-  const top=found.sort((a,b)=>b.pts-a.pts).slice(0,2);
-  document.getElementById("constRow").innerHTML=top.map(x=>`<span class="const-tag">${PG[x.pa]} ${x.a.s} ${PG[x.pb]}</span>`).join("");
-
-  const aS={};
-  const AREA_EXT={
-    romance:["Venus","Mars","Sun","Moon"],
-    emotion:["Moon","Sun","Venus","Jupiter"],
-    comms:["Mercury","Sun","Moon","Uranus"],
-    longterm:["Saturn","Sun","Jupiter","Moon"]
-  };
-  for(const[k,ad] of Object.entries(AREAS)){
-    let s=0,cnt=0;
-    const ps=AREA_EXT[k]||[];
-    for(const pa of ps) for(const pb of ps){
-      if(pA[pa]===undefined||pB[pb]===undefined) continue;
-      const a=asp(pA[pa],pB[pb]);
-      cnt++;
-      if(a){
-        const bonus=a.t==="harmonious"?a.sc:a.t==="tense"?a.sc*0.4:a.sc*0.6;
-        s+=bonus;
+    /* ─── RESPONSIVE — TABLET+ ───────────────────── */
+    @media (min-width: 640px) {
+      .three-col {
+        grid-template-columns: 1fr 1fr;
+      }
+      .steps-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .why-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .faq-cols {
+        grid-template-columns: 1fr 1fr;
+        gap: 0 48px;
+      }
+      /* first item in col 2 needs top border */
+      .faq-col-right .faq-item:first-child {
+        border-top: 1px solid rgba(255,255,255,0.08);
       }
     }
-    aS[k]=cnt>0?Math.min(100,Math.round(30+(s/cnt)*8)):30;
-  }
-  document.getElementById("areasGrid").innerHTML=Object.entries(AREAS).map(([k,ad])=>{const p=aS[k],label=lang==="es"?ad.es:ad.en;return `<div class="acard"><div class="ahead"><div class="aname">${label}</div><div class="apct">${p}%</div></div><div class="track"><div class="bar" style="width:${p}%;background:${ad.c}"></div></div><div class="ainsight">${ai(k,p,lang)}</div></div>`;}).join("");
 
-  const sorted=found.sort((a,b)=>b.pts-a.pts);
-  const pname=lang==="es"?PES:PEN;
-  document.getElementById("aspList").innerHTML=sorted.slice(0,premium?10:6).map((x,i)=>{
-    const aName=lang==="es"?x.a.es:x.a.en;
-    const sgA=signAbb(pA[x.pa],lang), sgB=signAbb(pB[x.pb],lang);
-    return `<div class="asp-row${!premium&&i>=3?" blurred":""}"><div class="asp-glyph">${PG[x.pa]}</div><div class="asp-body"><div class="asp-title">${pname[x.pa]} <span style="color:var(--txt3);font-size:11px">${sgA}</span> ${x.a.s} ${pname[x.pb]} <span style="color:var(--txt3);font-size:11px">${sgB}</span></div><div class="asp-subtitle">${aName} · ${x.a.orbe}° ${lang==="es"?"orbe":"orb"}</div><div class="asp-interp">${x.interp}</div><span class="asp-badge ${x.a.t}">${x.a.s} ${aName}</span></div></div>`;
-  }).join("");
+    /* ─── RESPONSIVE — DESKTOP ───────────────────── */
+    @media (min-width: 900px) {
+      .header-nav { display: flex; }
 
-  if(premium){
-    document.getElementById("premiumResults").style.display="block";
-    document.getElementById("unlockCard").style.display="none";
-    renderPremium(pA,pB,nA,nB);
-  } else {
-    document.getElementById("premiumResults").style.display="none";
-    document.getElementById("unlockCard").style.display="block";
-  }
-}
+      .three-col {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .steps-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .security-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: start;
+      }
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
 
-function renderPremium(pA,pB,nA,nB){
-  const l=lang;
-  const eA=SIGN_ELEM[Math.floor(pA.Sun/30)],eB=SIGN_ELEM[Math.floor(pB.Sun/30)];
-  const meA=SIGN_ELEM[Math.floor(pA.Moon/30)],meB=SIGN_ELEM[Math.floor(pB.Moon/30)];
-  const ek=elemKey(eA,eB);
-  const EN=ELEM_NAMES[l]||ELEM_NAMES.es,ED=ELEM_DESC[l]||ELEM_DESC.es;
-  document.getElementById("elemSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">☀ ${l==="es"?"Elementos Solares":"Solar Elements"}</div><div class="element-grid"><div class="elem-tag"><div class="elem-name">A: Sol</div><div class="elem-val">${EN[eA]}</div></div><div class="elem-tag"><div class="elem-name">B: Sol</div><div class="elem-val">${EN[eB]}</div></div><div class="elem-tag"><div class="elem-name">A: ☽</div><div class="elem-val">${EN[meA]}</div></div><div class="elem-tag"><div class="elem-name">B: ☽</div><div class="elem-val">${EN[meB]}</div></div></div><div class="premium-card-body" style="margin-top:10px;">${ED[ek]||""}</div></div>`;
+<body>
 
-  const vsA=Math.floor(pA.Venus/30),vsB=Math.floor(pB.Venus/30);
-  const msA=Math.floor(pA.Mars/30),msB=Math.floor(pB.Mars/30);
-  const vArr=l==="en"?VS.en:VS.es,mArr=l==="en"?MS.en:MS.es;
-  const vSign=l==="es"?SIGN_ES:SIGN_EN, mSign=l==="es"?SIGN_ES:SIGN_EN;
-  document.getElementById("venusSection").innerHTML=`
-    <div class="premium-card">
-      <div class="premium-card-title">♀ Venus</div>
-      <div class="premium-card-body">
-        <strong style="color:var(--rose-m)">${nA}: Venus en ${vSign[vsA]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsA]}</span>
-        <br><br>
-        <strong style="color:var(--rose-m)">${nB}: Venus en ${vSign[vsB]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsB]}</span>
+<!-- LANGUAGE BAR -->
+<div class="lang-bar">
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="es">ES</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">RLD<span>.</span></div>
+  <nav class="header-nav">
+    <a href="#problem"   data-t="nav_problem">The problem</a>
+    <a href="#how"       data-t="nav_how">How it works</a>
+    <a href="#pricing"   data-t="nav_pricing">Pricing</a>
+    <a href="#faq"       data-t="nav_faq">FAQ</a>
+  </nav>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow" data-t="hero_eyebrow">Revenue Leak Detection · SaaS Audit</div>
+    <h1 data-t="hero_h1">Hidden revenue leaks cost<br>mid-market companies $500K/year.<br>We find yours in 72h.</h1>
+    <p class="hero-sub" data-t="hero_sub">We analyze your CRM, billing, and payment data to detect revenue loss companies typically miss — without integrations or system access.</p>
+    <p class="hero-note" data-t="hero_note">Most billing leaks go unnoticed for 2+ years before someone looks.</p>
+    <a href="/form" class="btn" data-t="btn_request">Request audit</a>
+    <div class="hero-checks">
+      <span data-t="check_findings">Typical findings: 3–12% recoverable revenue</span>
+      <span data-t="check_no_int">No integrations required</span>
+      <span data-t="check_72h">Results in 72h</span>
+    </div>
+    <div class="hero-badge">
+      <span data-t="hero_badge">Fixed price: <strong>$899 USD</strong> · All 8 leak categories · 72h delivery</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEM / ANALYZE / RECEIVE ═══ -->
+<section class="section section-light" id="problem">
+  <div class="container">
+    <div class="section-tag" data-t="s_overview">Overview</div>
+    <h2 class="section-title" data-t="s_overview_title">From hidden errors to measurable recovery</h2>
+    <p class="section-sub" data-t="s_overview_sub">Most leaks happen without anyone noticing. We find them before they compound.</p>
+    <div class="three-col">
+
+      <div class="col-card">
+        <div class="col-card-label" data-t="col1_label">The problem</div>
+        <h3 data-t="col1_title">Companies lose money without realizing it</h3>
+        <ul>
+          <li data-t="col1_i1">Customers paying less than contracted</li>
+          <li data-t="col1_i2">MRR errors going undetected</li>
+          <li data-t="col1_i3">Duplicate charges</li>
+          <li data-t="col1_i4">Unrecorded churn</li>
+          <li data-t="col1_i5">Incorrectly applied discounts</li>
+        </ul>
+      </div>
+
+      <div class="col-card">
+        <div class="col-card-label" data-t="col2_label">What we analyze</div>
+        <h3 data-t="col2_title">8 leak categories, every audit</h3>
+        <ul>
+          <li data-t="col2_i1">Billing inconsistencies</li>
+          <li data-t="col2_i2">MRR crosscheck errors</li>
+          <li data-t="col2_i3">Irregular payment cycles</li>
+          <li data-t="col2_i4">Silent churn (unpaid, still active)</li>
+          <li data-t="col2_i5">Duplicate charges</li>
+          <li data-t="col2_i6">Leaks in upgrades / downgrades</li>
+          <li data-t="col2_i7">FX rate mismatches</li>
+          <li data-t="col2_i8">Chargebacks not managed</li>
+        </ul>
+      </div>
+
+      <div class="col-card">
+        <div class="col-card-label" data-t="col3_label">What you receive</div>
+        <h3 data-t="col3_title">An actionable report, not a spreadsheet</h3>
+        <ul>
+          <li data-t="col3_i1">Every leak flagged with source evidence</li>
+          <li data-t="col3_i2">Estimated recoverable amount per finding</li>
+          <li data-t="col3_i3">Impact analysis</li>
+          <li data-t="col3_i4">Practical recommendations</li>
+          <li data-t="col3_i5">Remediation roadmap</li>
+          <li data-t="col3_i6">Premium PDF report</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="section section-white" id="how">
+  <div class="container">
+    <div class="section-tag" data-t="s_how">Process</div>
+    <h2 class="section-title" data-t="s_how_title">How it works</h2>
+    <div class="steps-grid">
+
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title" data-t="step1_title">Send us your information</div>
+          <p class="step-desc" data-t="step1_desc">Company, contact details and context about your billing stack. Takes 5 minutes.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title" data-t="step2_title">Upload your files</div>
+          <p class="step-desc" data-t="step2_desc">PDF exports from your billing, CRM, and payment processor. Contracts, dashboards — whatever you have. No API access needed.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title" data-t="step3_title">We detect real leaks</div>
+          <p class="step-desc" data-t="step3_desc">Our analyst manually cross-references your CRM, billing platform and payment processor across all 8 leak categories.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title" data-t="step4_title">Results in 72 hours</div>
+          <p class="step-desc" data-t="step4_desc">Executive PDF report with findings, estimated recoverable amounts, and clear next steps for your ops or finance team.</p>
+        </div>
+      </div>
+
+    </div>
+    <p class="how-note" data-t="how_note">Fully async. No calls, no integrations, no waiting rooms. Just your files and your report.</p>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="section section-light" id="pricing">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-tag" data-t="s_pricing">Pricing</div>
+      <h2 class="section-title" data-t="s_pricing_title">One audit. Full visibility into what you're losing.</h2>
+    </div>
+    <div class="pricing-wrap">
+      <div class="pricing-card">
+        <div class="pricing-label" data-t="pricing_label">Standard Revenue Audit</div>
+        <div class="pricing-title" data-t="pricing_title">Revenue Audit</div>
+        <div class="pricing-subtitle" data-t="pricing_sub">One-time · All 8 leak categories · 72h delivery</div>
+        <div class="pricing-price"><sup>$</sup>899 <span style="font-size:18px;color:rgba(255,255,255,0.5);font-weight:400;">USD</span></div>
+        <div class="pricing-period" data-t="pricing_period">Fixed price — no surprises</div>
+        <hr class="pricing-divider" />
+        <ul class="pricing-features">
+          <li data-t="pf1">Comprehensive analysis of your last 90 days</li>
+          <li data-t="pf2">Review of billing, CRM, payment gateways &amp; subscriptions</li>
+          <li data-t="pf3">Detection of all 8 revenue leak categories</li>
+          <li data-t="pf4">Executive PDF report with findings, evidence &amp; calculations</li>
+          <li data-t="pf5">Actionable recovery recommendations</li>
+          <li data-t="pf6">Delivered within 72 hours of receiving all files</li>
+          <li data-t="pf7">No integrations or system access required</li>
+        </ul>
+        <a href="/form" class="btn" style="display:block;text-align:center;" data-t="btn_start">Start my audit →</a>
+        <div class="pricing-note-text" data-t="pricing_note">Extended scope available: 90 days to 12 months. Contact us for pricing.</div>
+        <div class="pricing-recovery" data-t="pricing_recovery">Companies typically recover 3–12% of annual revenue after their first audit.</div>
       </div>
     </div>
-    <div class="premium-card">
-      <div class="premium-card-title">♂ ${l==="es"?"Marte":"Mars"}</div>
-      <div class="premium-card-body">
-        <strong style="color:var(--rose-m)">${nA}: ${l==="es"?"Marte":"Mars"} en ${mSign[msA]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msA]}</span>
-        <br><br>
-        <strong style="color:var(--rose-m)">${nB}: ${l==="es"?"Marte":"Mars"} en ${mSign[msB]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msB]}</span>
+  </div>
+</section>
+
+<!-- ═══ SECURITY ═══ -->
+<section class="section section-white" id="security">
+  <div class="container">
+    <div class="security-card">
+      <div class="security-inner">
+        <div class="security-left">
+          <div class="section-tag" data-t="s_security">Confidentiality</div>
+          <h2 data-t="security_title">Security &amp;<br>Confidentiality</h2>
+          <p style="margin-top:10px;" data-t="security_sub">Designed for sensitive financial data. Your data remains fully under your control.</p>
+          <p class="security-footer-note" data-t="security_note">We operate under strict internal confidentiality practices.</p>
+        </div>
+        <div>
+          <ul class="security-bullets">
+            <li data-t="sec1">No system access required</li>
+            <li data-t="sec2">No API connections</li>
+            <li data-t="sec3">No persistent data storage</li>
+            <li data-t="sec4">Files used only for audit purposes</li>
+            <li data-t="sec5">Automatic deletion after project completion</li>
+            <li data-t="sec6">Restricted internal access</li>
+            <li data-t="sec7">Private, manual review process</li>
+          </ul>
+        </div>
       </div>
-    </div>`;
+    </div>
+  </div>
+</section>
 
-  const cAsp=asp(pA.Chiron,pB.Sun)||asp(pA.Sun,pB.Chiron)||asp(pA.Chiron,pB.Moon);
-  const chText=l==="es"?"Quirón representa las heridas más profundas que llevamos — y el potencial de sanar a través de ellas. En sinastría, el contacto de Quirón de una persona con planetas de la otra revela si esta relación tiene la capacidad de sanar o reabrir viejas heridas. Una conexión con Quirón activo es una relación que transforma.":"Chiron represents our deepest wounds — and the potential to heal through them. In synastry, Chiron contacts reveal whether this relationship has the capacity to heal or reopen old wounds. An active Chiron connection is a transforming relationship.";
-  document.getElementById("chironSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">⚷ ${l==="es"?"Quirón":"Chiron"}</div><div class="premium-card-body">${chText}${cAsp?`<br><br><strong style="color:var(--rose-m)">${l==="es"?"Aspecto activo ✦":"Active aspect ✦"}: ${cAsp.s} ${l==="es"?cAsp.es:cAsp.en}</strong>`:""}</div></div>`;
+<!-- ═══ WHY RLD ═══ -->
+<section class="section section-light" id="why">
+  <div class="container">
+    <div class="section-tag" data-t="s_why">Why RLD</div>
+    <h2 class="section-title" data-t="s_why_title">Why companies choose RLD</h2>
+    <div class="why-grid">
 
-  const nnAsp=asp(pA.NNode,pB.Sun)||asp(pA.Sun,pB.NNode)||asp(pA.NNode,pB.Venus);
-  const nnText=l==="es"?"El Nodo Norte indica la dirección del crecimiento del alma. Cuando los planetas de una persona contactan el Nodo Norte de la otra, la relación tiene un componente de propósito — como si se hubieran encontrado para crecer juntos hacia algo más grande.":"The North Node indicates the soul's direction of growth. When one person's planets contact the other's North Node, the relationship has a purpose component — as if you were brought together to grow toward something greater.";
-  document.getElementById("nodeSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">☊ ${l==="es"?"Nodo Norte":"North Node"}</div><div class="premium-card-body">${nnText}${nnAsp?`<br><br><strong style="color:var(--gold)">${l==="es"?"Contacto de propósito detectado ✦":"Purpose contact detected ✦"}</strong>`:""}</div></div>`;
-}
+      <div class="why-item">
+        <div class="why-icon">⊙</div>
+        <div class="why-body">
+          <div class="why-title" data-t="why1_title">Independent analysis</div>
+          <p class="why-desc" data-t="why1_desc">No software to sell. No integrations required. No long-term contracts. Just the findings.</p>
+        </div>
+      </div>
 
-function selectPlan(p){
-  selPlan=p;
-  document.getElementById("cardMonthly").classList.toggle("featured",p==="monthly");
-  document.getElementById("cardAnnual").classList.toggle("featured",p==="annual");
-  updatePayBtn();
-}
-function updatePayBtn(){
-  const btn=document.getElementById("payBtn");
-  if(selPlan==="monthly"){btn.className="pay-btn pay-btn-monthly";btn.innerHTML=`<span>${lang==="es"?"Empezar plan mensual · $2.99":"Start monthly plan · $2.99"}</span>`;}
-  else{btn.className="pay-btn pay-btn-annual";btn.innerHTML=`<span>${lang==="es"?"Empezar plan anual · $19.99":"Start annual plan · $19.99"}</span>`;}
-}
+      <div class="why-item">
+        <div class="why-icon">◈</div>
+        <div class="why-body">
+          <div class="why-title" data-t="why2_title">Specialized focus</div>
+          <p class="why-desc" data-t="why2_desc">Built specifically for billing, CRM, and payment revenue leaks — not general consulting.</p>
+        </div>
+      </div>
 
-function handlePayment(){
-  const url=selPlan==="annual"?LS_ANNUAL:LS_MONTHLY;
-  if(url.includes("YOUR_STORE_PLACEHOLDER")){
-    setPremium(selPlan);
-    showToast(lang==="es"?"✦ Demo activado — PayPal configurado ✦":"✦ Demo activated — PayPal configured ✦");
-    setTimeout(()=>goBack(),1500);
-    return;
-  }
-  window.open(url,"_blank");
-  setTimeout(()=>showToast(lang==="es"?"¿Completaste el pago? Toca 'Restaurar acceso'":"Payment complete? Tap 'Restore access'"),3000);
-}
+      <div class="why-item">
+        <div class="why-icon">◎</div>
+        <div class="why-body">
+          <div class="why-title" data-t="why3_title">Actionable outcomes</div>
+          <p class="why-desc" data-t="why3_desc">Every finding includes a quantified impact and clear remediation steps your team can act on immediately.</p>
+        </div>
+      </div>
 
-function restorePurchase(){
-  const email=prompt(lang==="es"?"Ingresa el email con que pagaste:":"Enter the email you used to pay:");
-  if(!email||!email.includes("@")){showToast(lang==="es"?"Email no válido":"Invalid email");return;}
-  if(ACCESS_CODES.includes(email.toLowerCase().trim())){
-    setPremium("annual");
-    showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");
-    setTimeout(()=>goBack(),1000);
-  } else {
-    showToast(lang==="es"?"Email no encontrado · Escríbenos":"Email not found · Contact support");
-  }
-}
+    </div>
+    <div class="why-compat">
+      <span data-t="compat1">✓ Stripe exports</span>
+      <span data-t="compat2">✓ HubSpot exports</span>
+      <span data-t="compat3">✓ Salesforce exports</span>
+      <span data-t="compat4">✓ Chargebee exports</span>
+      <span data-t="compat5">✓ Any billing PDF</span>
+    </div>
+    <div class="why-analyst" data-t="analyst_note">
+      RLD audits are conducted by a revenue analyst with hands-on experience in B2B billing operations and CRM data reconciliation. Every report is reviewed manually — no automated outputs.
+    </div>
+  </div>
+</section>
 
-(function checkReturn(){
-  const p=new URLSearchParams(window.location.search);
-  if(p.get("order_id")){setPremium(p.get("plan")||"monthly");showToast(lang==="es"?"✦ ¡Bienvenida a Premium!":"✦ Welcome to Premium!");history.replaceState({},document.title,window.location.pathname);}
-})();
+<!-- ═══ CTA BAND ═══ -->
+<section class="cta-band">
+  <div class="container">
+    <h2 data-t="cta_title">Identify lost revenue<br>before it compounds.</h2>
+    <p data-t="cta_sub">Most companies recover 10–50× the audit fee in the first 90 days. It takes 72 hours to find out if yours will too.</p>
+    <a href="/form" class="btn" data-t="btn_request">Request audit</a>
+    <p class="limited-note" data-t="cta_limited">Limited spaces due to manual capacity.</p>
+  </div>
+</section>
 
-function saveToHistory(){
-  if(!lastResult) return;
-  const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
-  h.unshift({nA:lastResult.nA,nB:lastResult.nB,score:document.getElementById("bigScore").textContent.replace("%","").trim(),verdict:document.getElementById("verdictBadge").textContent,saved:Date.now()});
-  if(h.length>30) h.pop();
-  localStorage.setItem("duual_history",JSON.stringify(h));
-  showToast(lang==="es"?"Guardado ✦":"Saved ✦");
-}
-function renderHistory(){
-  const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
-  const el=document.getElementById("historyScroll");
-  if(!h.length){el.innerHTML=`<div class="hempty">${lang==="es"?"Tu historial aparecerá aquí.<br>Haz tu primera lectura ✦":"Your history will appear here.<br>Make your first reading ✦"}</div>`;return;}
-  el.innerHTML=h.map((x,i)=>`<div class="hcard"><div class="hcard-top"><div class="hnames">${x.nA} <span style="color:var(--rose-m)">&</span> ${x.nB}</div><div style="display:flex;align-items:center;gap:10px;"><div class="hscore">${x.score}%</div><button onclick="deleteHistory(${i})" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;padding:4px;opacity:0.6;" title="Borrar">✕</button></div></div><div class="hdate">${x.verdict} · ${new Date(x.saved).toLocaleDateString(lang==="es"?"es-CL":"en-US")}</div></div>`).join("");
-}
+<!-- ═══ FAQ ═══ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-header">
+      <div class="section-tag" style="display:inline-block;" data-t="s_faq">FAQ</div>
+      <h2 class="section-title on-dark" style="margin-top:6px;" data-t="s_faq_title">Common questions</h2>
+    </div>
+    <div class="faq-cols">
+      <div class="faq-col-left">
 
-async function shareResult(){
-  const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";
-  const score=document.getElementById("bigScore").textContent;
-  const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Duual\nDescúbrelo en duual.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Duual\nDiscover yours at duual.app`;
-  if(navigator.share) try{await navigator.share({title:"Duual",text});}catch(e){}
-  else navigator.clipboard.writeText(text).then(()=>showToast(lang==="es"?"Copiado ✦":"Copied ✦"));
-}
-function copyForInsta(){
-  const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";
-  const score=document.getElementById("bigScore").textContent;
-  const verdict=document.getElementById("verdictBadge").textContent;
-  const text=lang==="es"
-    ?`${verdict}\n\n${nA} & ${nB}\n${score} compatibilidad astrológica ✦\n\n¿Y tú? Descubre la tuya en duual.app\n\n#astrología #compatibilidad #cartonatal #duual`
-    :`${verdict}\n\n${nA} & ${nB}\n${score} astrological compatibility ✦\n\nDiscover yours at duual.app\n\n#astrology #compatibility #birthchart #duual`;
-  const msg=lang==="es"?"✦ Copiado — pega en Instagram":"✦ Copied — paste on Instagram";
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>showToast(msg)).catch(()=>fallbackCopy(text,msg));
-  } else {
-    fallbackCopy(text,msg);
-  }
-}
-function fallbackCopy(text,msg){
-  const ta=document.createElement("textarea");
-  ta.value=text;ta.style.cssText="position:fixed;top:0;left:0;opacity:0;";
-  document.body.appendChild(ta);ta.focus();ta.select();
-  try{document.execCommand("copy");showToast(msg);}catch(e){showToast(lang==="es"?"Copia el texto manualmente":"Copy text manually");}
-  document.body.removeChild(ta);
-}
+        <div class="faq-item">
+          <button class="faq-q">
+            <span data-t="fq1">What files can I upload?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-a" data-t="fa1">You can upload PDF reports from your payment platforms, CRM, contracts, billing, or exported dashboards. If your data is in Excel or CSV, export it as PDF first.</div>
+        </div>
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// GENERATE CARD — versión mejorada
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function generateCard(){
-  const nA=lastResult?.nA||"A", nB=lastResult?.nB||"B";
-  const score=document.getElementById("bigScore").textContent.replace("%","").trim();
-  const verdict=document.getElementById("verdictBadge").textContent.replace("✦","").trim();
-  const W=1080, H=1920;
-  const cv=document.createElement("canvas");
-  cv.width=W; cv.height=H;
-  const ctx=cv.getContext("2d");
+        <div class="faq-item">
+          <button class="faq-q">
+            <span data-t="fq2">Do you guarantee results?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-a" data-t="fa2">We guarantee a professional and thorough audit process. Results depend on data quality and completeness. If no discrepancies are found, you receive a report confirming billing accuracy.</div>
+        </div>
 
-  const drawAll = () => {
-    // Background gradient
-    const bg=ctx.createLinearGradient(0,0,W,H);
-    bg.addColorStop(0,"#0D0A18");
-    bg.addColorStop(0.5,"#130B20");
-    bg.addColorStop(1,"#0A0812");
-    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+        <div class="faq-item">
+          <button class="faq-q">
+            <span data-t="fq3">Can I send more than one file?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-a" data-t="fa3">Yes — you can upload multiple files as long as they cover the 90-day period. Up to 120 pages total across all files for the standard audit.</div>
+        </div>
 
-    // Glow top left
-    const g1=ctx.createRadialGradient(W*0.15,H*0.2,0,W*0.15,H*0.2,W*0.6);
-    g1.addColorStop(0,"rgba(201,75,114,0.18)"); g1.addColorStop(1,"transparent");
-    ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+      </div>
+      <div class="faq-col-right">
 
-    // Glow bottom right
-    const g2=ctx.createRadialGradient(W*0.85,H*0.75,0,W*0.85,H*0.75,W*0.55);
-    g2.addColorStop(0,"rgba(107,99,204,0.15)"); g2.addColorStop(1,"transparent");
-    ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+        <div class="faq-item">
+          <button class="faq-q">
+            <span data-t="fq4">Is there a size limit?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-a" data-t="fa4">The standard audit covers up to 120 pages total across all submitted files. If your reports are larger, contact us before purchasing and we'll provide custom pricing.</div>
+        </div>
 
-    // Stars
-    ctx.fillStyle="rgba(255,252,255,0.7)";
-    for(let i=0;i<200;i++){
-      const x=Math.random()*W, y=Math.random()*H, r=Math.random()*2+0.5;
-      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
-    }
+        <div class="faq-item">
+          <button class="faq-q">
+            <span data-t="fq5">Who performs the analysis?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-a" data-t="fa5">Every audit is conducted by a specialized revenue analyst with a manual, structured review process. No automated reports — a real person reviews your data.</div>
+        </div>
 
-    // Score circle
-    const cx=W/2, cy=H*0.38, cr=260;
+        <div class="faq-item">
+          <button class="faq-q">
+            <span data-t="fq6">How is my information protected?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-a" data-t="fa6">We do not access your systems. We do not store any data. All files are permanently deleted upon report delivery. The process is 100% private and manual.</div>
+        </div>
 
-    // Outer ring
-    ctx.beginPath(); ctx.arc(cx,cy,cr+15,0,Math.PI*2);
-    ctx.strokeStyle="rgba(201,75,114,0.25)"; ctx.lineWidth=2; ctx.stroke();
+      </div>
+    </div>
+  </div>
+</section>
 
-    // Inner ring
-    ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2);
-    ctx.strokeStyle="rgba(201,75,114,0.5)"; ctx.lineWidth=3; ctx.stroke();
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">RLD<span>.</span></div>
+    <ul class="footer-links">
+      <li><a href="/form"    data-t="footer_audit">Request Audit</a></li>
+      <li><a href="/terms"   data-t="footer_terms">Terms of Service</a></li>
+      <li><a href="/privacy" data-t="footer_privacy">Privacy Policy</a></li>
+      <li><a href="mailto:contact@rldaudit.com">contact@rldaudit.com</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 RLD — Revenue Leak Detection. All rights reserved.</p>
+  </div>
+</footer>
 
-    // Arc fill based on score
-    const pct=parseInt(score)/100;
-    ctx.beginPath(); ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);
-    const arcG=ctx.createLinearGradient(cx-cr,cy,cx+cr,cy);
-    arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
-    ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
 
-    // ✅ Score centrado con textAlign center — más confiable cross-device
-    const scoreFontSize = score.length > 2 ? 210 : 250;
-    const pctFontSize = Math.round(scoreFontSize * 0.32);
+  /* ── FAQ ── */
+  document.querySelectorAll('.faq-q').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var item = btn.closest('.faq-item');
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(el) { el.classList.remove('open'); });
+      if (!isOpen) item.classList.add('open');
+    });
+  });
 
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
-    ctx.fillStyle = "#F2EEF9";
-    ctx.fillText(score, cx - 30, cy);
+  /* ── LANG TOGGLE ── */
+  document.querySelectorAll('.lang-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      setLang(btn.getAttribute('data-lang'));
+    });
+  });
 
-    // % superscript arriba a la derecha
-    ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
-    ctx.fillStyle = "#ED93B1";
-    ctx.textBaseline = "top";
-    const scoreHalfW = ctx.measureText(score).width * 0.5 + 
-                       ctx.font && ctx.measureText(score).width;
-    ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
-    const numW = ctx.measureText(score).width;
-    ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
-    ctx.fillText("%", cx - 30 + numW/2 + 10, cy - scoreFontSize * 0.38);
-    ctx.textBaseline = "middle";
+});
 
-    // ✅ COMPATIBILIDAD — debajo del círculo, fuera del borde
-    ctx.textAlign="center";
-    ctx.font="600 44px 'Arial', sans-serif";
-    ctx.fillStyle="rgba(237,147,177,0.9)";
-    ctx.letterSpacing="10px";
-    ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY", cx, cy+cr+58);
-    ctx.letterSpacing="0px";
-
-    // ✅ Nombres — tamaño dinámico para que no se corten
-    const fullName=`${nA} & ${nB}`;
-    let nameFontSize=88;
-    ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;
-    while(ctx.measureText(fullName).width > W*0.86 && nameFontSize > 40){
-      nameFontSize -= 4;
-      ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;
-    }
-    ctx.fillStyle="rgba(242,238,249,0.92)";
-    ctx.fillText(fullName, cx, H*0.635);
-
-    // Verdict
-    ctx.font="300 50px 'Georgia', serif";
-    ctx.fillStyle="#ED93B1";
-    ctx.fillText(verdict, cx, H*0.715);
-
-    // Divider line
-    ctx.beginPath(); ctx.moveTo(W*0.32,H*0.772); ctx.lineTo(W*0.68,H*0.772);
-    ctx.strokeStyle="rgba(242,238,249,0.15)"; ctx.lineWidth=1; ctx.stroke();
-
-    // ✅ Logo + "Duual" — agrupados y centrados
-    const duuFont = "300 50px 'Georgia', serif";
-    const alFont  = "italic 300 50px 'Georgia', serif";
-    ctx.font = duuFont;
-    const duuW = ctx.measureText("Duu").width;
-    ctx.font = alFont;
-    const alW = ctx.measureText("al").width;
-
-    // ✅ Logo grande centrado arriba del texto
-    const logoSize = 110;
-    const logoY = H * 0.785;
-
-    if(logoImg.complete && logoImg.naturalWidth > 0){
-      const lx = cx - logoSize/2;
-      const ly = logoY;
-      const r = 22;
-      ctx.save();
-      ctx.globalAlpha = 0.8;
-      ctx.beginPath();
-      ctx.moveTo(lx+r, ly); ctx.lineTo(lx+logoSize-r, ly);
-      ctx.quadraticCurveTo(lx+logoSize, ly, lx+logoSize, ly+r);
-      ctx.lineTo(lx+logoSize, ly+logoSize-r);
-      ctx.quadraticCurveTo(lx+logoSize, ly+logoSize, lx+logoSize-r, ly+logoSize);
-      ctx.lineTo(lx+r, ly+logoSize); ctx.quadraticCurveTo(lx, ly+logoSize, lx, ly+logoSize-r);
-      ctx.lineTo(lx, ly+r); ctx.quadraticCurveTo(lx, ly, lx+r, ly);
-      ctx.closePath(); ctx.clip();
-      ctx.drawImage(logoImg, lx, ly, logoSize, logoSize);
-      ctx.restore();
-      ctx.globalAlpha = 1.0;
-    }
-
-    // "Duual" centrado debajo del logo
-    const brandY = (logoImg.complete && logoImg.naturalWidth > 0)
-      ? logoY + logoSize + 40
-      : H * 0.855;
-    const brandStartX = cx - (duuW + alW) / 2;
-
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
-    ctx.font = duuFont;
-    ctx.fillStyle = "rgba(242,238,249,0.65)";
-    ctx.fillText("Duu", brandStartX, brandY);
-
-    ctx.font = alFont;
-    ctx.fillStyle = "#ED93B1";
-    ctx.fillText("al", brandStartX + duuW, brandY);
-
-    // URL
-    ctx.textAlign = "center";
-    ctx.font = "400 32px 'Arial', sans-serif";
-    ctx.fillStyle = "rgba(242,238,249,0.28)";
-    ctx.fillText("duual.app", cx, brandY + 52);
-
-    // ✅ Show preview instead of immediate download
-    _cardDataURL = cv.toDataURL("image/png");
-    _cardFileName = `duual-${nA}-${nB}.png`;
-    document.getElementById("cardPreviewImg").src = _cardDataURL;
-    document.getElementById("cardPreviewOverlay").classList.add("open");
-  };
-
-  // Carga el logo antes de dibujar
-  const logoImg = new Image();
-  logoImg.crossOrigin = "anonymous";
-  logoImg.onload = drawAll;
-  logoImg.onerror = drawAll;
-  logoImg.src = "icon-192.png";
-}
-
-let _cardDataURL = null, _cardFileName = "duual-card.png";
-
-function closeCardPreview(){
-  document.getElementById("cardPreviewOverlay").classList.remove("open");
-}
-function downloadCard(){
-  if(!_cardDataURL) return;
-  const link = document.createElement("a");
-  link.download = _cardFileName;
-  link.href = _cardDataURL;
-  link.style.display = "none";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  showToast(lang==="es"?"✦ Tarjeta descargada":"✦ Card downloaded");
-}
-async function shareCardNative(){
-  if(!_cardDataURL) return;
-  try {
-    const res = await fetch(_cardDataURL);
-    const blob = await res.blob();
-    const file = new File([blob], _cardFileName, {type:"image/png"});
-    if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file], title:"Duual"});
-    } else {
-      downloadCard();
-    }
-  } catch(e){ downloadCard(); }
-}
-
-// ✦ COMPATIBILIDAD SUGERIDA — lógica fija por elemento
-const ELEM_COMPAT = {
-  fire:  { best: ["fire","air"],   signs: [0,4,8,2,6,10] },   // Aries,Leo,Sag + Géminis,Libra,Acuario
-  earth: { best: ["earth","water"], signs: [1,5,9,3,7,11] },  // Tauro,Virgo,Cap + Cáncer,Escorpio,Piscis
-  air:   { best: ["air","fire"],   signs: [2,6,10,0,4,8] },   // Géminis,Libra,Acu + Aries,Leo,Sag
-  water: { best: ["water","earth"], signs: [3,7,11,1,5,9] }   // Cáncer,Esc,Piscis + Tauro,Virgo,Cap
-};
-const SIGN_ELEM_MAP = ["fire","earth","air","water","fire","earth","air","water","fire","earth","air","water"];
-
-const COMPAT_TIPS = {
-  es: {
-    Sun:  ["Tu Sol busca una llama afín — alguien que comparta tu energía vital.", "Tu Sol florece con quien lo estabilice y dé forma a su luz.", "Tu Sol conecta a través de las ideas y la libertad.", "Tu Sol encuentra hogar en la profundidad emocional."],
-    Moon: ["Tu Luna se siente segura con quien comparta su fuego interior.", "Tu Luna necesita estabilidad y presencia constante.", "Tu Luna disfruta la variedad y la conversación.", "Tu Luna busca fusión emocional y comprensión sin palabras."],
-    Venus:["Tu Venus ama con pasión y necesita chispa.", "Tu Venus valora la lealtad y el afecto físico.", "Tu Venus se enamora de las mentes brillantes.", "Tu Venus ama profundo y busca almas que sientan igual."]
-  },
+/* ── i18n ── */
+const T = {
   en: {
-    Sun:  ["Your Sun seeks a kindred flame — someone who matches your vital energy.", "Your Sun thrives when grounded and given form.", "Your Sun connects through ideas and freedom.", "Your Sun finds home in emotional depth."],
-    Moon: ["Your Moon feels safe with shared inner fire.", "Your Moon needs stability and consistent presence.", "Your Moon enjoys variety and conversation.", "Your Moon seeks emotional fusion and wordless understanding."],
-    Venus:["Your Venus loves with passion and needs a spark.", "Your Venus values loyalty and physical affection.", "Your Venus falls for brilliant minds.", "Your Venus loves deeply and seeks kindred souls."]
+    nav_problem:'The problem', nav_how:'How it works', nav_pricing:'Pricing', nav_faq:'FAQ',
+    hero_eyebrow:'Revenue Leak Detection · SaaS Audit',
+    hero_h1:'Hidden revenue leaks cost<br>mid-market companies $500K/year.<br>We find yours in 72h.',
+    hero_sub:'We analyze your CRM, billing, and payment data to detect revenue loss companies typically miss — without integrations or system access.',
+    hero_note:'Most billing leaks go unnoticed for 2+ years before someone looks.',
+    btn_request:'Request audit', btn_start:'Start my audit →',
+    check_findings:'Typical findings: 3–12% recoverable revenue',
+    check_no_int:'No integrations required', check_72h:'Results in 72h',
+    hero_badge:'Fixed price: <strong>$899 USD</strong> · All 8 leak categories · 72h delivery',
+    s_overview:'Overview', s_overview_title:'From hidden errors to measurable recovery',
+    s_overview_sub:'Most leaks happen without anyone noticing. We find them before they compound.',
+    col1_label:'The problem', col1_title:'Companies lose money without realizing it',
+    col1_i1:'Customers paying less than contracted', col1_i2:'MRR errors going undetected',
+    col1_i3:'Duplicate charges', col1_i4:'Unrecorded churn', col1_i5:'Incorrectly applied discounts',
+    col2_label:'What we analyze', col2_title:'8 leak categories, every audit',
+    col2_i1:'Billing inconsistencies', col2_i2:'MRR crosscheck errors',
+    col2_i3:'Irregular payment cycles', col2_i4:'Silent churn (unpaid, still active)',
+    col2_i5:'Duplicate charges', col2_i6:'Leaks in upgrades / downgrades',
+    col2_i7:'FX rate mismatches', col2_i8:'Chargebacks not managed',
+    col3_label:'What you receive', col3_title:'An actionable report, not a spreadsheet',
+    col3_i1:'Every leak flagged with source evidence', col3_i2:'Estimated recoverable amount per finding',
+    col3_i3:'Impact analysis', col3_i4:'Practical recommendations',
+    col3_i5:'Remediation roadmap', col3_i6:'Premium PDF report',
+    s_how:'Process', s_how_title:'How it works',
+    step1_title:'Send us your information', step1_desc:'Company, contact details and context about your billing stack. Takes 5 minutes.',
+    step2_title:'Upload your files', step2_desc:'PDF exports from your billing, CRM, and payment processor. No API access needed.',
+    step3_title:'We detect real leaks', step3_desc:'Our analyst manually cross-references your CRM, billing platform and payment processor across all 8 leak categories.',
+    step4_title:'Results in 72 hours', step4_desc:'Executive PDF report with findings, estimated recoverable amounts, and clear next steps.',
+    how_note:'Fully async. No calls, no integrations, no waiting rooms. Just your files and your report.',
+    s_pricing:'Pricing', s_pricing_title:"One audit. Full visibility into what you're losing.",
+    pricing_label:'Standard Revenue Audit', pricing_title:'Revenue Audit',
+    pricing_sub:'One-time · All 8 leak categories · 72h delivery',
+    pricing_period:'Fixed price — no surprises',
+    pf1:'Comprehensive analysis of your last 90 days',
+    pf2:'Review of billing, CRM, payment gateways &amp; subscriptions',
+    pf3:'Detection of all 8 revenue leak categories',
+    pf4:'Executive PDF report with findings, evidence &amp; calculations',
+    pf5:'Actionable recovery recommendations',
+    pf6:'Delivered within 72 hours of receiving all files',
+    pf7:'No integrations or system access required',
+    pricing_note:'Extended scope available: 90 days to 12 months. Contact us for pricing.',
+    pricing_recovery:'Companies typically recover 3–12% of annual revenue after their first audit.',
+    s_security:'Confidentiality', security_title:'Security &amp;<br>Confidentiality',
+    security_sub:'Designed for sensitive financial data. Your data remains fully under your control.',
+    security_note:'We operate under strict internal confidentiality practices.',
+    sec1:'No system access required', sec2:'No API connections',
+    sec3:'No persistent data storage', sec4:'Files used only for audit purposes',
+    sec5:'Automatic deletion after project completion', sec6:'Restricted internal access',
+    sec7:'Private, manual review process',
+    s_why:'Why RLD', s_why_title:'Why companies choose RLD',
+    why1_title:'Independent analysis', why1_desc:'No software to sell. No integrations required. No long-term contracts. Just the findings.',
+    why2_title:'Specialized focus', why2_desc:'Built specifically for billing, CRM, and payment revenue leaks — not general consulting.',
+    why3_title:'Actionable outcomes', why3_desc:'Every finding includes a quantified impact and clear remediation steps your team can act on immediately.',
+    compat1:'✓ Stripe exports', compat2:'✓ HubSpot exports', compat3:'✓ Salesforce exports',
+    compat4:'✓ Chargebee exports', compat5:'✓ Any billing PDF',
+    analyst_note:'RLD audits are conducted by a revenue analyst with hands-on experience in B2B billing operations and CRM data reconciliation. Every report is reviewed manually — no automated outputs.',
+    cta_title:'Identify lost revenue<br>before it compounds.',
+    cta_sub:'Most companies recover 10–50× the audit fee in the first 90 days. It takes 72 hours to find out if yours will too.',
+    cta_limited:'Limited spaces due to manual capacity.',
+    s_faq:'FAQ', s_faq_title:'Common questions',
+    fq1:'What files can I upload?', fa1:'You can upload PDF reports from your payment platforms, CRM, contracts, billing, or exported dashboards. If your data is in Excel or CSV, export it as PDF first.',
+    fq2:'Do you guarantee results?', fa2:'We guarantee a professional and thorough audit process. Results depend on data quality and completeness. If no discrepancies are found, you receive a report confirming billing accuracy.',
+    fq3:'Can I send more than one file?', fa3:'Yes — you can upload multiple files as long as they cover the 90-day period. Up to 120 pages total across all files for the standard audit.',
+    fq4:'Is there a size limit?', fa4:'The standard audit covers up to 120 pages total across all submitted files. If your reports are larger, contact us before purchasing and we\'ll provide custom pricing.',
+    fq5:'Who performs the analysis?', fa5:'Every audit is conducted by a specialized revenue analyst with a manual, structured review process. No automated reports — a real person reviews your data.',
+    fq6:'How is my information protected?', fa6:'We do not access your systems. We do not store any data. All files are permanently deleted upon report delivery. The process is 100% private and manual.',
+    footer_audit:'Request Audit', footer_terms:'Terms of Service', footer_privacy:'Privacy Policy'
+  },
+  es: {
+    nav_problem:'El problema', nav_how:'Cómo funciona', nav_pricing:'Precio', nav_faq:'Preguntas frecuentes',
+    hero_eyebrow:'Detección de Fugas de Revenue · Auditoría SaaS',
+    hero_h1:'Las fugas de revenue ocultas<br>le cuestan $500K/año a empresas medianas.<br>Las encontramos en 72h.',
+    hero_sub:'Analizamos tu CRM, facturación y datos de pago para detectar la pérdida de ingresos que las empresas suelen ignorar — sin integraciones ni acceso a sistemas.',
+    hero_note:'La mayoría de las fugas de facturación pasan desapercibidas más de 2 años antes de que alguien las busque.',
+    btn_request:'Solicitar auditoría', btn_start:'Iniciar mi auditoría →',
+    check_findings:'Hallazgos típicos: 3–12% de revenue recuperable',
+    check_no_int:'Sin integraciones requeridas', check_72h:'Resultados en 72h',
+    hero_badge:'Precio fijo: <strong>$899 USD</strong> · Las 8 categorías · Entrega en 72h',
+    s_overview:'Panorama general', s_overview_title:'De errores ocultos a recuperación medible',
+    s_overview_sub:'La mayoría de las fugas ocurren sin que nadie lo note. Las encontramos antes de que se acumulen.',
+    col1_label:'El problema', col1_title:'Las empresas pierden dinero sin darse cuenta',
+    col1_i1:'Clientes pagando menos de lo contratado', col1_i2:'Errores de MRR sin detectar',
+    col1_i3:'Cargos duplicados', col1_i4:'Churn no registrado', col1_i5:'Descuentos mal aplicados',
+    col2_label:'Qué analizamos', col2_title:'8 categorías de fuga, en cada auditoría',
+    col2_i1:'Inconsistencias de facturación', col2_i2:'Errores en cruce de MRR',
+    col2_i3:'Ciclos de pago irregulares', col2_i4:'Silent churn (sin pagar, aún activo)',
+    col2_i5:'Cargos duplicados', col2_i6:'Fugas en upgrades / downgrades',
+    col2_i7:'Discrepancias en tipo de cambio', col2_i8:'Chargebacks no gestionados',
+    col3_label:'Lo que recibes', col3_title:'Un reporte para actuar, no para archivar',
+    col3_i1:'Cada fuga señalada con evidencia de fuente', col3_i2:'Monto recuperable estimado por hallazgo',
+    col3_i3:'Análisis de impacto', col3_i4:'Recomendaciones prácticas',
+    col3_i5:'Hoja de ruta de remediación', col3_i6:'Reporte PDF premium',
+    s_how:'Proceso', s_how_title:'Cómo funciona',
+    step1_title:'Envíanos tu información', step1_desc:'Empresa, datos de contacto y contexto sobre tu stack de facturación. Tarda 5 minutos.',
+    step2_title:'Sube tus archivos', step2_desc:'Exportaciones PDF desde tu billing, CRM y procesador de pagos. Sin acceso API necesario.',
+    step3_title:'Detectamos fugas reales', step3_desc:'Nuestro analista cruza manualmente tu CRM, plataforma de billing y procesador de pagos en las 8 categorías de fuga.',
+    step4_title:'Resultados en 72 horas', step4_desc:'Reporte PDF ejecutivo con hallazgos, montos recuperables estimados y próximos pasos claros.',
+    how_note:'100% async. Sin llamadas, sin integraciones, sin salas de espera. Solo tus archivos y tu reporte.',
+    s_pricing:'Precio', s_pricing_title:'Una auditoría. Visibilidad total de lo que estás perdiendo.',
+    pricing_label:'Auditoría de Revenue Estándar', pricing_title:'Auditoría de Revenue',
+    pricing_sub:'Pago único · Las 8 categorías de fuga · Entrega en 72h',
+    pricing_period:'Precio fijo — sin sorpresas',
+    pf1:'Análisis completo de tus últimos 90 días',
+    pf2:'Revisión de billing, CRM, pasarelas de pago y suscripciones',
+    pf3:'Detección de las 8 categorías de fuga de revenue',
+    pf4:'Reporte PDF ejecutivo con hallazgos, evidencia y cálculos',
+    pf5:'Recomendaciones de recuperación accionables',
+    pf6:'Entregado dentro de las 72 horas de recibir todos los archivos',
+    pf7:'Sin integraciones ni acceso a sistemas requerido',
+    pricing_note:'Alcance extendido disponible: de 90 días a 12 meses. Contáctanos para precio personalizado.',
+    pricing_recovery:'Las empresas típicamente recuperan 3–12% de sus ingresos anuales tras su primera auditoría.',
+    s_security:'Confidencialidad', security_title:'Seguridad y<br>Confidencialidad',
+    security_sub:'Diseñado para datos financieros sensibles. Tus datos permanecen totalmente bajo tu control.',
+    security_note:'Operamos bajo prácticas internas estrictas de confidencialidad.',
+    sec1:'Sin acceso a sistemas requerido', sec2:'Sin conexiones API',
+    sec3:'Sin almacenamiento persistente de datos', sec4:'Archivos usados exclusivamente para la auditoría',
+    sec5:'Eliminación automática al completar el proyecto', sec6:'Acceso interno restringido',
+    sec7:'Proceso de revisión privado y manual',
+    s_why:'Por qué RLD', s_why_title:'Por qué las empresas eligen RLD',
+    why1_title:'Análisis independiente', why1_desc:'Sin software que vender. Sin integraciones requeridas. Sin contratos a largo plazo. Solo los hallazgos.',
+    why2_title:'Enfoque especializado', why2_desc:'Construido específicamente para fugas de revenue en billing, CRM y pagos — no consultoría general.',
+    why3_title:'Resultados accionables', why3_desc:'Cada hallazgo incluye impacto cuantificado y pasos claros de remediación que tu equipo puede ejecutar de inmediato.',
+    compat1:'✓ Exportaciones Stripe', compat2:'✓ Exportaciones HubSpot', compat3:'✓ Exportaciones Salesforce',
+    compat4:'✓ Exportaciones Chargebee', compat5:'✓ Cualquier PDF de billing',
+    analyst_note:'Las auditorías RLD son realizadas por un analista de revenue con experiencia práctica en operaciones de billing B2B y conciliación de datos CRM. Cada reporte se revisa manualmente — sin salidas automatizadas.',
+    cta_title:'Identifica el revenue perdido<br>antes de que se acumule.',
+    cta_sub:'La mayoría de las empresas recuperan 10–50× el costo de la auditoría en los primeros 90 días. Se tarda 72 horas en saberlo.',
+    cta_limited:'Espacios limitados por capacidad manual.',
+    s_faq:'Preguntas frecuentes', s_faq_title:'Dudas comunes',
+    fq1:'¿Qué archivos puedo subir?', fa1:'Puedes subir reportes PDF de tus plataformas de pago, CRM, contratos, billing, o dashboards exportados. Si tus datos están en Excel o CSV, expórtalos como PDF primero.',
+    fq2:'¿Garantizan resultados?', fa2:'Garantizamos un proceso de auditoría profesional y exhaustivo. Los resultados dependen de la calidad y completitud de los datos. Si no se encuentran discrepancias, recibes un reporte confirmando la exactitud de la facturación.',
+    fq3:'¿Puedo enviar más de un archivo?', fa3:'Sí — puedes subir múltiples archivos siempre que cubran el período de 90 días. Hasta 120 páginas en total entre todos los archivos para la auditoría estándar.',
+    fq4:'¿Hay un límite de tamaño?', fa4:'La auditoría estándar cubre hasta 120 páginas en total entre todos los archivos enviados. Si tus reportes son más grandes, contáctanos antes de comprar y te daremos precio personalizado.',
+    fq5:'¿Quién realiza el análisis?', fa5:'Cada auditoría es realizada por un analista de revenue especializado con un proceso de revisión manual y estructurado. Sin reportes automatizados — una persona real revisa tus datos.',
+    fq6:'¿Cómo se protege mi información?', fa6:'No accedemos a tus sistemas. No almacenamos ningún dato. Todos los archivos se eliminan permanentemente al entregar el reporte. El proceso es 100% privado y manual.',
+    footer_audit:'Solicitar Auditoría', footer_terms:'Términos de Servicio', footer_privacy:'Política de Privacidad'
   }
 };
 
-function renderCompatSection(pA) {
-  const el = document.getElementById("compatSection");
-  if(!el || !pA) return;
-  const l = lang;
-  const signs = l === "es" ? SIGN_ES : SIGN_EN;
-
-  const planets = [
-    { key: "Sun",   glyph: "☀", label: l==="es"?"Tu Sol":"Your Sun" },
-    { key: "Venus", glyph: "♀", label: l==="es"?"Tu Venus":"Your Venus" },
-    { key: "Moon",  glyph: "☽", label: l==="es"?"Tu Luna":"Your Moon" }
-  ];
-
-  const rows = planets.map(p => {
-    const deg = pA[p.key];
-    if(deg === undefined) return "";
-    const signIdx = Math.floor(((deg % 360) + 360) % 360 / 30);
-    const elem = SIGN_ELEM_MAP[signIdx];
-    const elemGroup = Math.floor(["fire","earth","air","water"].indexOf(elem));
-    const tip = COMPAT_TIPS[l][p.key][elemGroup];
-    // Get top 3 compatible signs
-    const compatSignIdxs = ELEM_COMPAT[elem].signs.filter(s => s !== signIdx).slice(0, 3);
-    const compatNames = compatSignIdxs.map(i => signs[i]).join(", ");
-    return `<div class="compat-row">
-      <div class="compat-planet">${p.glyph}</div>
-      <div class="compat-body">
-        <div class="compat-label">${p.label} ${l==="es"?"en":"in"} ${signs[signIdx]}</div>
-        <div class="compat-signs">✦ ${compatNames}</div>
-        <div class="compat-tip">${tip}</div>
-      </div>
-    </div>`;
-  }).join("");
-
-  const title = l==="es" ? "¿Con quién conectas mejor? ✦" : "Who do you connect with best? ✦";
-  el.innerHTML = `<div class="compat-title">${title}</div>${rows}`;
-  el.style.display = "block";
+let lang = 'en';
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    if (T[l][key] !== undefined) el.innerHTML = T[l][key];
+  });
 }
-
-function deleteHistory(index){
-  const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
-  h.splice(index,1);
-  localStorage.setItem("duual_history",JSON.stringify(h));
-  renderHistory();
-  showToast(lang==="es"?"Eliminado":"Deleted");
-}
-function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
-function updateClock(){const n=new Date();document.getElementById("clock").textContent=n.getHours()+":"+(n.getMinutes()<10?"0":"")+n.getMinutes();}
-updateClock();setInterval(updateClock,30000);
-updatePremiumUI();
-selectPlan("annual");
-
-(function cosmos(){
-  const cv=document.getElementById("cosmosCanvas"),ctx=cv.getContext("2d");
-  let W,H,stars=[];
-  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;init();}
-  function init(){stars=[];for(let i=0;i<120;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+0.2,o:Math.random()*0.45+0.08,t:Math.random()*Math.PI*2,spd:Math.random()*0.007+0.002,c:false});const cp=[{x:W*.12,y:H*.1},{x:W*.22,y:H*.06},{x:W*.18,y:H*.18},{x:W*.28,y:H*.14},{x:W*.72,y:H*.08},{x:W*.82,y:H*.12},{x:W*.78,y:H*.2},{x:W*.88,y:H*.22},{x:W*.08,y:H*.75},{x:W*.16,y:H*.7},{x:W*.12,y:H*.82},{x:W*.85,y:H*.7},{x:W*.92,y:H*.78},{x:W*.88,y:H*.85}];cp.forEach(p=>stars.push({...p,r:1.5,o:.55,t:0,spd:.003,c:true}));}
-  const CL=[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7],[8,9],[9,10],[11,12],[12,13]];
-  function draw(){ctx.clearRect(0,0,W,H);[[W*.15,H*.12,"rgba(201,75,114,0.055)",W*.4],[W*.85,H*.6,"rgba(107,99,204,0.05)",W*.45]].forEach(([x,y,c,r])=>{const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c);g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);});const cs=stars.filter(s=>s.c);ctx.strokeStyle="rgba(237,147,177,0.14)";ctx.lineWidth=0.5;CL.forEach(([a,b])=>{if(cs[a]&&cs[b]){ctx.beginPath();ctx.moveTo(cs[a].x,cs[a].y);ctx.lineTo(cs[b].x,cs[b].y);ctx.stroke();}});stars.forEach(s=>{s.t+=s.spd;const f=s.o*(0.65+0.35*Math.sin(s.t));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.c?`rgba(237,147,177,${f})`:`rgba(255,252,255,${f})`;ctx.fill();if(s.r>1.1&&Math.sin(s.t)>.85){ctx.strokeStyle=`rgba(255,252,255,${f*.35})`;ctx.lineWidth=.4;ctx.beginPath();ctx.moveTo(s.x-4,s.y);ctx.lineTo(s.x+4,s.y);ctx.moveTo(s.x,s.y-4);ctx.lineTo(s.x,s.y+4);ctx.stroke();}});requestAnimationFrame(draw);}
-  window.addEventListener("resize",resize);resize();draw();
-})();
-let dp;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;});
+setLang('en');
 </script>
 </body>
 </html>
