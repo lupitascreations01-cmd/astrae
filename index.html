@@ -183,6 +183,44 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .compat-label{font-size:11px;color:var(--txt3);margin-bottom:3px;}
 .compat-signs{font-size:13px;color:var(--txt);font-weight:500;}
 .compat-tip{font-size:11px;color:var(--txt2);margin-top:3px;line-height:1.5;}
+/* NATAL SCREEN */
+.natal-screen-header{padding:env(safe-area-inset-top,14px) 22px 10px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:0.5px solid var(--bord);}
+.natal-back{background:none;border:none;color:var(--txt3);font-size:12px;cursor:pointer;font-family:"DM Sans",sans-serif;padding:0;}
+.natal-screen-title{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:300;color:var(--txt);}
+.natal-person-toggle{display:flex;gap:8px;margin:14px 16px 0;}
+.npt-btn{flex:1;padding:10px;background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-md);font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt3);cursor:pointer;}
+.npt-btn.on{background:var(--rose-l);border-color:var(--rose-b);color:var(--rose-m);}
+.natal-svg-wrap{margin:14px 16px 0;background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px;}
+.planet-accordion{margin:14px 16px 0;}
+.pacc-item{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);margin-bottom:7px;overflow:hidden;}
+.pacc-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.pacc-left{display:flex;align-items:center;gap:10px;}
+.pacc-glyph{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
+.pacc-planet{font-size:13px;font-weight:500;color:var(--txt);}
+.pacc-sign{font-size:12px;color:var(--txt3);margin-left:2px;}
+.pacc-arrow{font-size:12px;color:var(--txt3);transition:transform 0.2s;}
+.pacc-arrow.open{transform:rotate(180deg);}
+.pacc-body{padding:0 16px 14px;display:none;}
+.pacc-body.open{display:block;}
+.pacc-interp{font-size:12px;color:var(--txt2);line-height:1.85;}
+.pacc-share{display:flex;align-items:center;gap:6px;margin-top:10px;background:none;border:0.5px solid var(--bord2);border-radius:14px;padding:5px 13px;font-family:"DM Sans",sans-serif;font-size:11px;color:var(--txt3);cursor:pointer;}
+.natal-qa-section{margin:18px 16px 0;}
+.natal-qa-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px;}
+.natal-qa-input{width:100%;background:var(--surf2);border:0.5px solid var(--bord);border-radius:var(--r-md);padding:12px 14px;font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt);outline:none;resize:none;min-height:72px;-webkit-appearance:none;}
+.natal-qa-input::placeholder{color:var(--txt3);}
+.natal-qa-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+.natal-qa-counter{font-size:11px;color:var(--txt3);}
+.natal-qa-btn{padding:10px 20px;background:var(--rose);border:none;border-radius:var(--r-md);font-family:"DM Sans",sans-serif;font-size:13px;font-weight:500;color:#fff;cursor:pointer;}
+.natal-qa-btn:disabled{opacity:0.45;cursor:default;}
+.natal-qa-answers{margin-top:12px;display:flex;flex-direction:column;gap:10px;}
+.natal-qa-answer{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:14px 16px;}
+.natal-qa-q{font-size:11px;color:var(--rose-m);margin-bottom:6px;font-style:italic;}
+.natal-qa-a{font-size:12px;color:var(--txt2);line-height:1.85;}
+.natal-qa-upgrade{background:var(--plum-l);border:0.5px solid var(--plum-b);border-radius:var(--r-lg);padding:14px 16px;text-align:center;margin-top:10px;}
+.natal-qa-upgrade-text{font-size:12px;color:rgba(176,170,238,0.8);margin-bottom:10px;line-height:1.6;}
+.natal-qa-upgrade-btn{padding:9px 20px;background:var(--plum);border:none;border-radius:var(--r-md);font-family:"DM Sans",sans-serif;font-size:13px;color:#fff;cursor:pointer;}
+.ai-spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(201,75,114,0.3);border-top-color:#C94B72;border-radius:50%;animation:aispin 0.8s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes aispin{to{transform:rotate(360deg);}}
 /* CARD PREVIEW MODAL */
 .card-preview-overlay{position:fixed;inset:0;background:rgba(5,3,14,0.93);z-index:200;display:none;flex-direction:column;align-items:center;backdrop-filter:blur(12px);}
 .card-preview-overlay.open{display:flex;}
@@ -218,7 +256,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <div class="pcard">
       <div class="plabel"><span class="pdot da"></span><span data-es="Primera persona" data-en="First person">Primera persona</span></div>
       <input class="ninput" type="text" id="nameA" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
-      <input class="ninput" type="date" id="dateA" value="1997-03-15">
+      <input class="ninput" type="date" id="dateA">
       <div class="time-row">
         <span class="time-label" data-es="Hora (opcional)" data-en="Time (optional)">Hora (opcional)</span>
         <input class="time-input" type="time" id="timeA" placeholder="--:--">
@@ -228,7 +266,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <div class="pcard">
       <div class="plabel"><span class="pdot db"></span><span data-es="Segunda persona" data-en="Second person">Segunda persona</span></div>
       <input class="ninput" type="text" id="nameB" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
-      <input class="ninput" type="date" id="dateB" value="1994-09-22">
+      <input class="ninput" type="date" id="dateB">
       <div class="time-row">
         <span class="time-label" data-es="Hora (opcional)" data-en="Time (optional)">Hora (opcional)</span>
         <input class="time-input" type="time" id="timeB" placeholder="--:--">
@@ -283,6 +321,10 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <button class="share-btn" onclick="shareResult()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg><span data-es="Compartir ↗" data-en="Share ↗">Compartir ↗</span></button>
       <button class="share-btn" onclick="saveToHistory()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span data-es="Guardar" data-en="Save">Guardar</span></button>
     </div>
+    <button class="card-btn" onclick="openNatalScreen()" style="background:linear-gradient(135deg,var(--plum),#9B6FD4);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+      <span data-es="✦ Ver carta natal con IA" data-en="✦ View natal chart with AI">✦ Ver carta natal con IA</span>
+    </button>
     <button class="card-btn" onclick="generateCard()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
       <span data-es="✦ Crear tarjeta para Instagram / TikTok" data-en="✦ Create card for Instagram / TikTok">✦ Crear tarjeta para Instagram / TikTok</span>
@@ -382,6 +424,37 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <button class="bitem" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
     <button class="bitem" onclick="goLastResult()"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
     <button class="bitem on"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
+    <button class="bitem" onclick="goScreen('paywall')"><span class="bico">◎</span><span>Premium</span></button>
+  </div>
+</div>
+
+<div class="screen" id="s-natal">
+  <div class="natal-screen-header">
+    <button class="natal-back" onclick="goBack()">←</button>
+    <span class="natal-screen-title" id="natalScreenTitle">Carta Natal</span>
+  </div>
+  <div class="scroll" id="natalScroll" style="padding-bottom:24px;">
+    <div class="natal-person-toggle">
+      <button class="npt-btn on" id="nptA" onclick="switchNatalPerson('A')">—</button>
+      <button class="npt-btn" id="nptB" onclick="switchNatalPerson('B')">—</button>
+    </div>
+    <div class="natal-svg-wrap" id="natalSVGWrap"></div>
+    <div class="planet-accordion" id="planetAccordion"></div>
+    <div class="natal-qa-section">
+      <div class="natal-qa-title" id="natalQATitle">✦ PREGUNTA A LOS ASTROS</div>
+      <textarea class="natal-qa-input" id="natalQAInput" placeholder="¿Algo específico que quieras saber sobre tu carta?" maxlength="300"></textarea>
+      <div class="natal-qa-meta">
+        <span class="natal-qa-counter" id="natalQACounter">3 preguntas restantes hoy</span>
+        <button class="natal-qa-btn" id="natalQABtn" onclick="submitNatalQuestion()">Preguntar ✦</button>
+      </div>
+      <div class="natal-qa-answers" id="natalQAAnswers"></div>
+    </div>
+    <div style="height:20px;"></div>
+  </div>
+  <div class="bnav">
+    <button class="bitem" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
+    <button class="bitem" onclick="goLastResult()"><span class="bico">♡</span><span data-es="Resultado" data-en="Result">Resultado</span></button>
+    <button class="bitem" onclick="goScreen('history')"><span class="bico">◫</span><span data-es="Historial" data-en="History">Historial</span></button>
     <button class="bitem" onclick="goScreen('paywall')"><span class="bico">◎</span><span>Premium</span></button>
   </div>
 </div>
@@ -554,6 +627,7 @@ function setLang(l){
   document.querySelectorAll("[data-placeholder-"+l+"]").forEach(el=>el.placeholder=el.getAttribute("data-placeholder-"+l)||"");
   if(lastResult) renderResults(lastResult);
   updatePayBtn();
+  document.querySelectorAll(".time-label").forEach(el=>el.textContent=el.getAttribute("data-"+l)||el.textContent);
 }
 
 function goScreen(n){
@@ -592,7 +666,8 @@ function goLastResult(){
     try{renderResults(lastResult);}catch(e){console.error(e);}
     goScreen("results");
   } else {
-    showToast(lang==="es"?"Haz una lectura primero ✦":"Make a reading first ✦");
+    goScreen("input");
+    setTimeout(()=>showToast(lang==="es"?"Ingresa dos fechas para comenzar ✦":"Enter two dates to begin ✦"),300);
   }
 }
 
@@ -620,7 +695,8 @@ function markRead(){if(!isPremium()) localStorage.setItem("duual_last_read",toda
 function startCalc(){
   const dA=document.getElementById("dateA").value;
   const dB=document.getElementById("dateB").value;
-  if(!dA||!dB){showToast(lang==="es"?"Ingresa ambas fechas":"Enter both dates");return;}
+  if(!dA){showToast(lang==="es"?"Ingresa la fecha de la primera persona":"Enter the first person's date");document.getElementById("dateA").focus();return;}
+  if(!dB){showToast(lang==="es"?"Ingresa la fecha de la segunda persona":"Enter the second person's date");document.getElementById("dateB").focus();return;}
   if(!canRead()){showToast(lang==="es"?"Lectura de hoy usada · ¡Vuelve mañana!":"Today's reading used · Come back tomorrow!");setTimeout(()=>goScreen("paywall"),1200);return;}
   const nA=document.getElementById("nameA").value.trim()||(lang==="es"?"Persona A":"Person A");
   const nB=document.getElementById("nameB").value.trim()||(lang==="es"?"Persona B":"Person B");
@@ -1120,130 +1196,216 @@ selectPlan("annual");
   window.addEventListener("resize",resize);resize();draw();
 })();
 let dp;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;});
-  const AI_CACHE = {}; // cache en sesión para no repetir llamadas
- 
-async function fetchInterpretation(payload) {
-  const cacheKey = JSON.stringify(payload);
-  if (AI_CACHE[cacheKey]) return AI_CACHE[cacheKey];
- 
-  const res = await fetch('/api/interpret', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...payload, lang })
-  });
- 
-  if (!res.ok) throw new Error('API error');
-  const data = await res.json();
-  AI_CACHE[cacheKey] = data.interpretation;
-  return data.interpretation;
-}
- 
-// ── SPINNER HTML helper ──
-function aiSpinner(l) {
-  return `<div style="display:flex;align-items:center;gap:10px;padding:12px 0;">
-    <div style="width:16px;height:16px;border:2px solid rgba(201,75,114,0.3);border-top-color:#C94B72;border-radius:50%;animation:spin360 0.8s linear infinite;flex-shrink:0;"></div>
-    <span style="font-size:12px;color:var(--txt3);">${l==="es"?"Generando interpretación...":"Generating interpretation..."}</span>
-  </div>`;
-}
- 
-// ── Agregar keyframe si no existe ──
-(function(){
-  if(!document.getElementById('ai-keyframes')){
-    const s=document.createElement('style');
-    s.id='ai-keyframes';
-    s.textContent='@keyframes spin360{to{transform:rotate(360deg);}}';
-    document.head.appendChild(s);
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// CARTA NATAL CON IA
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let natalActivePid="A";
+const NATAL_PLANET_CACHE={};
+const NATAL_QA_FREE_LIMIT=3;
+const NATAL_QA_ANSWERS_STORE=[];
+const NATAL_PLANETS=["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"];
+const NATAL_GLYPH={Sun:"☀",Moon:"☽",Mercury:"☿",Venus:"♀",Mars:"♂",Jupiter:"♃",Saturn:"♄"};
+
+function generateNatalSVG(p,name,l){
+  const signs=l==="es"?SIGN_ES:SIGN_EN;
+  const W=300,CX=150,CY=150,R_OUT=130,R_IN=95,R_PLANET=112;
+  let paths="";
+  for(let i=0;i<12;i++){
+    const angle=(i*30-90)*Math.PI/180;
+    const x1=CX+R_IN*Math.cos(angle),y1=CY+R_IN*Math.sin(angle);
+    const x2=CX+R_OUT*Math.cos(angle),y2=CY+R_OUT*Math.sin(angle);
+    paths+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(242,238,249,0.12)" stroke-width="0.5"/>`;
   }
-})();
- 
-// ── BOTÓN "Generar con IA" ──
-function aiBtn(onClick, l) {
-  return `<button onclick="${onClick}" style="margin-top:10px;display:flex;align-items:center;gap:7px;background:var(--rose-l);border:0.5px solid var(--rose-b);border-radius:20px;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--rose-m);cursor:pointer;">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-    ${l==="es"?"Generar con IA ✦":"Generate with AI ✦"}
+  for(let i=0;i<12;i++){
+    const angle=(i*30+15-90)*Math.PI/180;
+    const x=CX+118*Math.cos(angle),y=CY+118*Math.sin(angle);
+    paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(242,238,249,0.22)">${SIGN_GLYPH[i]}</text>`;
+  }
+  paths+=`<circle cx="${CX}" cy="${CY}" r="${R_OUT}" fill="none" stroke="rgba(242,238,249,0.15)" stroke-width="0.5"/>`;
+  paths+=`<circle cx="${CX}" cy="${CY}" r="${R_IN}" fill="none" stroke="rgba(242,238,249,0.08)" stroke-width="0.5"/>`;
+  paths+=`<circle cx="${CX}" cy="${CY}" r="5" fill="rgba(201,75,114,0.5)" stroke="rgba(201,75,114,0.7)" stroke-width="1"/>`;
+  const colors={Sun:"#F5D76E",Moon:"#C8C0F5",Mercury:"#90E0D0",Venus:"#F49AC2",Mars:"#F08080",Jupiter:"#A0C8F0",Saturn:"#C8B060"};
+  NATAL_PLANETS.forEach(planet=>{
+    if(p[planet]===undefined)return;
+    const deg=((p[planet]%360)+360)%360;
+    const angle=(deg-90)*Math.PI/180;
+    const x=CX+R_PLANET*Math.cos(angle),y=CY+R_PLANET*Math.sin(angle);
+    const color=colors[planet]||"#FFF";
+    paths+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="${color}" opacity="0.92"/>`;
+    paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="9" fill="#0D0A18">${NATAL_GLYPH[planet]}</text>`;
+  });
+  paths+=`<text x="${CX}" y="${CY-12}" text-anchor="middle" font-size="10" fill="rgba(242,238,249,0.45)" font-family="DM Sans,sans-serif">${name}</text>`;
+  paths+=`<text x="${CX}" y="${CY+8}" text-anchor="middle" font-size="8" fill="rgba(242,238,249,0.25)" font-family="DM Sans,sans-serif">${l==="es"?"Carta Natal":"Natal Chart"}</text>`;
+  return`<svg width="280" height="280" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:auto;">${paths}</svg>`;
+}
+
+function openNatalScreen(){
+  if(!lastResult)return;
+  natalActivePid="A";
+  goScreen("natal");
+  renderNatalScreen();
+}
+
+function switchNatalPerson(pid){
+  natalActivePid=pid;
+  document.getElementById("nptA").classList.toggle("on",pid==="A");
+  document.getElementById("nptB").classList.toggle("on",pid==="B");
+  renderNatalScreen();
+}
+
+function renderNatalScreen(){
+  if(!lastResult)return;
+  const pid=natalActivePid;
+  const p=pid==="A"?lastResult.pA:lastResult.pB;
+  const name=pid==="A"?lastResult.nA:lastResult.nB;
+  const l=lang;
+  document.getElementById("nptA").textContent=lastResult.nA;
+  document.getElementById("nptB").textContent=lastResult.nB;
+  document.getElementById("natalScreenTitle").textContent=l==="es"?"Carta Natal":"Natal Chart";
+  document.getElementById("natalSVGWrap").innerHTML=generateNatalSVG(p,name,l);
+  const signs=l==="es"?SIGN_ES:SIGN_EN;
+  const pnames=l==="es"?PES:PEN;
+  const accordion=document.getElementById("planetAccordion");
+  accordion.innerHTML=NATAL_PLANETS.map(planet=>{
+    const deg=p[planet];
+    if(deg===undefined)return"";
+    const signIdx=Math.floor(((deg%360)+360)%360/30);
+    const signName=signs[signIdx];
+    const cacheKey=`${pid}-${planet}`;
+    const cached=NATAL_PLANET_CACHE[cacheKey];
+    return`<div class="pacc-item" id="pacc_${pid}_${planet}">
+      <div class="pacc-header" onclick="togglePlanetCard('${pid}','${planet}','${pnames[planet]}','${signName}','${name}')">
+        <div class="pacc-left">
+          <span class="pacc-glyph">${NATAL_GLYPH[planet]}</span>
+          <span class="pacc-planet">${pnames[planet]}</span>
+          <span class="pacc-sign">${l==="es"?"en":"in"} ${signName}</span>
+        </div>
+        <span class="pacc-arrow" id="arrow_${pid}_${planet}">▾</span>
+      </div>
+      <div class="pacc-body" id="paccBody_${pid}_${planet}">
+        <div id="paccContent_${pid}_${planet}">${cached
+          ?`<div class="pacc-interp">${cached}</div>${natalShareBtn(pnames[planet],signName,name,cached,l)}`
+          :`<div style="display:flex;align-items:center;gap:8px;padding:4px 0 2px;"><span class="ai-spin"></span><span style="font-size:12px;color:var(--txt3);">${l==="es"?"Generando…":"Generating…"}</span></div>`
+        }</div>
+      </div>
+    </div>`;
+  }).join("");
+  updateQACounter();
+  document.getElementById("natalQAAnswers").innerHTML=NATAL_QA_ANSWERS_STORE.filter(a=>a.pid===pid).map(a=>`<div class="natal-qa-answer"><div class="natal-qa-q">${a.question}</div><div class="natal-qa-a">${a.answer}</div></div>`).join("");
+  document.getElementById("natalQAInput").placeholder=l==="es"?`¿Algo específico que quieras saber sobre la carta de ${name}?`:`Anything specific you want to know about ${name}'s chart?`;
+  document.getElementById("natalQATitle").textContent=l==="es"?"✦ PREGUNTA A LOS ASTROS":"✦ ASK THE STARS";
+  document.getElementById("natalScroll").scrollTop=0;
+}
+
+async function togglePlanetCard(pid,planet,pname,signName,personName){
+  const body=document.getElementById(`paccBody_${pid}_${planet}`);
+  const arrow=document.getElementById(`arrow_${pid}_${planet}`);
+  const isOpen=body.classList.contains("open");
+  document.querySelectorAll(".pacc-body").forEach(b=>b.classList.remove("open"));
+  document.querySelectorAll(".pacc-arrow").forEach(a=>a.classList.remove("open"));
+  if(isOpen)return;
+  body.classList.add("open");
+  arrow.classList.add("open");
+  const cacheKey=`${pid}-${planet}`;
+  if(NATAL_PLANET_CACHE[cacheKey])return;
+  try{
+    const res=await fetch("/api/interpret",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"planet",planetA:pname,signA:signName,nameA:personName,lang})});
+    const data=await res.json();
+    const text=data.interpretation||"";
+    NATAL_PLANET_CACHE[cacheKey]=text;
+    const el=document.getElementById(`paccContent_${pid}_${planet}`);
+    if(el)el.innerHTML=`<div class="pacc-interp">${text}</div>${natalShareBtn(pname,signName,personName,text,lang)}`;
+  }catch(e){
+    const el=document.getElementById(`paccContent_${pid}_${planet}`);
+    if(el)el.innerHTML=`<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error — intenta de nuevo":"Error — try again"}</span>`;
+  }
+}
+
+function natalShareBtn(pname,signName,name,text,l){
+  const safeText=text.replace(/'/g,"&#39;").replace(/"/g,"&quot;");
+  return`<button class="pacc-share" onclick='shareNatalInterp("${pname}","${signName}","${name}","${safeText}")'>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+    ${l==="es"?"Compartir interpretación":"Share interpretation"}
   </button>`;
 }
- 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// QUIRÓN — reemplaza renderPremium > chiron
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-async function loadChironAI() {
-  const el = document.getElementById('chironAIContent');
-  if (!el || !lastResult) return;
-  el.innerHTML = aiSpinner(lang);
- 
-  try {
-    const signIdx = Math.floor(((lastResult.pA.Chiron % 360) + 360) % 360 / 30);
-    const signs = lang === 'es' ? SIGN_ES : SIGN_EN;
-    const text = await fetchInterpretation({
-      type: 'chiron',
-      signA: signs[signIdx],
-      nameA: lastResult.nA,
-      nameB: lastResult.nB
-    });
-    el.innerHTML = `<div style="font-size:13px;color:var(--txt2);line-height:1.85;white-space:pre-wrap;">${text}</div>`;
-  } catch(e) {
-    el.innerHTML = `<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error al generar — intenta de nuevo":"Failed to generate — try again"}</span>`;
-  }
+
+async function shareNatalInterp(pname,signName,name,text){
+  const shareText=lang==="es"
+    ?`✦ ${name} · ${pname} en ${signName}\n\n${text}\n\nDescubre tu carta natal en duual.app`
+    :`✦ ${name} · ${pname} in ${signName}\n\n${text}\n\nDiscover your natal chart at duual.app`;
+  if(navigator.share){try{await navigator.share({title:"Duual · Carta Natal",text:shareText});return;}catch(e){}}
+  if(navigator.clipboard){await navigator.clipboard.writeText(shareText);showToast(lang==="es"?"Copiado ✦":"Copied ✦");}
 }
- 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// NODO NORTE — reemplaza renderPremium > node
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-async function loadNorthNodeAI() {
-  const el = document.getElementById('nodeAIContent');
-  if (!el || !lastResult) return;
-  el.innerHTML = aiSpinner(lang);
- 
-  try {
-    const signIdx = Math.floor(((lastResult.pA.NNode % 360) + 360) % 360 / 30);
-    const signs = lang === 'es' ? SIGN_ES : SIGN_EN;
-    const text = await fetchInterpretation({
-      type: 'northnode',
-      signA: signs[signIdx],
-      nameA: lastResult.nA,
-      nameB: lastResult.nB
-    });
-    el.innerHTML = `<div style="font-size:13px;color:var(--txt2);line-height:1.85;white-space:pre-wrap;">${text}</div>`;
-  } catch(e) {
-    el.innerHTML = `<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error al generar — intenta de nuevo":"Failed to generate — try again"}</span>`;
-  }
+
+function getQAUsed(){
+  if(isPremium())return 0;
+  const stored=JSON.parse(localStorage.getItem("duual_qa_count")||'{"date":"","count":0}');
+  const today=todayKey();
+  if(stored.date!==today)return 0;
+  return stored.count;
 }
- 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PLANETA INDIVIDUAL — carta natal
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-async function loadPlanetAI(pid, planetKey) {
-  const el = document.getElementById(`planetAI_${pid}_${planetKey}`);
-  if (!el || !lastResult) return;
-  if (el.dataset.loaded === '1') {
-    // toggle: colapsar si ya está cargado
-    el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    return;
-  }
-  el.style.display = 'block';
-  el.innerHTML = aiSpinner(lang);
-  el.dataset.loaded = '1';
- 
-  try {
-    const pData = pid === 'A' ? lastResult.pA : lastResult.pB;
-    const name  = pid === 'A' ? lastResult.nA : lastResult.nB;
-    const deg   = pData[planetKey];
-    const signIdx = Math.floor(((deg % 360) + 360) % 360 / 30);
-    const signs = lang === 'es' ? SIGN_ES : SIGN_EN;
-    const planetNames = lang === 'es' ? PES : PEN;
- 
-    const text = await fetchInterpretation({
-      type: 'planet',
-      planetA: planetNames[planetKey],
-      signA: signs[signIdx],
-      nameA: name
-    });
-    el.innerHTML = `<div style="font-size:12px;color:var(--txt2);line-height:1.8;padding:10px 0 4px;border-top:0.5px solid var(--bord);white-space:pre-wrap;">${text}</div>`;
-  } catch(e) {
-    el.innerHTML = `<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error — intenta de nuevo":"Error — try again"}</span>`;
-    el.dataset.loaded = '0';
-  }
+function incrementQAUsed(){
+  if(isPremium())return;
+  const used=getQAUsed();
+  localStorage.setItem("duual_qa_count",JSON.stringify({date:todayKey(),count:used+1}));
+}
+function updateQACounter(){
+  const counter=document.getElementById("natalQACounter");
+  const btn=document.getElementById("natalQABtn");
+  if(!counter||!btn)return;
+  if(isPremium()){counter.textContent=lang==="es"?"Preguntas ilimitadas ✦":"Unlimited questions ✦";btn.disabled=false;return;}
+  const left=Math.max(0,NATAL_QA_FREE_LIMIT-getQAUsed());
+  counter.textContent=lang==="es"?`${left} preguntas restantes hoy`:`${left} questions left today`;
+  btn.disabled=left===0;
+}
+
+async function submitNatalQuestion(){
+  const input=document.getElementById("natalQAInput");
+  const question=input.value.trim();
+  if(!question)return;
+  if(!isPremium()&&getQAUsed()>=NATAL_QA_FREE_LIMIT){showNatalUpgrade();return;}
+  const btn=document.getElementById("natalQABtn");
+  btn.disabled=true;
+  btn.innerHTML=`<span class="ai-spin"></span>`;
+  const pid=natalActivePid;
+  const p=pid==="A"?lastResult.pA:lastResult.pB;
+  const name=pid==="A"?lastResult.nA:lastResult.nB;
+  const l=lang;
+  const signs=l==="es"?SIGN_ES:SIGN_EN;
+  const pnames=l==="es"?PES:PEN;
+  const chartSummary=NATAL_PLANETS.map(planet=>{
+    if(p[planet]===undefined)return"";
+    const signIdx=Math.floor(((p[planet]%360)+360)%360/30);
+    return`${pnames[planet]} en ${signs[signIdx]}`;
+  }).filter(Boolean).join(", ");
+  try{
+    const res=await fetch("/api/interpret",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"freeQuestion",nameA:name,chartSummary,question,lang:l})});
+    const data=await res.json();
+    const answer=data.interpretation||"";
+    incrementQAUsed();
+    NATAL_QA_ANSWERS_STORE.unshift({pid,question,answer});
+    const answersEl=document.getElementById("natalQAAnswers");
+    const div=document.createElement("div");
+    div.className="natal-qa-answer";
+    div.innerHTML=`<div class="natal-qa-q">${question}</div><div class="natal-qa-a">${answer}</div>`;
+    answersEl.insertBefore(div,answersEl.firstChild);
+    input.value="";
+    updateQACounter();
+    if(!isPremium()&&getQAUsed()>=NATAL_QA_FREE_LIMIT)showNatalUpgrade();
+  }catch(e){showToast(lang==="es"?"Error — intenta de nuevo":"Error — try again");}
+  btn.disabled=false;
+  btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";
+}
+
+function showNatalUpgrade(){
+  const answersEl=document.getElementById("natalQAAnswers");
+  if(answersEl.querySelector(".natal-qa-upgrade"))return;
+  const l=lang;
+  const div=document.createElement("div");
+  div.className="natal-qa-upgrade";
+  div.innerHTML=`<div class="natal-qa-upgrade-text">${l==="es"?"Llegaste al límite de 3 preguntas gratuitas hoy.<br>Con Premium, pregunta sin límites.":"You reached the 3 free questions limit for today.<br>With Premium, ask without limits."}</div><button class="natal-qa-upgrade-btn" onclick="goScreen('paywall')">${l==="es"?"Ver Premium ✦":"See Premium ✦"}</button>`;
+  answersEl.appendChild(div);
 }
 </script>
 </body>
