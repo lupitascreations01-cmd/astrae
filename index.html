@@ -1029,26 +1029,27 @@ function generateCard(){
     arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
     ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
 
-    // ✅ Score centrado con textAlign center — más confiable cross-device
+    // Score — número centrado, % como superscript flotante
     const scoreFontSize = score.length > 2 ? 210 : 250;
-    const pctFontSize = Math.round(scoreFontSize * 0.32);
+    const pctFontSize = Math.round(scoreFontSize * 0.28);
 
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
-    ctx.fillStyle = "#F2EEF9";
-    ctx.fillText(score, cx - 30, cy);
-
-    // % superscript arriba a la derecha
-    ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
-    ctx.fillStyle = "#ED93B1";
-    ctx.textBaseline = "top";
-    const scoreHalfW = ctx.measureText(score).width * 0.5 + 
-                       ctx.font && ctx.measureText(score).width;
+    // Medir ancho del número para calcular posición del %
     ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
     const numW = ctx.measureText(score).width;
+
+    // Dibujar número centrado exacto
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#F2EEF9";
+    ctx.fillText(score, cx, cy);
+
+    // % posicionado a la derecha del número sin desplazarlo
     ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
-    ctx.fillText("%", cx - 30 + numW/2 + 10, cy - scoreFontSize * 0.38);
+    ctx.fillStyle = "#ED93B1";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText("%", cx + numW/2 + 8, cy - scoreFontSize * 0.42);
+    ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
     // ✅ COMPATIBILIDAD — debajo del círculo, fuera del borde
@@ -1278,29 +1279,51 @@ function generateNatalSVG(p,name,l){
     const angle=(i*30-90)*Math.PI/180;
     const x1=CX+R_IN*Math.cos(angle),y1=CY+R_IN*Math.sin(angle);
     const x2=CX+R_OUT*Math.cos(angle),y2=CY+R_OUT*Math.sin(angle);
-    paths+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(242,238,249,0.12)" stroke-width="0.5"/>`;
+    paths+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(242,238,249,0.1)" stroke-width="0.5"/>`;
   }
+  // Anillo exterior para signos
+  const R_SIGN=148;
+  paths+=`<circle cx="${CX}" cy="${CY}" r="${R_SIGN}" fill="rgba(255,255,255,0.02)" stroke="rgba(242,238,249,0.18)" stroke-width="0.5"/>`;
+  paths+=`<circle cx="${CX}" cy="${CY}" r="${R_OUT}" fill="rgba(255,255,255,0.03)" stroke="rgba(242,238,249,0.12)" stroke-width="0.5"/>`;
+  paths+=`<circle cx="${CX}" cy="${CY}" r="${R_IN}" fill="none" stroke="rgba(242,238,249,0.08)" stroke-width="0.5"/>`;
+  // Glyphs de signos en anillo exterior más legibles
+  const R_SIGN_TXT=(R_OUT+R_SIGN)/2;
   for(let i=0;i<12;i++){
     const angle=(i*30+15-90)*Math.PI/180;
-    const x=CX+118*Math.cos(angle),y=CY+118*Math.sin(angle);
-    paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(242,238,249,0.22)">${SIGN_GLYPH[i]}</text>`;
+    const x=CX+R_SIGN_TXT*Math.cos(angle),y=CY+R_SIGN_TXT*Math.sin(angle);
+    paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="rgba(242,238,249,0.4)">${SIGN_GLYPH[i]}</text>`;
   }
-  paths+=`<circle cx="${CX}" cy="${CY}" r="${R_OUT}" fill="none" stroke="rgba(242,238,249,0.15)" stroke-width="0.5"/>`;
-  paths+=`<circle cx="${CX}" cy="${CY}" r="${R_IN}" fill="none" stroke="rgba(242,238,249,0.08)" stroke-width="0.5"/>`;
-  paths+=`<circle cx="${CX}" cy="${CY}" r="5" fill="rgba(201,75,114,0.5)" stroke="rgba(201,75,114,0.7)" stroke-width="1"/>`;
+  paths+=`<circle cx="${CX}" cy="${CY}" r="5" fill="rgba(201,75,114,0.6)" stroke="rgba(201,75,114,0.8)" stroke-width="1"/>`;
   const colors={Sun:"#F5D76E",Moon:"#C8C0F5",Mercury:"#90E0D0",Venus:"#F49AC2",Mars:"#F08080",Jupiter:"#A0C8F0",Saturn:"#C8B060"};
-  NATAL_PLANETS.forEach(planet=>{
-    if(p[planet]===undefined)return;
+  // Anti-solapamiento: separar planetas muy cercanos
+  const positions=NATAL_PLANETS.map(planet=>{
+    if(p[planet]===undefined)return null;
     const deg=((p[planet]%360)+360)%360;
-    const angle=(deg-90)*Math.PI/180;
-    const x=CX+R_PLANET*Math.cos(angle),y=CY+R_PLANET*Math.sin(angle);
-    const color=colors[planet]||"#FFF";
-    paths+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="${color}" opacity="0.92"/>`;
-    paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="9" fill="#0D0A18">${NATAL_GLYPH[planet]}</text>`;
+    return{planet,deg,angle:(deg-90)*Math.PI/180,r:R_PLANET};
+  }).filter(Boolean);
+  for(let i=0;i<positions.length;i++){
+    for(let j=i+1;j<positions.length;j++){
+      let diff=Math.abs(positions[i].deg-positions[j].deg);
+      if(diff>180)diff=360-diff;
+      if(diff<14){positions[i].r=R_PLANET+13;positions[j].r=R_PLANET-13;}
+    }
+  }
+  // Líneas conectoras
+  positions.forEach(({angle,r})=>{
+    const x1=CX+R_IN*Math.cos(angle),y1=CY+R_IN*Math.sin(angle);
+    const x2=CX+r*Math.cos(angle),y2=CY+r*Math.sin(angle);
+    paths+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(242,238,249,0.06)" stroke-width="0.5"/>`;
   });
-  paths+=`<text x="${CX}" y="${CY-12}" text-anchor="middle" font-size="10" fill="rgba(242,238,249,0.45)" font-family="DM Sans,sans-serif">${name}</text>`;
-  paths+=`<text x="${CX}" y="${CY+8}" text-anchor="middle" font-size="8" fill="rgba(242,238,249,0.25)" font-family="DM Sans,sans-serif">${l==="es"?"Carta Natal":"Natal Chart"}</text>`;
-  return`<svg width="280" height="280" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:auto;">${paths}</svg>`;
+  // Planetas
+  positions.forEach(({planet,angle,r})=>{
+    const x=CX+r*Math.cos(angle),y=CY+r*Math.sin(angle);
+    const color=colors[planet]||"#FFF";
+    paths+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9" fill="${color}" opacity="0.95"/>`;
+    paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#0D0A18" font-weight="600">${NATAL_GLYPH[planet]}</text>`;
+  });
+  paths+=`<text x="${CX}" y="${CY-10}" text-anchor="middle" font-size="11" fill="rgba(242,238,249,0.5)" font-family="DM Sans,sans-serif">${name}</text>`;
+  paths+=`<text x="${CX}" y="${CY+7}" text-anchor="middle" font-size="9" fill="rgba(242,238,249,0.25)" font-family="DM Sans,sans-serif">${l==="es"?"Carta Natal":"Natal Chart"}</text>`;
+  return`<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:auto;">${paths}</svg>`;
 }
 
 function openNatalScreen(){
@@ -1349,7 +1372,7 @@ function renderNatalScreen(){
       <div class="pacc-body" id="paccBody_${pid}_${planet}">
         <div id="paccContent_${pid}_${planet}">${cached
           ?`<div class="pacc-interp">${cached}</div>${natalShareBtn(pnames[planet],signName,name,cached,l)}`
-          :`<div style="display:flex;align-items:center;gap:8px;padding:4px 0 2px;"><span class="ai-spin"></span><span style="font-size:12px;color:var(--txt3);">${l==="es"?"Generando…":"Generating…"}</span></div>`
+          :`<div class="pacc-placeholder" style="height:4px;"></div>`
         }</div>
       </div>
     </div>`;
@@ -1372,16 +1395,17 @@ async function togglePlanetCard(pid,planet,pname,signName,personName){
   arrow.classList.add("open");
   const cacheKey=`${pid}-${planet}`;
   if(NATAL_PLANET_CACHE[cacheKey])return;
+  // Mostrar spinner inmediatamente al abrir
+  const contentEl=document.getElementById(`paccContent_${pid}_${planet}`);
+  if(contentEl)contentEl.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:6px 0 2px;"><span class="ai-spin"></span><span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Generando…":"Generating…"}</span></div>`;
   try{
     const res=await fetch("/api/interpret",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"planet",planetA:pname,signA:signName,nameA:personName,lang})});
     const data=await res.json();
     const text=data.interpretation||"";
     NATAL_PLANET_CACHE[cacheKey]=text;
-    const el=document.getElementById(`paccContent_${pid}_${planet}`);
-    if(el)el.innerHTML=`<div class="pacc-interp">${text}</div>${natalShareBtn(pname,signName,personName,text,lang)}`;
+    if(contentEl)contentEl.innerHTML=`<div class="pacc-interp">${text}</div>${natalShareBtn(pname,signName,personName,text,lang)}`;
   }catch(e){
-    const el=document.getElementById(`paccContent_${pid}_${planet}`);
-    if(el)el.innerHTML=`<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error — intenta de nuevo":"Error — try again"}</span>`;
+    if(contentEl)contentEl.innerHTML=`<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error — intenta de nuevo":"Error — try again"}</span>`;
   }
 }
 
