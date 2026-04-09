@@ -1120,6 +1120,131 @@ selectPlan("annual");
   window.addEventListener("resize",resize);resize();draw();
 })();
 let dp;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;});
+  const AI_CACHE = {}; // cache en sesión para no repetir llamadas
+ 
+async function fetchInterpretation(payload) {
+  const cacheKey = JSON.stringify(payload);
+  if (AI_CACHE[cacheKey]) return AI_CACHE[cacheKey];
+ 
+  const res = await fetch('/api/interpret', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...payload, lang })
+  });
+ 
+  if (!res.ok) throw new Error('API error');
+  const data = await res.json();
+  AI_CACHE[cacheKey] = data.interpretation;
+  return data.interpretation;
+}
+ 
+// ── SPINNER HTML helper ──
+function aiSpinner(l) {
+  return `<div style="display:flex;align-items:center;gap:10px;padding:12px 0;">
+    <div style="width:16px;height:16px;border:2px solid rgba(201,75,114,0.3);border-top-color:#C94B72;border-radius:50%;animation:spin360 0.8s linear infinite;flex-shrink:0;"></div>
+    <span style="font-size:12px;color:var(--txt3);">${l==="es"?"Generando interpretación...":"Generating interpretation..."}</span>
+  </div>`;
+}
+ 
+// ── Agregar keyframe si no existe ──
+(function(){
+  if(!document.getElementById('ai-keyframes')){
+    const s=document.createElement('style');
+    s.id='ai-keyframes';
+    s.textContent='@keyframes spin360{to{transform:rotate(360deg);}}';
+    document.head.appendChild(s);
+  }
+})();
+ 
+// ── BOTÓN "Generar con IA" ──
+function aiBtn(onClick, l) {
+  return `<button onclick="${onClick}" style="margin-top:10px;display:flex;align-items:center;gap:7px;background:var(--rose-l);border:0.5px solid var(--rose-b);border-radius:20px;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--rose-m);cursor:pointer;">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    ${l==="es"?"Generar con IA ✦":"Generate with AI ✦"}
+  </button>`;
+}
+ 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// QUIRÓN — reemplaza renderPremium > chiron
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function loadChironAI() {
+  const el = document.getElementById('chironAIContent');
+  if (!el || !lastResult) return;
+  el.innerHTML = aiSpinner(lang);
+ 
+  try {
+    const signIdx = Math.floor(((lastResult.pA.Chiron % 360) + 360) % 360 / 30);
+    const signs = lang === 'es' ? SIGN_ES : SIGN_EN;
+    const text = await fetchInterpretation({
+      type: 'chiron',
+      signA: signs[signIdx],
+      nameA: lastResult.nA,
+      nameB: lastResult.nB
+    });
+    el.innerHTML = `<div style="font-size:13px;color:var(--txt2);line-height:1.85;white-space:pre-wrap;">${text}</div>`;
+  } catch(e) {
+    el.innerHTML = `<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error al generar — intenta de nuevo":"Failed to generate — try again"}</span>`;
+  }
+}
+ 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// NODO NORTE — reemplaza renderPremium > node
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function loadNorthNodeAI() {
+  const el = document.getElementById('nodeAIContent');
+  if (!el || !lastResult) return;
+  el.innerHTML = aiSpinner(lang);
+ 
+  try {
+    const signIdx = Math.floor(((lastResult.pA.NNode % 360) + 360) % 360 / 30);
+    const signs = lang === 'es' ? SIGN_ES : SIGN_EN;
+    const text = await fetchInterpretation({
+      type: 'northnode',
+      signA: signs[signIdx],
+      nameA: lastResult.nA,
+      nameB: lastResult.nB
+    });
+    el.innerHTML = `<div style="font-size:13px;color:var(--txt2);line-height:1.85;white-space:pre-wrap;">${text}</div>`;
+  } catch(e) {
+    el.innerHTML = `<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error al generar — intenta de nuevo":"Failed to generate — try again"}</span>`;
+  }
+}
+ 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// PLANETA INDIVIDUAL — carta natal
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function loadPlanetAI(pid, planetKey) {
+  const el = document.getElementById(`planetAI_${pid}_${planetKey}`);
+  if (!el || !lastResult) return;
+  if (el.dataset.loaded === '1') {
+    // toggle: colapsar si ya está cargado
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    return;
+  }
+  el.style.display = 'block';
+  el.innerHTML = aiSpinner(lang);
+  el.dataset.loaded = '1';
+ 
+  try {
+    const pData = pid === 'A' ? lastResult.pA : lastResult.pB;
+    const name  = pid === 'A' ? lastResult.nA : lastResult.nB;
+    const deg   = pData[planetKey];
+    const signIdx = Math.floor(((deg % 360) + 360) % 360 / 30);
+    const signs = lang === 'es' ? SIGN_ES : SIGN_EN;
+    const planetNames = lang === 'es' ? PES : PEN;
+ 
+    const text = await fetchInterpretation({
+      type: 'planet',
+      planetA: planetNames[planetKey],
+      signA: signs[signIdx],
+      nameA: name
+    });
+    el.innerHTML = `<div style="font-size:12px;color:var(--txt2);line-height:1.8;padding:10px 0 4px;border-top:0.5px solid var(--bord);white-space:pre-wrap;">${text}</div>`;
+  } catch(e) {
+    el.innerHTML = `<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error — intenta de nuevo":"Error — try again"}</span>`;
+    el.dataset.loaded = '0';
+  }
+}
 </script>
 </body>
 </html>
