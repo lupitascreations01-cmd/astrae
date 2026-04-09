@@ -1,109 +1,59 @@
 export default async function handler(req, res) {
-  // Solo POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { type, planetA, signA, planetB, signB, nameA, nameB, lang } = req.body;
+  const { type, planetA, signA, nameA, nameB, chartSummary, question, lang } = req.body;
 
-  if (!type) {
-    return res.status(400).json({ error: 'Missing type' });
-  }
+  if (!type) return res.status(400).json({ error: 'Missing type' });
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'API key not configured' });
-  }
+  if (!apiKey) return res.status(500).json({ error: 'API key not configured' });
 
-  // Construir el prompt según el tipo de interpretación
-  let prompt = '';
   const isES = lang !== 'en';
+  let prompt = '';
+  let maxTokens = 300;
 
   if (type === 'chiron') {
-    // Quirón en sinastría
-    const sign = signA;
-    if (isES) {
-      prompt = `Eres una astróloga experta en sinastría. Escribe una interpretación de Quirón en ${sign} para una lectura de compatibilidad de pareja. 
-      
-La interpretación debe:
-- Tener exactamente 3 párrafos cortos (2-3 oraciones cada uno)
-- Hablar sobre la herida kármica que este Quirón representa en la relación
-- El potencial de sanación que ofrece esta conexión
-- Cómo este Quirón afecta la dinámica entre ${nameA} y ${nameB}
-- Tono: poético, empático, profundo pero accesible
-- NO usar listas ni bullets, solo párrafos fluidos
-- Escribir en español, segunda persona plural (ustedes)
-- Máximo 120 palabras en total`;
-    } else {
-      prompt = `You are an expert astrologer specializing in synastry. Write a Chiron in ${sign} interpretation for a compatibility reading between ${nameA} and ${nameB}.
+    prompt = isES
+      ? `Eres una astróloga experta en sinastría. Escribe una interpretación de Quirón en ${signA} para la relación entre ${nameA} y ${nameB}.
 
-The interpretation must:
-- Have exactly 3 short paragraphs (2-3 sentences each)
-- Address the karmic wound this Chiron represents in the relationship
-- The healing potential this connection offers
-- How this Chiron affects the dynamic between them
-- Tone: poetic, empathetic, deep but accessible
-- NO lists or bullets, only flowing paragraphs
-- Write in English, second person plural (you both)
-- Maximum 120 words total`;
-    }
+Escribe exactamente 3 párrafos cortos (2-3 oraciones cada uno). Habla sobre: la herida kármica que este Quirón trae a la relación, el potencial de sanación que ofrece esta conexión, y cómo afecta la dinámica entre ellos. Tono poético y empático. Solo párrafos, sin listas. Segunda persona plural (ustedes). Máximo 120 palabras.`
+      : `You are an expert synastry astrologer. Write a Chiron in ${signA} interpretation for the relationship between ${nameA} and ${nameB}.
+
+Write exactly 3 short paragraphs (2-3 sentences each). Cover: the karmic wound this Chiron brings to the relationship, the healing potential this connection offers, and how it affects their dynamic. Poetic and empathetic tone. Paragraphs only, no lists. Second person plural (you both). Maximum 120 words.`;
 
   } else if (type === 'northnode') {
-    // Nodo Norte en sinastría
-    const sign = signA;
-    if (isES) {
-      prompt = `Eres una astróloga experta en sinastría. Escribe una interpretación del Nodo Norte en ${sign} para una lectura de compatibilidad entre ${nameA} y ${nameB}.
+    prompt = isES
+      ? `Eres una astróloga experta en sinastría. Escribe una interpretación del Nodo Norte en ${signA} para la relación entre ${nameA} y ${nameB}.
 
-La interpretación debe:
-- Tener exactamente 3 párrafos cortos (2-3 oraciones cada uno)
-- Hablar sobre el propósito kármico compartido de esta relación
-- Hacia dónde les llama el alma a crecer juntos
-- Qué patrones del pasado deben soltar para avanzar
-- Tono: esperanzador, místico, inspirador
-- NO usar listas ni bullets, solo párrafos fluidos
-- Escribir en español, segunda persona plural (ustedes)
-- Máximo 120 palabras en total`;
-    } else {
-      prompt = `You are an expert astrologer specializing in synastry. Write a North Node in ${sign} interpretation for a compatibility reading between ${nameA} and ${nameB}.
+Escribe exactamente 3 párrafos cortos (2-3 oraciones cada uno). Habla sobre: el propósito kármico compartido, hacia dónde les llama el alma a crecer juntos, y qué patrones del pasado deben soltar. Tono esperanzador y místico. Solo párrafos, sin listas. Segunda persona plural (ustedes). Máximo 120 palabras.`
+      : `You are an expert synastry astrologer. Write a North Node in ${signA} interpretation for the relationship between ${nameA} and ${nameB}.
 
-The interpretation must:
-- Have exactly 3 short paragraphs (2-3 sentences each)
-- Address the shared karmic purpose of this relationship
-- Where the soul calls them to grow together
-- What past patterns they must release to move forward
-- Tone: hopeful, mystical, inspiring
-- NO lists or bullets, only flowing paragraphs
-- Write in English, second person plural (you both)
-- Maximum 120 words total`;
-    }
+Write exactly 3 short paragraphs (2-3 sentences each). Cover: the shared karmic purpose, where the soul calls them to grow together, and what past patterns to release. Hopeful and mystical tone. Paragraphs only, no lists. Second person plural (you both). Maximum 120 words.`;
 
   } else if (type === 'planet') {
-    // Interpretación de planeta individual en carta natal
-    const planet = planetA;
-    const sign = signA;
-    if (isES) {
-      prompt = `Eres una astróloga experta. Escribe una interpretación personal de ${planet} en ${sign} para ${nameA}.
+    prompt = isES
+      ? `Eres una astróloga experta. Escribe una interpretación personal de ${planetA} en ${signA} para ${nameA}.
 
-La interpretación debe:
-- Tener 2 párrafos cortos (2-3 oraciones cada uno)
-- Hablar sobre cómo esta posición planetaria se expresa en la personalidad y relaciones de ${nameA}
-- Mencionar fortalezas específicas y áreas de crecimiento
-- Tono: cálido, personal, perspicaz — como una astróloga hablando directamente
-- NO usar listas ni bullets, solo párrafos fluidos
-- Escribir en español, segunda persona singular (tú)
-- Máximo 80 palabras en total`;
-    } else {
-      prompt = `You are an expert astrologer. Write a personal interpretation of ${planet} in ${sign} for ${nameA}.
+Escribe 2 párrafos cortos (2-3 oraciones cada uno). Habla sobre cómo esta posición se expresa en su personalidad y relaciones, con fortalezas específicas y áreas de crecimiento. Tono cálido y personal, como una astróloga hablando directamente. Solo párrafos. Segunda persona singular (tú). Máximo 80 palabras.`
+      : `You are an expert astrologer. Write a personal interpretation of ${planetA} in ${signA} for ${nameA}.
 
-The interpretation must:
-- Have 2 short paragraphs (2-3 sentences each)
-- Address how this planetary position expresses itself in ${nameA}'s personality and relationships
-- Mention specific strengths and growth areas
-- Tone: warm, personal, insightful — like an astrologer speaking directly
-- NO lists or bullets, only flowing paragraphs
-- Write in English, second person singular (you)
-- Maximum 80 words total`;
-    }
+Write 2 short paragraphs (2-3 sentences each). Cover how this position expresses itself in their personality and relationships, with specific strengths and growth areas. Warm and personal tone, like an astrologer speaking directly. Paragraphs only. Second person singular (you). Maximum 80 words.`;
+
+  } else if (type === 'freeQuestion') {
+    maxTokens = 400;
+    prompt = isES
+      ? `Eres una astróloga experta y empática. Tienes la carta natal de ${nameA} frente a ti: ${chartSummary}.
+
+${nameA} te pregunta: "${question}"
+
+Responde directamente a su pregunta basándote en su carta natal. Sé específica, menciona los planetas relevantes de su carta. Tono cálido, sabio y accesible. Máximo 180 palabras. Solo párrafos, sin listas ni títulos.`
+      : `You are an expert and empathetic astrologer. You have ${nameA}'s natal chart in front of you: ${chartSummary}.
+
+${nameA} asks you: "${question}"
+
+Answer their question directly based on their natal chart. Be specific, mention the relevant planets from their chart. Warm, wise and accessible tone. Maximum 180 words. Paragraphs only, no lists or headings.`;
 
   } else {
     return res.status(400).json({ error: 'Invalid type' });
@@ -118,8 +68,8 @@ The interpretation must:
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001', // Haiku = más rápido y barato para interpretaciones cortas
-        max_tokens: 300,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: maxTokens,
         messages: [{ role: 'user', content: prompt }]
       })
     });
@@ -132,7 +82,6 @@ The interpretation must:
 
     const data = await response.json();
     const text = data.content?.[0]?.text || '';
-
     return res.status(200).json({ interpretation: text });
 
   } catch (err) {
