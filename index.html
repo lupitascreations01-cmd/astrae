@@ -82,9 +82,9 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .score-wrap{position:relative;display:inline-block;}
 .score-ring{position:absolute;inset:-14px;border-radius:50%;border:1.5px solid var(--rose-m);animation:pulse-ring 2s ease-in-out infinite;}
 @keyframes pulse-ring{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
-.big-score{font-family:"Cormorant Garamond",serif;font-size:104px;font-weight:400;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;gap:2px;}
-.big-score .pct{font-size:42px;color:var(--rose-m);align-self:flex-start;margin-top:14px;}
-.slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:4px;}
+.big-score{font-family:"Cormorant Garamond",serif;font-size:104px;font-weight:400;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;position:relative;}
+.big-score .pct{font-size:36px;color:var(--rose-m);position:absolute;right:-34px;top:10px;}
+.slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:18px;}
 .rpair{font-family:"Cormorant Garamond",serif;font-size:18px;font-style:italic;color:var(--txt2);margin-top:10px;}
 .ramp{color:var(--rose-m);}
 .verdict-badge{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 16px;border-radius:20px;background:var(--rose-l);border:0.5px solid var(--rose-b);font-size:12px;color:var(--rose-m);}
@@ -603,8 +603,70 @@ const AREAS={romance:{es:"Romance",en:"Romance",pairs:["Venus-Mars","Mars-Venus"
 const IT={"Venus-Mars":{es:{conj:"Química instantánea e intensa. Este aspecto es la atracción en su forma más pura.",trig:"La atracción fluye de manera natural — un romance sin esfuerzo.",sext:"Una química suave pero persistente. Se sienten atraídos sin saber exactamente por qué.",sq:"Tensión erótica presente. La atracción existe pero puede tornarse competitiva.",opp:"Polaridad magnética. Se atraen como opuestos en formas que pueden volverse intensas."},en:{conj:"Instant, intense chemistry. This aspect is attraction in its purest form.",trig:"Attraction flows naturally — an effortless romance.",sext:"A soft but persistent chemistry. You feel drawn to each other without knowing why.",sq:"Erotic tension is present. Attraction exists but can become competitive.",opp:"Magnetic polarity. You attract each other as opposites in intense ways."}},"Sun-Moon":{es:{conj:"Una comprensión rara y profunda. Sienten que se conocen desde siempre.",trig:"Fluyen emocionalmente juntos sin esfuerzo aparente.",sext:"Se entienden bien en el día a día. Hay confort mutuo.",sq:"Estilos emocionales distintos que requieren trabajo consciente.",opp:"El Sol ilumina lo que la Luna siente pero no siempre dice."},en:{conj:"A rare and deep understanding. You feel like you've known each other forever.",trig:"You flow together emotionally without apparent effort.",sext:"You understand each other well day to day.",sq:"Different emotional styles that require conscious work.",opp:"The Sun illuminates what the Moon feels but doesn't always say."}},"Mercury-Mercury":{es:{conj:"Piensan de forma similar. Las conversaciones son fluidas e intuitivas.",trig:"La comunicación es natural y placentera.",sext:"Se entienden bien verbalmente.",sq:"Estilos de pensar distintos. Pueden surgir malentendidos.",opp:"Perspectivas opuestas que se enriquecen si se respetan."},en:{conj:"You think similarly. Conversations are fluid and intuitive.",trig:"Communication is natural and enjoyable.",sext:"You understand each other verbally.",sq:"Different thinking styles. Misunderstandings can arise.",opp:"Opposing perspectives that enrich each other if respected."}},"Saturn-Sun":{es:{conj:"Un vínculo serio con potencial de permanencia.",trig:"Saturno da estabilidad sin ahogar. Construyen cosas que duran.",sext:"Hay una seriedad creciente en esta relación.",sq:"Saturno puede sentirse limitante para el Sol.",opp:"Tensión entre libertad y compromiso que puede definir la relación."},en:{conj:"A serious bond with real potential for permanence.",trig:"Saturn gives stability without smothering. You build things that last.",sext:"There's a growing seriousness to this relationship.",sq:"Saturn can feel limiting to the Sun's expression.",opp:"Tension between freedom and commitment that can define the relationship."}},default:{es:{conj:"Energías fusionadas. Conexión fuerte.",trig:"Flujo armonioso. Se potencian mutuamente.",sext:"Apoyo gentil y natural.",sq:"Fricción que puede generar crecimiento.",opp:"Polaridad que puede crear atracción o tensión."},en:{conj:"Fused energies. Strong connection.",trig:"Harmonious flow. You enhance each other.",sext:"Gentle, natural support.",sq:"Friction that can generate growth.",opp:"Polarity that can create attraction or tension."}}};
 function interp(pair,aspEs,l){const k=IT[pair]?pair:"default";const m={"Conjunción":"conj","Trígono":"trig","Sextil":"sext","Cuadratura":"sq","Oposición":"opp"};return IT[k][l][m[aspEs]]||"";}
 
-const VRD={es:[[88,"✦ Almas gemelas cósmicas","Esta conexión es excepcional. Los planetas rara vez se alinean así. Lo que tienen juntos es profundo, real y merece ser cuidado con atención."],[75,"✦ Una conexión que arde lento","Su vínculo es magnético y capas — no de los que estallan de inmediato, sino de los que echan raíces. Hay una cadencia natural entre ustedes."],[60,"✦ Complementos con potencial","Tienen diferencias que pueden ser regalos si se trabajan. Lo que a uno le falta, el otro lo tiene."],[45,"✦ Caminos que se cruzan","Esta relación enseña. Puede tener momentos de gran intensidad pero requiere trabajo de ambas partes."],[0,"✦ Un desafío que transforma","Los planetas muestran fricción, pero la fricción pule. Esta relación tiene potencial de transformar a ambos."]],en:[[88,"✦ Cosmic soulmates","This connection is exceptional. The planets rarely align like this. What you have together is deep, real and deserves careful attention."],[75,"✦ A slow burn that ignites","Your bond is magnetic and layered — not the kind that explodes instantly, but the kind that grows roots."],[60,"✦ Complements with potential","You have differences that can be gifts if worked through. What one lacks, the other has."],[45,"✦ Paths that cross","This relationship teaches. It can have moments of great intensity but requires work from both sides."],[0,"✦ A transforming challenge","The planets show friction, but friction polishes. This relationship has the potential to transform you both."]]};
+const VRD={
+es:[
+  [88,"✦ Almas gemelas cósmicas",[
+    "Esta conexión es excepcional — los astros rara vez se alinean así. Lo que {A} y {B} tienen juntos es profundo, real y merece ser cuidado.",
+    "Hay algo entre {A} y {B} que va más allá del azar. Los planetas hablan de un encuentro que fue escrito mucho antes de que se conocieran.",
+    "No todos encuentran esto. {A} y {B} tienen una sintonía que la mayoría busca toda la vida — sus cartas se complementan de maneras que son difíciles de ignorar."
+  ]],
+  [75,"✦ Una conexión que arde lento",[
+    "El vínculo entre {A} y {B} es magnético y de capas — no de los que estallan de inmediato, sino de los que echan raíces profundas con el tiempo.",
+    "{A} y {B} tienen algo que crece: mientras más tiempo pasan juntos, más descubren. Sus planetas sugieren una historia que apenas está comenzando.",
+    "Entre {A} y {B} hay una cadencia natural. No siempre explosiva, pero sí constante — el tipo de conexión que se vuelve más rica con cada estación."
+  ]],
+  [60,"✦ Complementos con potencial",[
+    "{A} y {B} tienen diferencias que, bien trabajadas, pueden ser sus mayores regalos. Lo que uno no tiene, el otro lo lleva en su carta.",
+    "Los planetas muestran contraste entre {A} y {B} — y el contraste, cuando hay respeto, es lo que hace que dos personas se expandan juntas.",
+    "Esta conexión entre {A} y {B} tiene materia prima. No todo es fácil, pero lo que construyan juntos puede ser más sólido por eso."
+  ]],
+  [45,"✦ Caminos que se cruzan",[
+    "La carta de {A} y la de {B} se encuentran con intensidad. Esta relación tiene mucho que enseñarles — aunque no siempre de manera cómoda.",
+    "Entre {A} y {B} hay momentos de gran brillo y otros de fricción real. Los planetas indican que esta conexión transforma, si se le da espacio.",
+    "{A} y {B} se atraen por razones que van más allá de lo obvio. Esta relación requiere trabajo consciente, pero el crecimiento que ofrece es genuino."
+  ]],
+  [0,"✦ Un desafío que transforma",[
+    "Los planetas muestran fricción entre {A} y {B} — pero la fricción pule. Esta conexión tiene el potencial de cambiarlos a ambos de maneras profundas.",
+    "No es el camino más fácil, pero {A} y {B} se encontraron por algo. Las relaciones que más nos transforman rara vez son las más sencillas.",
+    "La carta de {A} y la de {B} chocan en puntos importantes. Ese choque, si se trabaja con honestidad, puede convertirse en el mayor catalizador de ambos."
+  ]]
+],
+en:[
+  [88,"✦ Cosmic soulmates",[
+    "This connection is exceptional — the stars rarely align like this. What {A} and {B} have together is deep, real, and worth protecting.",
+    "There's something between {A} and {B} that goes beyond chance. The planets speak of a meeting that was written long before they found each other.",
+    "Not everyone finds this. {A} and {B} share a resonance that most people spend a lifetime searching for — their charts complement each other in ways that are hard to ignore."
+  ]],
+  [75,"✦ A slow burn that ignites",[
+    "The bond between {A} and {B} is magnetic and layered — not the kind that explodes instantly, but the kind that grows deep roots over time.",
+    "{A} and {B} have something that builds: the more time they spend together, the more they discover. Their planets suggest a story that's just beginning.",
+    "There's a natural cadence between {A} and {B}. Not always explosive, but consistent — the kind of connection that becomes richer with every season."
+  ]],
+  [60,"✦ Complements with potential",[
+    "{A} and {B} have differences that, when worked through, can become their greatest gifts. What one lacks, the other carries in their chart.",
+    "The planets show contrast between {A} and {B} — and contrast, with mutual respect, is what allows two people to expand together.",
+    "This connection between {A} and {B} has raw material. Not everything is easy, but what they build together can be stronger because of it."
+  ]],
+  [45,"✦ Paths that cross",[
+    "{A} and {B}'s charts meet with intensity. This relationship has much to teach them — though not always in the most comfortable way.",
+    "There are moments of great brightness between {A} and {B}, and moments of real friction. The planets suggest this connection transforms, if given space.",
+    "{A} and {B} are drawn to each other for reasons that go beyond the obvious. This relationship requires conscious work, but the growth it offers is real."
+  ]],
+  [0,"✦ A transforming challenge",[
+    "The planets show friction between {A} and {B} — but friction polishes. This connection has the potential to change both of them in profound ways.",
+    "It's not the easiest path, but {A} and {B} found each other for a reason. The relationships that transform us most are rarely the simplest ones.",
+    "{A} and {B}'s charts clash at important points. That clash, worked through with honesty, can become the greatest catalyst for both of them."
+  ]]
+]};
 
+function pickVerdict(vList, pct, nA, nB) {
+  const vE = vList.find(v => pct >= v[0]);
+  const texts = vE[2];
+  // Usa el score como seed para que siempre sea el mismo para la misma pareja
+  const idx = pct % texts.length;
+  const text = texts[idx].replace(/{A}/g, nA).replace(/{B}/g, nB);
+  return [vE[1], text];
+}
 const AI={romance:{es:[[80,"Atracción potente y natural."],[60,"Química presente con espacio para crecer."],[0,"La atracción requiere cultivo consciente."]],en:[[80,"Powerful, natural attraction."],[60,"Chemistry present with room to grow."],[0,"Attraction needs conscious nurturing."]]},emotion:{es:[[80,"Se entienden emocionalmente sin esfuerzo."],[60,"Conexión emocional real con algunas diferencias."],[0,"Mundos emocionales distintos — enriquecedor si se trabaja."]],en:[[80,"You understand each other emotionally with ease."],[60,"Real emotional connection with some differences."],[0,"Different emotional worlds — enriching if worked through."]]},comms:{es:[[80,"Comunicación fluida e intuitiva."],[60,"Se entienden bien en lo cotidiano."],[0,"Estilos distintos. Requiere paciencia."]],en:[[80,"Fluid, intuitive communication."],[60,"You understand each other well in daily life."],[0,"Different styles. Patience required."]]},longterm:{es:[[80,"Bases sólidas para construir juntos."],[60,"Potencial de permanencia con trabajo."],[0,"La estabilidad hay que construirla activamente."]],en:[[80,"Solid foundations to build on together."],[60,"Potential for permanence with work."],[0,"Stability must be actively built."]]}};
 function ai(k,p,l){const t=AI[k][l];for(const[th,tx]of t)if(p>=th)return tx;return t[t.length-1][1];}
 
@@ -729,12 +791,13 @@ function renderResults(r){
   const maxFound=found.reduce((s,x)=>s+ASPS[0].sc*(PW[x.pa+"-"+x.pb]||1),0)||1;
   const rawPct=total/maxFound*100;
   const pct=Math.min(99,Math.max(5,Math.round(30+rawPct*0.7)));
-  const vList=VRD[lang],vE=vList.find(v=>pct>=v[0]);
+  const vList=VRD[lang];
+  const [vTitle, vText] = pickVerdict(vList, pct, nA, nB);
   document.getElementById("bigScore").innerHTML=`${pct}<span class="pct">%</span>`;
   document.getElementById("rpair").innerHTML=`${nA} <span class="ramp">&</span> ${nB}`;
-  document.getElementById("verdictBadge").textContent=vE[1];
-  document.getElementById("verdictTitle").textContent=vE[1];
-  document.getElementById("verdictText").textContent=vE[2];
+  document.getElementById("verdictBadge").textContent=vTitle;
+  document.getElementById("verdictTitle").textContent=vTitle;
+  document.getElementById("verdictText").textContent=vText;
   renderCompatSection(pA);
 
   const pl = lang==="es"
