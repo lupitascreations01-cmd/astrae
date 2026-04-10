@@ -78,13 +78,13 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .ld{width:6px;height:6px;border-radius:50%;background:var(--rose-m);animation:lpulse 1.4s ease-in-out infinite;}
 .ld:nth-child(2){animation-delay:.22s;}.ld:nth-child(3){animation-delay:.44s;}
 @keyframes lpulse{0%,80%,100%{opacity:.2;transform:scale(.7);}40%{opacity:1;transform:scale(1);}}
-.rhero{text-align:center;padding:22px 20px 16px;border-bottom:0.5px solid var(--bord);}
-.score-wrap{position:relative;display:inline-block;}
-.score-ring{position:absolute;inset:-14px;border-radius:50%;border:1.5px solid var(--rose-m);animation:pulse-ring 2s ease-in-out infinite;}
+.rhero{text-align:center;padding:16px 20px 16px;border-bottom:0.5px solid var(--bord);}
+.score-wrap{position:relative;display:inline-block;padding:14px;}
+.score-ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--rose-m);animation:pulse-ring 2s ease-in-out infinite;}
 @keyframes pulse-ring{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
-.big-score{font-family:"Cormorant Garamond",serif;font-size:104px;font-weight:400;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;position:relative;}
-.big-score .pct{font-size:36px;color:var(--rose-m);position:absolute;right:-34px;top:10px;}
-.slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:18px;}
+.big-score{font-family:"Cormorant Garamond",serif;font-size:96px;font-weight:400;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;position:relative;}
+.big-score .pct{font-size:32px;color:var(--rose-m);position:absolute;right:-30px;top:8px;}
+.slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:12px;}
 .rpair{font-family:"Cormorant Garamond",serif;font-size:18px;font-style:italic;color:var(--txt2);margin-top:10px;}
 .ramp{color:var(--rose-m);}
 .verdict-badge{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 16px;border-radius:20px;background:var(--rose-l);border:0.5px solid var(--rose-b);font-size:12px;color:var(--rose-m);}
@@ -828,7 +828,10 @@ function renderResults(r){
         s+=bonus;
       }
     }
-    aS[k]=cnt>0?Math.min(100,Math.round(30+(s/cnt)*8)):30;
+    // Anclar las áreas al score global: varían ±20pts alrededor del pct
+    const rawArea=cnt>0?Math.round((s/cnt)*10):0;
+    const anchored=Math.min(99,Math.max(20,Math.round(pct*0.7 + rawArea*0.3)));
+    aS[k]=anchored;
   }
   document.getElementById("areasGrid").innerHTML=Object.entries(AREAS).map(([k,ad])=>{const p=aS[k],label=lang==="es"?ad.es:ad.en;return `<div class="acard"><div class="ahead"><div class="aname">${label}</div><div class="apct">${p}%</div></div><div class="track"><div class="bar" style="width:${p}%;background:${ad.c}"></div></div><div class="ainsight">${ai(k,p,lang)}</div></div>`;}).join("");
 
@@ -1029,26 +1032,31 @@ function generateCard(){
     arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
     ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
 
-    // Score — número centrado, % como superscript flotante
+    // Score — centrado visualmente compensando el % superscript
     const scoreFontSize = score.length > 2 ? 210 : 250;
-    const pctFontSize = Math.round(scoreFontSize * 0.28);
+    const pctFontSize = Math.round(scoreFontSize * 0.26);
 
-    // Medir ancho del número para calcular posición del %
+    // Medir ambas partes para centrar el grupo completo
     ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
     const numW = ctx.measureText(score).width;
+    ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
+    const pctW = ctx.measureText("%").width;
+    // El grupo total es numW + gap + pctW, centrado en cx
+    const groupW = numW + 12 + pctW;
+    const groupStartX = cx - groupW / 2;
 
-    // Dibujar número centrado exacto
-    ctx.textAlign = "center";
+    // Número
+    ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
+    ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#F2EEF9";
-    ctx.fillText(score, cx, cy);
+    ctx.fillText(score, groupStartX, cy);
 
-    // % posicionado a la derecha del número sin desplazarlo
+    // % superscript
     ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
     ctx.fillStyle = "#ED93B1";
-    ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    ctx.fillText("%", cx + numW/2 + 8, cy - scoreFontSize * 0.42);
+    ctx.fillText("%", groupStartX + numW + 10, cy - scoreFontSize * 0.40);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
@@ -1361,7 +1369,10 @@ function renderNatalScreen(){
     const cacheKey=`${pid}-${planet}`;
     const cached=NATAL_PLANET_CACHE[cacheKey];
     return`<div class="pacc-item" id="pacc_${pid}_${planet}">
-      <div class="pacc-header" onclick="togglePlanetCard('${pid}','${planet}','${pnames[planet]}','${signName}','${name}')">
+      <div class="pacc-header" 
+        data-pid="${pid}" data-planet="${planet}" 
+        data-pname="${pnames[planet]}" data-sign="${signName}" data-person="${name}"
+        onclick="togglePlanetCard(this)">
         <div class="pacc-left">
           <span class="pacc-glyph">${NATAL_GLYPH[planet]}</span>
           <span class="pacc-planet">${pnames[planet]}</span>
@@ -1384,7 +1395,12 @@ function renderNatalScreen(){
   document.getElementById("natalScroll").scrollTop=0;
 }
 
-async function togglePlanetCard(pid,planet,pname,signName,personName){
+async function togglePlanetCard(el){
+  const pid=el.dataset.pid;
+  const planet=el.dataset.planet;
+  const pname=el.dataset.pname;
+  const signName=el.dataset.sign;
+  const personName=el.dataset.person;
   const body=document.getElementById(`paccBody_${pid}_${planet}`);
   const arrow=document.getElementById(`arrow_${pid}_${planet}`);
   const isOpen=body.classList.contains("open");
@@ -1401,6 +1417,10 @@ async function togglePlanetCard(pid,planet,pname,signName,personName){
   try{
     const res=await fetch("/api/interpret",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"planet",planetA:pname,signA:signName,nameA:personName,lang})});
     const data=await res.json();
+    if(!res.ok){
+      if(contentEl)contentEl.innerHTML=`<span style="font-size:12px;color:var(--rose-m);">Error ${res.status}: ${data.error||"desconocido"}</span>`;
+      return;
+    }
     const text=data.interpretation||"";
     NATAL_PLANET_CACHE[cacheKey]=text;
     if(contentEl)contentEl.innerHTML=`<div class="pacc-interp">${text}</div>${natalShareBtn(pname,signName,personName,text,lang)}`;
@@ -1469,7 +1489,20 @@ async function submitNatalQuestion(){
   try{
     const res=await fetch("/api/interpret",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"freeQuestion",nameA:name,chartSummary,question,lang:l})});
     const data=await res.json();
+    if(!res.ok){
+      const errMsg=data.error||`Error ${res.status}`;
+      showToast(`Error: ${errMsg}`);
+      btn.disabled=false;
+      btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";
+      return;
+    }
     const answer=data.interpretation||"";
+    if(!answer){
+      showToast(lang==="es"?"Sin respuesta — intenta de nuevo":"No response — try again");
+      btn.disabled=false;
+      btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";
+      return;
+    }
     incrementQAUsed();
     NATAL_QA_ANSWERS_STORE.unshift({pid,question,answer});
     const answersEl=document.getElementById("natalQAAnswers");
@@ -1480,7 +1513,10 @@ async function submitNatalQuestion(){
     input.value="";
     updateQACounter();
     if(!isPremium()&&getQAUsed()>=NATAL_QA_FREE_LIMIT)showNatalUpgrade();
-  }catch(e){showToast(lang==="es"?"Error — intenta de nuevo":"Error — try again");}
+  }catch(e){
+    console.error("QA error:",e);
+    showToast(lang==="es"?`Error: ${e.message}`:`Error: ${e.message}`);
+  }
   btn.disabled=false;
   btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";
 }
