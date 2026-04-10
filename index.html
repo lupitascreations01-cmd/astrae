@@ -1032,26 +1032,32 @@ function generateCard(){
     arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
     ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
 
-    // Score — centrado geométrico sin depender de measureText
-    const scoreFontSize = score.length > 2 ? 200 : 240;
-    const pctFontSize = Math.round(scoreFontSize * 0.24);
+    // Score — fuente sans-serif (garantizada en Android), centrado geométrico
+    const scoreFontSize = 220;
+    const pctFontSize = 80;
+    const gap = 14; // espacio entre número y %
 
-    // Dibujar número centrado
-    ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
-    ctx.textAlign = "center";
+    ctx.font = `200 ${scoreFontSize}px sans-serif`;
+    const numW = ctx.measureText(score).width;
+    ctx.font = `200 ${pctFontSize}px sans-serif`;
+    const pctW = ctx.measureText("%").width;
+
+    // Centro del grupo completo
+    const totalW = numW + gap + pctW;
+    const startX = cx - totalW / 2;
+
+    // Número
+    ctx.font = `200 ${scoreFontSize}px sans-serif`;
+    ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#F2EEF9";
-    ctx.fillText(score, cx, cy);
+    ctx.fillText(score, startX, cy);
 
-    // % superscript: posición fija relativa al tamaño del font
-    // Offset horizontal: ~0.3 * fontSize * digitCount
-    const digitCount = score.length;
-    const pctOffsetX = digitCount === 1 ? scoreFontSize * 0.28 : digitCount === 2 ? scoreFontSize * 0.52 : scoreFontSize * 0.72;
-    ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
+    // % superscript
+    ctx.font = `200 ${pctFontSize}px sans-serif`;
     ctx.fillStyle = "#ED93B1";
-    ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    ctx.fillText("%", cx + pctOffsetX, cy - scoreFontSize * 0.40);
+    ctx.fillText("%", startX + numW + gap, cy - scoreFontSize * 0.36);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
