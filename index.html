@@ -78,13 +78,13 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .ld{width:6px;height:6px;border-radius:50%;background:var(--rose-m);animation:lpulse 1.4s ease-in-out infinite;}
 .ld:nth-child(2){animation-delay:.22s;}.ld:nth-child(3){animation-delay:.44s;}
 @keyframes lpulse{0%,80%,100%{opacity:.2;transform:scale(.7);}40%{opacity:1;transform:scale(1);}}
-.rhero{text-align:center;padding:16px 20px 16px;border-bottom:0.5px solid var(--bord);}
-.score-wrap{position:relative;display:inline-block;padding:14px;}
+.rhero{text-align:center;padding:20px 20px 16px;border-bottom:0.5px solid var(--bord);}
+.score-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;width:160px;height:160px;}
 .score-ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--rose-m);animation:pulse-ring 2s ease-in-out infinite;}
 @keyframes pulse-ring{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
 .big-score{font-family:"Cormorant Garamond",serif;font-size:96px;font-weight:400;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;position:relative;}
-.big-score .pct{font-size:32px;color:var(--rose-m);position:absolute;right:-30px;top:8px;}
-.slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:12px;}
+.big-score .pct{font-size:30px;color:var(--rose-m);position:absolute;right:-28px;top:6px;}
+.slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:14px;}
 .rpair{font-family:"Cormorant Garamond",serif;font-size:18px;font-style:italic;color:var(--txt2);margin-top:10px;}
 .ramp{color:var(--rose-m);}
 .verdict-badge{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 16px;border-radius:20px;background:var(--rose-l);border:0.5px solid var(--rose-b);font-size:12px;color:var(--rose-m);}
@@ -463,14 +463,14 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 <div class="toast" id="toast"></div>
 <div class="card-preview-overlay" id="cardPreviewOverlay">
   <div class="card-preview-header">
-    <span class="card-preview-title" data-es="u2746 Vista previa" data-en="u2746 Preview">u2746 Vista previa</span>
+    <span class="card-preview-title" data-es="✦ Vista previa" data-en="✦ Preview">✦ Vista previa</span>
     <button class="card-preview-close" onclick="closeCardPreview()">&#215;</button>
   </div>
   <div class="card-preview-scroll">
     <img class="card-preview-img" id="cardPreviewImg" src="" alt="preview">
     <div class="card-preview-actions">
-      <button class="card-dl-btn" id="cardDlBtn" onclick="downloadCard()" data-es="u2193 Descargar imagen" data-en="u2193 Download image">u2193 Descargar imagen</button>
-      <button class="card-share-native" onclick="shareCardNative()" data-es="Compartir u2197" data-en="Share u2197">Compartir u2197</button>
+      <button class="card-dl-btn" id="cardDlBtn" onclick="downloadCard()" data-es="↓ Descargar imagen" data-en="↓ Download image">↓ Descargar imagen</button>
+      <button class="card-share-native" onclick="shareCardNative()" data-es="Compartir ↗" data-en="Share ↗">Compartir ↗</button>
     </div>
   </div>
 </div>
@@ -1032,31 +1032,26 @@ function generateCard(){
     arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
     ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
 
-    // Score — centrado visualmente compensando el % superscript
-    const scoreFontSize = score.length > 2 ? 210 : 250;
-    const pctFontSize = Math.round(scoreFontSize * 0.26);
+    // Score — centrado geométrico sin depender de measureText
+    const scoreFontSize = score.length > 2 ? 200 : 240;
+    const pctFontSize = Math.round(scoreFontSize * 0.24);
 
-    // Medir ambas partes para centrar el grupo completo
+    // Dibujar número centrado
     ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
-    const numW = ctx.measureText(score).width;
-    ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
-    const pctW = ctx.measureText("%").width;
-    // El grupo total es numW + gap + pctW, centrado en cx
-    const groupW = numW + 12 + pctW;
-    const groupStartX = cx - groupW / 2;
-
-    // Número
-    ctx.font = `300 ${scoreFontSize}px 'Georgia', serif`;
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#F2EEF9";
-    ctx.fillText(score, groupStartX, cy);
+    ctx.fillText(score, cx, cy);
 
-    // % superscript
+    // % superscript: posición fija relativa al tamaño del font
+    // Offset horizontal: ~0.3 * fontSize * digitCount
+    const digitCount = score.length;
+    const pctOffsetX = digitCount === 1 ? scoreFontSize * 0.28 : digitCount === 2 ? scoreFontSize * 0.52 : scoreFontSize * 0.72;
     ctx.font = `300 ${pctFontSize}px 'Georgia', serif`;
     ctx.fillStyle = "#ED93B1";
+    ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    ctx.fillText("%", groupStartX + numW + 10, cy - scoreFontSize * 0.40);
+    ctx.fillText("%", cx + pctOffsetX, cy - scoreFontSize * 0.40);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
