@@ -82,8 +82,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .score-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;width:160px;height:160px;}
 .score-ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--rose-m);animation:pulse-ring 2s ease-in-out infinite;}
 @keyframes pulse-ring{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
-.big-score{font-family:"Cormorant Garamond",serif;font-size:96px;font-weight:400;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;position:relative;}
-.big-score .pct{font-size:30px;color:var(--rose-m);position:absolute;right:-28px;top:6px;}
+.big-score{font-family:"Cormorant Garamond",serif;font-size:96px;font-weight:300;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;position:relative;width:130px;text-align:center;}
+.big-score .pct{font-size:28px;color:var(--rose-m);position:absolute;right:-26px;top:8px;font-weight:300;}
 .slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:14px;}
 .rpair{font-family:"Cormorant Garamond",serif;font-size:18px;font-style:italic;color:var(--txt2);margin-top:10px;}
 .ramp{color:var(--rose-m);}
@@ -1033,32 +1033,79 @@ function generateCard(){
     arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
     ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
 
-    // Score — fuente sans-serif (garantizada en Android), centrado geométrico
-    const scoreFontSize = 220;
-    const pctFontSize = 80;
-    const gap = 14; // espacio entre número y %
+    // Score — dibujado con segmentos estilo display digital, sin depender de fuentes
+    function drawDigit(ctx, digit, x, y, size, color) {
+      const s = size; // alto del dígito
+      const w = s * 0.55; // ancho
+      const t = s * 0.09; // grosor del trazo
+      const g = s * 0.03; // gap en esquinas
+      ctx.fillStyle = color;
+      // Segmentos: [top, topL, topR, mid, botL, botR, bot]
+      const segs = {
+        0:[1,1,1,0,1,1,1], 1:[0,0,1,0,0,1,0], 2:[1,0,1,1,1,0,1],
+        3:[1,0,1,1,0,1,1], 4:[0,1,1,1,0,1,0], 5:[1,1,0,1,0,1,1],
+        6:[1,1,0,1,1,1,1], 7:[1,0,1,0,0,1,0], 8:[1,1,1,1,1,1,1],
+        9:[1,1,1,1,0,1,1]
+      };
+      const d = segs[digit];
+      if(!d) return;
+      const r = t/2;
+      function hBar(bx, by) {
+        ctx.beginPath();
+        ctx.moveTo(bx+g+r, by); ctx.lineTo(bx+w-g-r, by);
+        ctx.arcTo(bx+w-g, by, bx+w-g, by+r, r);
+        ctx.lineTo(bx+w-g, by+t-r);
+        ctx.arcTo(bx+w-g, by+t, bx+w-g-r, by+t, r);
+        ctx.lineTo(bx+g+r, by+t);
+        ctx.arcTo(bx+g, by+t, bx+g, by+t-r, r);
+        ctx.lineTo(bx+g, by+r);
+        ctx.arcTo(bx+g, by, bx+g+r, by, r);
+        ctx.fill();
+      }
+      function vBar(bx, by) {
+        ctx.beginPath();
+        ctx.moveTo(bx, by+g+r); ctx.lineTo(bx, by+s/2-g-r);
+        ctx.arcTo(bx, by+s/2-g, bx+r, by+s/2-g, r);
+        ctx.lineTo(bx+t-r, by+s/2-g);
+        ctx.arcTo(bx+t, by+s/2-g, bx+t, by+s/2-g-r, r);
+        ctx.lineTo(bx+t, by+g+r);
+        ctx.arcTo(bx+t, by+g, bx+t-r, by+g, r);
+        ctx.lineTo(bx+r, by+g);
+        ctx.arcTo(bx, by+g, bx, by+g+r, r);
+        ctx.fill();
+      }
+      if(d[0]) hBar(x, y);                          // top
+      if(d[1]) vBar(x, y);                           // topL
+      if(d[2]) vBar(x+w-t, y);                       // topR
+      if(d[3]) hBar(x, y+s/2-t/2);                  // mid
+      if(d[4]) vBar(x, y+s/2);                       // botL
+      if(d[5]) vBar(x+w-t, y+s/2);                  // botR
+      if(d[6]) hBar(x, y+s-t);                       // bot
+    }
 
-    ctx.font = `200 ${scoreFontSize}px sans-serif`;
-    const numW = ctx.measureText(score).width;
-    ctx.font = `200 ${pctFontSize}px sans-serif`;
-    const pctW = ctx.measureText("%").width;
+    const digitH = 220;
+    const digitW = digitH * 0.55;
+    const digitGap = 14;
+    const pctSize = 80;
+    const digits = score.toString().split('').map(Number);
+    const totalDigitW = digits.length * digitW + (digits.length - 1) * digitGap;
+    const pctW = pctSize * 0.4;
+    const groupW = totalDigitW + 20 + pctW;
+    let dx = cx - groupW / 2;
+    const dy = cy - digitH / 2;
 
-    // Centro del grupo completo
-    const totalW = numW + gap + pctW;
-    const startX = cx - totalW / 2;
+    // Dibujar cada dígito
+    digits.forEach((d, i) => {
+      drawDigit(ctx, d, dx, dy, digitH, "#F2EEF9");
+      dx += digitW + digitGap;
+    });
 
-    // Número
-    ctx.font = `200 ${scoreFontSize}px sans-serif`;
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#F2EEF9";
-    ctx.fillText(score, startX, cy);
-
-    // % superscript
-    ctx.font = `200 ${pctFontSize}px sans-serif`;
+    // % como texto pequeño arriba a la derecha
+    ctx.font = `300 ${pctSize}px sans-serif`;
     ctx.fillStyle = "#ED93B1";
+    ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    ctx.fillText("%", startX + numW + gap, cy - scoreFontSize * 0.36);
+    ctx.fillText("%", dx + 8, dy);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
