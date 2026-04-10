@@ -773,6 +773,7 @@ function startCalc(){
     const pA=planetsPrecise(yA,mA,dAd,hA),pB=planetsPrecise(yB,mB,dBd,hB);
     markRead();
     lastResult={pA,pB,nA,nB};
+    try{sessionStorage.setItem('duual_last',JSON.stringify(lastResult));}catch(e){}
     try{renderResults(lastResult);}catch(e){console.error("Render error:",e);}
     goScreen("results");
   },2600);
@@ -1259,6 +1260,16 @@ updateClock();setInterval(updateClock,30000);
 updatePremiumUI();
 selectPlan("annual");
 
+// Restaurar último resultado de sesión si existe
+(function restoreSession(){
+  try{
+    const saved=sessionStorage.getItem('duual_last');
+    if(saved){
+      lastResult=JSON.parse(saved);
+    }
+  }catch(e){}
+})();
+
 (function cosmos(){
   const cv=document.getElementById("cosmosCanvas"),ctx=cv.getContext("2d");
   let W,H,stars=[];
@@ -1419,7 +1430,9 @@ async function togglePlanetCard(el){
     const res=await fetch("/api/interpret",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"planet",planetA:pname,signA:signName,nameA:personName,lang})});
     const data=await res.json();
     if(!res.ok){
-      if(contentEl)contentEl.innerHTML=`<span style="font-size:12px;color:var(--rose-m);">Error ${res.status}: ${data.error||"desconocido"}</span>`;
+      const errMsg=data.error||`Error ${res.status}`;
+      const detail=data.detail||'';
+      if(contentEl)contentEl.innerHTML=`<span style="font-size:11px;color:var(--rose-m);">${errMsg}${detail?' — '+detail:''}</span>`;
       return;
     }
     const text=data.interpretation||"";
