@@ -773,7 +773,7 @@ function startCalc(){
     const pA=planetsPrecise(yA,mA,dAd,hA),pB=planetsPrecise(yB,mB,dBd,hB);
     markRead();
     lastResult={pA,pB,nA,nB};
-    try{sessionStorage.setItem('duual_last',JSON.stringify(lastResult));}catch(e){}
+    try{localStorage.setItem('duual_last',JSON.stringify(lastResult));}catch(e){}
     try{renderResults(lastResult);}catch(e){console.error("Render error:",e);}
     goScreen("results");
   },2600);
@@ -1260,12 +1260,15 @@ updateClock();setInterval(updateClock,30000);
 updatePremiumUI();
 selectPlan("annual");
 
-// Restaurar último resultado de sesión si existe
+// Restaurar último resultado si existe
 (function restoreSession(){
   try{
-    const saved=sessionStorage.getItem('duual_last');
+    const saved=localStorage.getItem('duual_last');
     if(saved){
       lastResult=JSON.parse(saved);
+      // Si había un resultado activo, ir directo a resultados
+      renderResults(lastResult);
+      goScreen("results");
     }
   }catch(e){}
 })();
