@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Duual">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Duual · Tu amor, escrito en las estrellas</title>
+✦ <span id="splashTag">tu amor, escrito en las estrellas</span> ✦
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2/source/js/astronomy.browser.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
@@ -185,7 +185,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .compat-tip{font-size:11px;color:var(--txt2);margin-top:3px;line-height:1.5;}
 /* NATAL SCREEN */
 .natal-screen-header{padding:env(safe-area-inset-top,14px) 22px 10px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:0.5px solid var(--bord);}
-.natal-back{background:none;border:none;color:var(--txt3);font-size:28px;cursor:pointer;font-family:"DM Sans",sans-serif;padding:8px 12px 8px 0;}
+.natal-back{background:none;border:none;color:var(--txt3);font-size:28px;cursor:pointer;font-family:"Cormorant Garamond",sans-serif;padding:8px 12px 8px 0;}
 .natal-screen-title{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:300;color:var(--txt);}
 .natal-person-toggle{display:flex;gap:8px;margin:14px 16px 0;}
 .npt-btn{flex:1;padding:10px;background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-md);font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt3);cursor:pointer;}
@@ -309,7 +309,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 
 <div class="screen" id="s-results">
   <div class="status">
-    <button onclick="goScreen('input')" style="background:none;border:none;color:var(--txt3);font-size:28px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:8px 12px 8px 0;">← <span data-es="Nueva" data-en="New">Nueva</span></button>
+    <button onclick="goScreen('input')" style="background:none;border:none;color:var(--txt3);font-size:28px;cursor:pointer;font-family:'Cormorant Garamond',sans-serif;padding:8px 12px 8px 0;">← <span data-es="Nueva" data-en="New">Nueva</span></button>
     <span style="letter-spacing:2px">· · · ▮</span>
   </div>
   <div class="scroll">
@@ -379,7 +379,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 
 <div class="screen" id="s-paywall">
   <div class="status">
-    <button onclick="goBack()" style="background:none;border:none;color:var(--txt3);font-size:28px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:8px 12px 8px 0;">← <span data-es="Volver" data-en="Back">Volver</span></button>
+    <button onclick="goBack()" style="background:none;border:none;color:var(--txt3);font-size:28px;cursor:pointer;font-family:'Cormorant Garamond',sans-serif;padding:8px 12px 8px 0;">← <span data-es="Volver" data-en="Back">Volver</span></button>
     <span style="letter-spacing:2px">· · · ▮</span>
   </div>
   <div class="scroll">
@@ -703,6 +703,7 @@ function setLang(l){
   if(lastResult) renderResults(lastResult);
   updatePayBtn();
   document.querySelectorAll(".time-label").forEach(el=>el.textContent=el.getAttribute("data-"+l)||el.textContent);
+  localStorage.setItem('duual_lang',l);
 }
 
 function goScreen(n){
@@ -1260,6 +1261,8 @@ function deleteHistory(index){
 }
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
 function updateClock(){const n=new Date();document.getElementById("clock").textContent=n.getHours()+":"+(n.getMinutes()<10?"0":"")+n.getMinutes();}
+const splashTag=document.getElementById('splashTag');
+if(splashTag){const sl=localStorage.getItem('duual_lang')||'es';splashTag.textContent=sl==='en'?'your love, written in the stars':'tu amor, escrito en las estrellas';}
 setTimeout(()=>{const s=document.getElementById('splash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),800);}},2200);
 updateClock();setInterval(updateClock,30000);
 updatePremiumUI();
