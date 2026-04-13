@@ -1056,19 +1056,24 @@ function generateCard(){
     } catch(e) {}
 
     const numSize = 180;
-    const pctSize = 70;
-    ctx.font = `200 ${numSize}px Montserrat, sans-serif`;
-    const numWidth = ctx.measureText(score).width;
-    ctx.font = `300 ${pctSize}px Montserrat, sans-serif`;
-    const pctWidth = ctx.measureText("%").width;
-    const groupGap = 14;
-    const totalWidth = numWidth + groupGap + pctWidth;
-    const groupStartX = cx - totalWidth / 2;
+const pctSize = 70;
 
-    // Número
-    ctx.font = `200 ${numSize}px Montserrat, sans-serif`;
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
+// Número centrado exacto
+ctx.font = `200 ${numSize}px Montserrat, sans-serif`;
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+ctx.fillStyle = "#F2EEF9";
+ctx.fillText(score, cx, cy);
+
+// % a la derecha con offset fijo según dígitos
+const pctOffsetX = score.length === 1 ? 115 : score.length === 2 ? 155 : 195;
+ctx.font = `300 ${pctSize}px Montserrat, sans-serif`;
+ctx.fillStyle = "#ED93B1";
+ctx.textAlign = "left";
+ctx.textBaseline = "top";
+ctx.fillText("%", cx + pctOffsetX, cy - 75);
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
     ctx.fillStyle = "#F2EEF9";
     ctx.fillText(score, groupStartX, cy);
 
