@@ -393,7 +393,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <div class="feat-row"><div class="feat-icon">🪐</div><div><div class="feat-title" data-es="12 planetas completos" data-en="Full 12 planets">12 planetas completos</div><div class="feat-desc" data-es="Quirón y Nodo Norte incluidos." data-en="Chiron and North Node included.">Quirón y Nodo Norte incluidos.</div></div></div>
       <div class="feat-row"><div class="feat-icon">♀</div><div><div class="feat-title" data-es="Venus & Marte profundo" data-en="Deep Venus & Mars">Venus & Marte profundo</div><div class="feat-desc" data-es="Análisis completo de la química romántica." data-en="Full analysis of romantic chemistry.">Análisis completo de la química romántica.</div></div></div>
       <div class="feat-row"><div class="feat-icon">🔥</div><div><div class="feat-title" data-es="Balance de elementos" data-en="Element balance">Balance de elementos</div><div class="feat-desc" data-es="Fuego, Tierra, Aire y Agua." data-en="Fire, Earth, Air and Water.">Fuego, Tierra, Aire y Agua.</div></div></div>
-      <div class="feat-row"><div class="feat-icon">🌀</div><div><div class="feat-title">Quirón & Nodo Norte</div><div class="feat-desc" data-es="Las heridas kármicas y el propósito compartido." data-en="Karmic wounds and shared purpose.">Las heridas kármicas y el propósito compartido.</div></div></div>
+      <div class="feat-row"><div class="feat-icon">🌙</div><div><div class="feat-title" data-es="Carta natal con IA" data-en="AI natal chart">Carta natal con IA</div><div class="feat-desc" data-es="Interpretación personalizada de cada planeta por inteligencia artificial." data-en="AI-powered interpretation of each planet in your natal chart.">Interpretación personalizada de cada planeta.</div></div></div>
+      <div class="feat-row"><div class="feat-icon">✨</div><div><div class="feat-title" data-es="Preguntas ilimitadas a los astros" data-en="Unlimited questions to the stars">Preguntas ilimitadas a los astros</div><div class="feat-desc" data-es="Pregunta lo que quieras sobre tu carta natal. Sin límite diario." data-en="Ask anything about your natal chart. No daily limit.">Pregunta lo que quieras. Sin límite diario.</div></div></div>
     </div>
     <div class="pricing-wrap">
       <div class="price-card" id="cardMonthly" onclick="selectPlan('monthly')">
@@ -713,22 +714,7 @@ function goScreen(n){
   document.getElementById("s-"+n).classList.add("active");
   if(n==="history") renderHistory();
   updatePremiumUI();
-  // Agregar entrada al historial para capturar flecha del celular
-  history.pushState({screen:n},"",window.location.pathname);
 }
-
-// Capturar flecha volver del celular
-window.addEventListener('popstate',function(e){
-  const cur=document.querySelector(".screen.active");
-  const curId=cur?cur.id.replace("s-",""):"input";
-  if(curId==="input"){
-    // En la pantalla inicial, permitir que Android cierre la app normalmente
-    history.pushState({screen:"input"},"",window.location.pathname);
-  } else {
-    // En cualquier otra pantalla, volver a la anterior
-    goBack();
-  }
-});
 function goBack(){goScreen(prevScr||"input");}
 
 const signOverrides={};
@@ -1044,16 +1030,16 @@ function generateCard(){
       ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
     }
 
-    // Score circle
+    // Score — círculo con número más pequeño (opción A)
     const cx=W/2, cy=H*0.38, cr=260;
 
     // Outer ring
     ctx.beginPath(); ctx.arc(cx,cy,cr+15,0,Math.PI*2);
-    ctx.strokeStyle="rgba(201,75,114,0.25)"; ctx.lineWidth=2; ctx.stroke();
+    ctx.strokeStyle="rgba(201,75,114,0.15)"; ctx.lineWidth=1.5; ctx.stroke();
 
     // Inner ring
     ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2);
-    ctx.strokeStyle="rgba(201,75,114,0.5)"; ctx.lineWidth=3; ctx.stroke();
+    ctx.strokeStyle="rgba(201,75,114,0.4)"; ctx.lineWidth=2; ctx.stroke();
 
     // Arc fill based on score
     const pct=parseInt(score)/100;
@@ -1062,31 +1048,43 @@ function generateCard(){
     arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
     ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
 
-
-    // Score canvas — Montserrat
+    // Score canvas — Montserrat, número más pequeño para que quepa bien en el círculo
     try {
       const mf = new FontFace('Montserrat','url(https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2)');
       await mf.load();
       document.fonts.add(mf);
     } catch(e) {}
-    ctx.font = `200 220px Montserrat, sans-serif`;
-    ctx.textAlign = "center";
+
+    const numSize = 180;
+    const pctSize = 70;
+    ctx.font = `200 ${numSize}px Montserrat, sans-serif`;
+    const numWidth = ctx.measureText(score).width;
+    ctx.font = `300 ${pctSize}px Montserrat, sans-serif`;
+    const pctWidth = ctx.measureText("%").width;
+    const groupGap = 14;
+    const totalWidth = numWidth + groupGap + pctWidth;
+    const groupStartX = cx - totalWidth / 2;
+
+    // Número
+    ctx.font = `200 ${numSize}px Montserrat, sans-serif`;
+    ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#F2EEF9";
-    ctx.fillText(score, cx, cy + 10);
-    ctx.font = `300 72px Montserrat, sans-serif`;
+    ctx.fillText(score, groupStartX, cy);
+
+    // % arriba a la derecha separado
+    ctx.font = `300 ${pctSize}px Montserrat, sans-serif`;
     ctx.fillStyle = "#ED93B1";
-    ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    ctx.fillText("%", cx + (score.length === 1 ? 68 : score.length === 2 ? 118 : 165), cy - 88);
+    ctx.fillText("%", groupStartX + numWidth + groupGap, cy - 72);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    // ✅ COMPATIBILIDAD — debajo del círculo, fuera del borde
+    // COMPATIBILIDAD debajo del círculo
     ctx.textAlign="center";
-    ctx.font="600 44px 'Arial', sans-serif";
+    ctx.font="400 42px 'Arial', sans-serif";
     ctx.fillStyle="rgba(237,147,177,0.9)";
-    ctx.letterSpacing="10px";
+    ctx.letterSpacing="12px";
     ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY", cx, cy+cr+58);
     ctx.letterSpacing="0px";
 
