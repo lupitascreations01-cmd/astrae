@@ -495,8 +495,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 
 <script>
 // PAYPAL — URLs de checkout
-const LS_MONTHLY = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=4.99&currency_code=USD&item_name=Duual+Premium+Monthly";
-const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=29.99&currency_code=USD&item_name=Duual+Premium+Annual";
+const LS_MONTHLY = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=4.99&currency_code=USD&item_name=Duual+Premium+Monthly&return=https://duual.vercel.app?paid=monthly";
+const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=29.99&currency_code=USD&item_name=Duual+Premium+Annual&return=https://duual.vercel.app?paid=annual";
 
 // ACCESS CODES — agrega emails de clientas que pagaron
 const ACCESS_CODES = [
@@ -972,7 +972,11 @@ async function restorePurchase(){
 
 (function checkReturn(){
   const p=new URLSearchParams(window.location.search);
-  if(p.get("order_id")){setPremium(p.get("plan")||"monthly");showToast(lang==="es"?"✦ ¡Bienvenida a Premium!":"✦ Welcome to Premium!");history.replaceState({},document.title,window.location.pathname);}
+  if(p.get("paid")){
+    showToast(lang==="es"?"✦ Pago recibido · Activa tu acceso abajo":"✦ Payment received · Activate access below");
+    history.replaceState({},document.title,window.location.pathname);
+    setTimeout(()=>goScreen("paywall"),1500);
+  }
 })();
 
 function saveToHistory(){
