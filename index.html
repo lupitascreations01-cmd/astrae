@@ -365,7 +365,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
         <li data-es="Análisis de elementos (Fuego, Tierra, Aire, Agua)" data-en="Element analysis">Análisis de elementos</li>
         <li data-es="Lecturas ilimitadas cada día" data-en="Unlimited daily readings">Lecturas ilimitadas cada día</li>
       </ul>
-      <button class="unlock-btn" onclick="goScreen('paywall')" data-es="Ver planes · desde $2.99/mes" data-en="See plans · from $2.99/mo">Ver planes · desde $2.99/mes</button>
+      <button class="unlock-btn" onclick="goScreen('paywall')" data-es="Ver planes · desde $4.99/mes" data-en="See plans · from $4.99/mo">Ver planes · desde $4.99/mes</button>
       <div class="uprice" data-es="Cancela cuando quieras" data-en="Cancel anytime">Cancela cuando quieras</div>
     </div>
   </div>
@@ -396,22 +396,26 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <div class="feat-row"><div class="feat-icon">🌙</div><div><div class="feat-title" data-es="Carta natal con IA" data-en="AI natal chart">Carta natal con IA</div><div class="feat-desc" data-es="Interpretación personalizada de cada planeta por inteligencia artificial." data-en="AI-powered interpretation of each planet in your natal chart.">Interpretación personalizada de cada planeta.</div></div></div>
       <div class="feat-row"><div class="feat-icon">✨</div><div><div class="feat-title" data-es="Preguntas ilimitadas a los astros" data-en="Unlimited questions to the stars">Preguntas ilimitadas a los astros</div><div class="feat-desc" data-es="Pregunta lo que quieras sobre tu carta natal. Sin límite diario." data-en="Ask anything about your natal chart. No daily limit.">Pregunta lo que quieras. Sin límite diario.</div></div></div>
     </div>
+    <div style="text-align:center;margin:0 16px 16px;padding:10px 14px;background:rgba(212,146,14,0.08);border:0.5px solid rgba(212,146,14,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <span style="font-size:16px;">✨</span>
+      <span style="font-size:12px;color:var(--gold);" data-es="✦ IA incluida — Carta natal y preguntas a los astros" data-en="✦ AI included — Natal chart & questions to the stars">✦ IA incluida — Carta natal y preguntas a los astros</span>
+    </div>
     <div class="pricing-wrap">
       <div class="price-card" id="cardMonthly" onclick="selectPlan('monthly')">
         <div class="price-period" data-es="MENSUAL" data-en="MONTHLY">MENSUAL</div>
-        <div class="price-amount"><span>$</span>2.99</div>
+        <div class="price-amount"><span>$</span>4.99</div>
         <div class="price-per" data-es="por mes" data-en="per month">por mes</div>
       </div>
       <div class="price-card featured" id="cardAnnual" onclick="selectPlan('annual')">
         <div class="best-badge" data-es="Mejor valor" data-en="Best value">Mejor valor</div>
         <div class="price-period" data-es="ANUAL" data-en="ANNUAL">ANUAL</div>
-        <div class="price-amount"><span>$</span>19.99</div>
+        <div class="price-amount"><span>$</span>29.99</div>
         <div class="price-per" data-es="por año" data-en="per year">por año</div>
-        <div class="price-save" data-es="Ahorras $15.89" data-en="Save $15.89">Ahorras $15.89</div>
+        <div class="price-save" data-es="Ahorras $29.89" data-en="Save $29.89">Ahorras $29.89</div>
       </div>
     </div>
     <button class="pay-btn pay-btn-annual" id="payBtn" onclick="handlePayment()">
-      <span id="payBtnText" data-es="Empezar plan anual · $19.99" data-en="Start annual plan · $19.99">Empezar plan anual · $19.99</span>
+      <span id="payBtnText" data-es="Empezar plan anual · $29.99" data-en="Start annual plan · $29.99">Empezar plan anual · $29.99</span>
     </button>
     <div class="pay-note" data-es="Sin sorpresas · Cancela cuando quieras · ES / EN" data-en="No surprises · Cancel anytime · ES / EN">Sin sorpresas · Cancela cuando quieras · ES / EN</div>
     <div style="text-align:center;padding:0 16px 8px;display:flex;align-items:center;justify-content:center;gap:7px;">
@@ -491,8 +495,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 
 <script>
 // PAYPAL — URLs de checkout
-const LS_MONTHLY = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=2.99&currency_code=USD&item_name=Duual+Premium+Monthly";
-const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=19.99&currency_code=USD&item_name=Duual+Premium+Annual";
+const LS_MONTHLY = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=4.99&currency_code=USD&item_name=Duual+Premium+Monthly";
+const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=29.99&currency_code=USD&item_name=Duual+Premium+Annual";
 
 // ACCESS CODES — agrega emails de clientas que pagaron
 const ACCESS_CODES = [
@@ -916,8 +920,8 @@ function selectPlan(p){
 }
 function updatePayBtn(){
   const btn=document.getElementById("payBtn");
-  if(selPlan==="monthly"){btn.className="pay-btn pay-btn-monthly";btn.innerHTML=`<span>${lang==="es"?"Empezar plan mensual · $2.99":"Start monthly plan · $2.99"}</span>`;}
-  else{btn.className="pay-btn pay-btn-annual";btn.innerHTML=`<span>${lang==="es"?"Empezar plan anual · $19.99":"Start annual plan · $19.99"}</span>`;}
+  if(selPlan==="monthly"){btn.className="pay-btn pay-btn-monthly";btn.innerHTML=`<span>${lang==="es"?"Empezar plan mensual · $4.99":"Start monthly plan · $4.99"}</span>`;}
+  else{btn.className="pay-btn pay-btn-annual";btn.innerHTML=`<span>${lang==="es"?"Empezar plan anual · $29.99":"Start annual plan · $29.99"}</span>`;}
 }
 
 function handlePayment(){
@@ -932,15 +936,37 @@ function handlePayment(){
   setTimeout(()=>showToast(lang==="es"?"¿Completaste el pago? Toca 'Restaurar acceso'":"Payment complete? Tap 'Restore access'"),3000);
 }
 
-function restorePurchase(){
+async function restorePurchase(){
   const email=prompt(lang==="es"?"Ingresa el email con que pagaste:":"Enter the email you used to pay:");
   if(!email||!email.includes("@")){showToast(lang==="es"?"Email no válido":"Invalid email");return;}
+  showToast(lang==="es"?"Verificando…":"Verifying…");
+  // Verificar primero en ACCESS_CODES local
   if(ACCESS_CODES.includes(email.toLowerCase().trim())){
     setPremium("annual");
     showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");
     setTimeout(()=>goBack(),1000);
-  } else {
-    showToast(lang==="es"?"Email no encontrado · Escríbenos":"Email not found · Contact support");
+    return;
+  }
+  // Luego verificar en Google Sheets
+  try{
+    const res=await fetch("/api/verify-premium",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({email:email.toLowerCase().trim()})
+    });
+    const data=await res.json();
+    if(data.premium){
+      setPremium(data.plan||"annual");
+      showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");
+      setTimeout(()=>goBack(),1000);
+    } else if(data.reason==="expired"){
+      showToast(lang==="es"?"Suscripción vencida · Renueva tu plan":"Subscription expired · Renew your plan");
+    } else {
+      showToast(lang==="es"?"Email no encontrado · Escríbenos":"Email not found · Contact support");
+    }
+  }catch(e){
+    // Fallback si falla la API
+    showToast(lang==="es"?"Error de conexión · Intenta de nuevo":"Connection error · Try again");
   }
 }
 
