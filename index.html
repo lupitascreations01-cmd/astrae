@@ -163,6 +163,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .hempty{text-align:center;padding:60px 20px;font-size:13px;color:var(--txt3);line-height:1.8;}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,24,48,0.95);border:0.5px solid var(--bord2);border-radius:20px;padding:10px 20px;font-size:13px;color:var(--txt2);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:99;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.tut-dot{width:7px;height:7px;border-radius:50%;background:rgba(242,238,249,0.2);transition:background 0.3s;}
+.tut-dot.on{background:var(--rose-m);}
 .natal-mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 14px 14px;}
 .natal-person{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:12px 14px;}
 .natal-pname{font-size:10px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--rose-m);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -197,13 +199,15 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .pacc-left{display:flex;align-items:center;gap:10px;}
 .pacc-glyph{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
 .pacc-planet{font-size:13px;font-weight:500;color:var(--txt);}
-.pacc-sign{font-size:12px;color:var(--txt3);margin-left:2px;}
-.pacc-arrow{font-size:12px;color:var(--txt3);transition:transform 0.2s;}
-.pacc-arrow.open{transform:rotate(180deg);}
+.pacc-sign{font-size:12px;color:rgba(242,238,249,0.55);margin-left:2px;}
+.pacc-arrow{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.08);border:0.5px solid rgba(242,238,249,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.2s,background 0.2s;}
+.pacc-arrow::after{content:"▾";font-size:13px;color:rgba(242,238,249,0.7);line-height:1;}
+.pacc-arrow.open{transform:rotate(180deg);background:var(--rose-l);border-color:var(--rose-b);}
+.pacc-arrow.open::after{color:var(--rose-m);}
 .pacc-body{padding:0 16px 14px;display:none;}
 .pacc-body.open{display:block;}
-.pacc-interp{font-size:12px;color:var(--txt2);line-height:1.85;}
-.pacc-share{display:flex;align-items:center;gap:6px;margin-top:10px;background:none;border:0.5px solid var(--bord2);border-radius:14px;padding:5px 13px;font-family:"DM Sans",sans-serif;font-size:11px;color:var(--txt3);cursor:pointer;}
+.pacc-interp{font-size:12px;color:rgba(242,238,249,0.75);line-height:1.85;}
+.pacc-share{display:flex;align-items:center;gap:6px;margin-top:10px;background:none;border:0.5px solid var(--bord2);border-radius:14px;padding:5px 13px;font-family:"DM Sans",sans-serif;font-size:11px;color:rgba(242,238,249,0.5);cursor:pointer;}
 .natal-qa-section{margin:18px 16px 0;}
 .natal-qa-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px;}
 .natal-qa-input{width:100%;background:var(--surf2);border:0.5px solid var(--bord);border-radius:var(--r-md);padding:12px 14px;font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt);outline:none;resize:none;min-height:72px;-webkit-appearance:none;}
@@ -479,6 +483,28 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 
 </div>
 <div class="toast" id="toast"></div>
+
+<!-- TUTORIAL DE BIENVENIDA -->
+<div id="tutorialOverlay" style="position:fixed;inset:0;background:rgba(5,3,14,0.92);z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;backdrop-filter:blur(16px);">
+  <div style="width:100%;max-width:340px;">
+    <!-- Paso actual -->
+    <div id="tutStep" style="text-align:center;">
+      <div id="tutIcon" style="font-size:48px;margin-bottom:20px;">✦</div>
+      <div id="tutTitle" style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#F2EEF9;margin-bottom:12px;"></div>
+      <div id="tutDesc" style="font-size:14px;color:rgba(242,238,249,0.7);line-height:1.75;margin-bottom:32px;"></div>
+    </div>
+    <!-- Dots -->
+    <div style="display:flex;justify-content:center;gap:8px;margin-bottom:28px;">
+      <div class="tut-dot" id="td0"></div>
+      <div class="tut-dot" id="td1"></div>
+      <div class="tut-dot" id="td2"></div>
+      <div class="tut-dot" id="td3"></div>
+    </div>
+    <!-- Botones -->
+    <button id="tutNext" onclick="tutorialNext()" style="width:100%;padding:15px;background:var(--rose);border:none;border-radius:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;margin-bottom:12px;"></button>
+    <button onclick="tutorialSkip()" style="width:100%;padding:10px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(242,238,249,0.35);cursor:pointer;" id="tutSkip"></button>
+  </div>
+</div>
 <div class="card-preview-overlay" id="cardPreviewOverlay">
   <div class="card-preview-header">
     <span class="card-preview-title" data-es="✦ Vista previa" data-en="✦ Preview">✦ Vista previa</span>
@@ -1301,7 +1327,7 @@ function showToast(msg){const t=document.getElementById("toast");t.textContent=m
 function updateClock(){const n=new Date();document.getElementById("clock").textContent=n.getHours()+":"+(n.getMinutes()<10?"0":"")+n.getMinutes();}
 const splashTag=document.getElementById('splashTag');
 if(splashTag){const sl=localStorage.getItem('duual_lang')||'es';splashTag.textContent=sl==='en'?'your love, written in the stars':'tu amor, escrito en las estrellas';}
-setTimeout(()=>{const s=document.getElementById('splash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),800);}},2200);
+setTimeout(()=>{const s=document.getElementById('splash');if(s){s.style.opacity='0';setTimeout(()=>{s.remove();showTutorial();},800);}},2200);
 updateClock();setInterval(updateClock,30000);
 updatePremiumUI();
 selectPlan("annual");
@@ -1328,7 +1354,110 @@ selectPlan("annual");
   function draw(){ctx.clearRect(0,0,W,H);[[W*.15,H*.12,"rgba(201,75,114,0.055)",W*.4],[W*.85,H*.6,"rgba(107,99,204,0.05)",W*.45]].forEach(([x,y,c,r])=>{const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c);g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);});const cs=stars.filter(s=>s.c);ctx.strokeStyle="rgba(237,147,177,0.14)";ctx.lineWidth=0.5;CL.forEach(([a,b])=>{if(cs[a]&&cs[b]){ctx.beginPath();ctx.moveTo(cs[a].x,cs[a].y);ctx.lineTo(cs[b].x,cs[b].y);ctx.stroke();}});stars.forEach(s=>{s.t+=s.spd;const f=s.o*(0.65+0.35*Math.sin(s.t));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.c?`rgba(237,147,177,${f})`:`rgba(255,252,255,${f})`;ctx.fill();if(s.r>1.1&&Math.sin(s.t)>.85){ctx.strokeStyle=`rgba(255,252,255,${f*.35})`;ctx.lineWidth=.4;ctx.beginPath();ctx.moveTo(s.x-4,s.y);ctx.lineTo(s.x+4,s.y);ctx.moveTo(s.x,s.y-4);ctx.lineTo(s.x,s.y+4);ctx.stroke();}});requestAnimationFrame(draw);}
   window.addEventListener("resize",resize);resize();draw();
 })();
-let dp;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;});
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// TUTORIAL DE BIENVENIDA
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const TUTORIAL_STEPS = {
+  es: [
+    { icon: "📅", title: "Ingresa dos fechas", desc: "Escribe el nombre y fecha de nacimiento de ambas personas. La hora es opcional pero mejora la precisión." },
+    { icon: "🌙", title: "Lee tu resultado", desc: "Obtén un score de compatibilidad, aspectos planetarios y análisis por área: romance, comunicación y más." },
+    { icon: "🪐", title: "Carta natal con IA", desc: "Con Premium, explora interpretaciones personalizadas de cada planeta y haz preguntas a los astros." }
+  ],
+  en: [
+    { icon: "📅", title: "Enter two dates", desc: "Add names and birth dates for both people. Time is optional but improves accuracy." },
+    { icon: "🌙", title: "Read your result", desc: "Get a compatibility score, planetary aspects and analysis by area: romance, communication and more." },
+    { icon: "🪐", title: "AI natal chart", desc: "With Premium, explore personalized interpretations of each planet and ask questions to the stars." }
+  ]
+};
+
+let tutCurrentStep = -1; // -1 = pantalla de idioma
+
+function showTutorial() {
+  if(localStorage.getItem('duual_tutorial_done')) return;
+  const overlay = document.getElementById('tutorialOverlay');
+  overlay.style.display = 'flex';
+  tutCurrentStep = -1;
+  renderTutStep();
+}
+
+function renderTutStep() {
+  const stepEl = document.getElementById('tutStep');
+  const nextBtn = document.getElementById('tutNext');
+  const skipBtn = document.getElementById('tutSkip');
+
+  if(tutCurrentStep === -1) {
+    // Pantalla de selección de idioma
+    document.getElementById('tutIcon').textContent = "✦";
+    document.getElementById('tutTitle').textContent = "Duual";
+    document.getElementById('tutDesc').innerHTML = '';
+    stepEl.querySelector('#tutDesc').style.display = 'none';
+
+    // Botones de idioma
+    nextBtn.style.display = 'none';
+    skipBtn.style.display = 'none';
+
+    // Insertar selector si no existe
+    if(!document.getElementById('tutLangSel')) {
+      const langDiv = document.createElement('div');
+      langDiv.id = 'tutLangSel';
+      langDiv.style.cssText = 'display:flex;gap:12px;justify-content:center;margin-bottom:16px;';
+      langDiv.innerHTML = `
+        <button onclick="tutSelectLang('es')" style="flex:1;padding:14px;background:var(--rose);border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;">Español</button>
+        <button onclick="tutSelectLang('en')" style="flex:1;padding:14px;background:var(--surf2);border:0.5px solid var(--bord2);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--txt2);cursor:pointer;">English</button>
+      `;
+      nextBtn.parentNode.insertBefore(langDiv, nextBtn);
+    }
+
+    // Dots — step 0 de 4
+    for(let i = 0; i < 4; i++) {
+      document.getElementById(`td${i}`).className = 'tut-dot' + (i === 0 ? ' on' : '');
+    }
+    return;
+  }
+
+  // Pasos normales
+  const langSel = document.getElementById('tutLangSel');
+  if(langSel) langSel.style.display = 'none';
+  nextBtn.style.display = 'block';
+  skipBtn.style.display = 'block';
+  document.getElementById('tutDesc').style.display = 'block';
+
+  const steps = TUTORIAL_STEPS[lang] || TUTORIAL_STEPS.es;
+  const step = steps[tutCurrentStep];
+  document.getElementById('tutIcon').textContent = step.icon;
+  document.getElementById('tutTitle').textContent = step.title;
+  document.getElementById('tutDesc').textContent = step.desc;
+  const isLast = tutCurrentStep === steps.length - 1;
+  nextBtn.textContent = isLast
+    ? (lang === 'es' ? '¡Empezar! ✦' : 'Get started! ✦')
+    : (lang === 'es' ? 'Siguiente →' : 'Next →');
+  skipBtn.textContent = lang === 'es' ? 'Saltar tutorial' : 'Skip tutorial';
+
+  for(let i = 0; i < 4; i++) {
+    document.getElementById(`td${i}`).className = 'tut-dot' + (i === tutCurrentStep + 1 ? ' on' : '');
+  }
+}
+
+function tutSelectLang(l) {
+  setLang(l);
+  tutCurrentStep = 0;
+  renderTutStep();
+}
+
+function tutorialNext() {
+  const steps = TUTORIAL_STEPS[lang] || TUTORIAL_STEPS.es;
+  if(tutCurrentStep < steps.length - 1) {
+    tutCurrentStep++;
+    renderTutStep();
+  } else {
+    tutorialSkip();
+  }
+}
+
+function tutorialSkip() {
+  localStorage.setItem('duual_tutorial_done', '1');
+  document.getElementById('tutorialOverlay').style.display = 'none';
+}
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // CARTA NATAL CON IA
@@ -1439,7 +1568,7 @@ function renderNatalScreen(){
           <span class="pacc-planet">${pnames[planet]}</span>
           <span class="pacc-sign">${l==="es"?"en":"in"} ${signName}</span>
         </div>
-        <span class="pacc-arrow" id="arrow_${pid}_${planet}">▾</span>
+        <span class="pacc-arrow" id="arrow_${pid}_${planet}"></span>
       </div>
       <div class="pacc-body" id="paccBody_${pid}_${planet}">
         <div id="paccContent_${pid}_${planet}">${cached
