@@ -876,7 +876,7 @@ function renderTutStep(){
   const isLast=tutCurrentStep===steps.length-1;
   nextBtn.textContent=isLast?(lang==='es'?'¡Empezar! ✦':'Get started! ✦'):(lang==='es'?'Siguiente →':'Next →');
   skipBtn.textContent=lang==='es'?'Saltar tutorial':'Skip tutorial';
- for(let i=0;i<4;i++)document.getElementById(`td${i}`).className='tut-dot'+(i===tutCurrentStep+1?' on':'');
+for(let i=0;i<4;i++)document.getElementById(`td${i}`).className='tut-dot'+(i===tutCurrentStep?' on':'');
 }
 function tutSelectLang(l){setLang(l);tutCurrentStep=0;renderTutStep();}
 function tutorialNext(){const steps=TUTORIAL_STEPS[lang]||TUTORIAL_STEPS.es;if(tutCurrentStep<steps.length-1){tutCurrentStep++;renderTutStep();}else{tutorialSkip();}}
