@@ -810,7 +810,12 @@ selectPlan("annual");
 (function restoreSession(){
   try{
     const saved=localStorage.getItem('duual_last');
-    if(saved){lastResult=JSON.parse(saved);renderResults(lastResult);goScreen("results");}
+    const isNewSession=!sessionStorage.getItem('duual_active');
+    sessionStorage.setItem('duual_active','1');
+    if(saved){
+      lastResult=JSON.parse(saved);
+      if(!isNewSession){renderResults(lastResult);goScreen("results");}
+    }
   }catch(e){}
 })();
 (function cosmos(){
