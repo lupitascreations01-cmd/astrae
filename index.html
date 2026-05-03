@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Duual · Tu amor, escrito en las estrellas</title>
-  <script defer data-domain="duual.vercel.app" src="https://plausible.io/js/script.js"></script>
+<script defer data-domain="duual.vercel.app" src="https://plausible.io/js/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2/source/js/astronomy.browser.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
@@ -44,6 +44,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .plabel{font-size:10px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--txt3);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
 .pdot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;}
 .da{background:var(--rose-m);}.db{background:#9E97F0;}
+.date-label{font-size:11px;color:var(--txt3);margin-bottom:4px;}
 .ninput{width:100%;background:var(--surf2);border:0.5px solid var(--bord);border-radius:var(--r-md);padding:11px 14px;font-family:"DM Sans",sans-serif;font-size:14px;color:var(--txt);margin-bottom:10px;outline:none;-webkit-appearance:none;}
 .ninput::placeholder{color:var(--txt3);}
 .ninput[type="date"]{color-scheme:dark;}
@@ -106,7 +107,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .ainsight{font-size:11px;color:var(--txt3);line-height:1.55;}
 .asp-list{display:flex;flex-direction:column;gap:7px;margin:0 14px 14px;}
 .asp-row{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--r-lg);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;}
-.asp-row.blurred{filter:blur(3.5px);pointer-events:none;user-select:none;}
 .asp-glyph{font-size:18px;line-height:1;flex-shrink:0;padding-top:1px;}
 .asp-body{flex:1;}
 .asp-title{font-size:13px;font-weight:500;color:var(--txt);margin-bottom:3px;}
@@ -123,7 +123,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .elem-tag{background:var(--surf2);border:0.5px solid var(--bord);border-radius:8px;padding:8px 10px;text-align:center;}
 .elem-name{font-size:11px;font-weight:500;color:var(--txt);margin-bottom:2px;}
 .elem-val{font-size:10px;color:var(--txt3);}
-/* PAYWALL */
 .paywall-hero{text-align:center;padding:32px 24px 20px;}
 .paywall-title{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:300;color:var(--txt);margin-bottom:8px;}
 .paywall-sub{font-size:13px;color:var(--txt2);line-height:1.7;}
@@ -186,7 +185,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .compat-label{font-size:11px;color:var(--txt3);margin-bottom:3px;}
 .compat-signs{font-size:13px;color:var(--txt);font-weight:500;}
 .compat-tip{font-size:11px;color:var(--txt2);margin-top:3px;line-height:1.5;}
-/* NATAL SCREEN */
 .natal-screen-header{padding:env(safe-area-inset-top,14px) 22px 10px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:0.5px solid var(--bord);}
 .natal-back{background:none;border:none;color:var(--txt3);font-size:20px;cursor:pointer;font-family:"DM Sans",sans-serif;padding:8px 12px 8px 0;}
 .natal-screen-title{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:300;color:var(--txt);}
@@ -226,7 +224,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .natal-qa-upgrade-btn{padding:9px 20px;background:var(--plum);border:none;border-radius:var(--r-md);font-family:"DM Sans",sans-serif;font-size:13px;color:#fff;cursor:pointer;}
 .ai-spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(201,75,114,0.3);border-top-color:#C94B72;border-radius:50%;animation:aispin 0.8s linear infinite;vertical-align:middle;margin-right:6px;}
 @keyframes aispin{to{transform:rotate(360deg);}}
-  .premium-section-wrapper{position:relative;margin:0 14px 8px;border-radius:var(--r-lg);overflow:hidden;}
+.premium-section-wrapper{position:relative;margin:0 14px 8px;border-radius:var(--r-lg);overflow:hidden;}
 .premium-section-wrapper.locked .premium-card{filter:blur(5px);pointer-events:none;user-select:none;}
 .premium-paywall-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;background:rgba(13,10,24,0.65);border-radius:var(--r-lg);text-align:center;padding:16px;backdrop-filter:blur(2px);border:0.5px solid var(--gold-b);}
 .premium-paywall-overlay .pw-icon{font-size:24px;margin-bottom:8px;}
@@ -241,7 +239,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .push-banner-actions{display:flex;gap:6px;align-items:center;}
 .push-banner-btn{padding:7px 14px;background:var(--plum);border:none;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:500;color:#fff;cursor:pointer;}
 .push-banner-dismiss{background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
-/* CARD PREVIEW MODAL */
 .card-preview-overlay{position:fixed;inset:0;background:rgba(5,3,14,0.93);z-index:200;display:none;flex-direction:column;align-items:center;backdrop-filter:blur(12px);}
 .card-preview-overlay.open{display:flex;}
 .card-preview-header{width:100%;display:flex;justify-content:space-between;align-items:center;padding:env(safe-area-inset-top,16px) 20px 10px;flex-shrink:0;}
@@ -272,6 +269,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 <canvas id="cosmosCanvas"></canvas>
 <div id="app">
 
+<!-- FIX 1: 'active' removed from s-input — goScreen() handles navigation after splash -->
 <div class="screen" id="s-input">
   <div class="status"><span id="clock">9:41</span><span style="letter-spacing:2px">· · · ▮</span></div>
   <div class="scroll" style="padding-bottom:8px;">
@@ -286,7 +284,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
         <span class="pbadge">✦ <span data-es="Premium activo" data-en="Premium active">Premium activo</span></span>
       </div>
     </div>
-    <!-- Push notifications banner -->
     <div class="push-banner" id="pushBanner" style="display:none;">
       <span class="push-banner-icon">🔔</span>
       <div class="push-banner-body">
@@ -301,8 +298,9 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <div class="pcard">
       <div class="plabel"><span class="pdot da"></span><span data-es="Primera persona" data-en="First person">Primera persona</span></div>
       <input class="ninput" type="text" id="nameA" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
-<div style="font-size:11px;color:var(--txt3);margin-bottom:4px;" data-es="Fecha de nacimiento" data-en="Date of birth">Fecha de nacimiento</div>
-<input class="ninput" type="date" id="dateA">
+      <!-- FIX 2: Date label added -->
+      <div class="date-label" data-es="Fecha de nacimiento" data-en="Date of birth">Fecha de nacimiento</div>
+      <input class="ninput" type="date" id="dateA">
       <div class="time-row">
         <span class="time-label" data-es="Hora (opcional)" data-en="Time (optional)">Hora (opcional)</span>
         <input class="time-input" type="time" id="timeA" placeholder="--:--">
@@ -312,8 +310,9 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <div class="pcard">
       <div class="plabel"><span class="pdot db"></span><span data-es="Segunda persona" data-en="Second person">Segunda persona</span></div>
       <input class="ninput" type="text" id="nameB" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
-    <div style="font-size:11px;color:var(--txt3);margin-bottom:4px;" data-es="Fecha de nacimiento" data-en="Date of birth">Fecha de nacimiento</div>
-<input class="ninput" type="date" id="dateB">
+      <!-- FIX 2: Date label added -->
+      <div class="date-label" data-es="Fecha de nacimiento" data-en="Date of birth">Fecha de nacimiento</div>
+      <input class="ninput" type="date" id="dateB">
       <div class="time-row">
         <span class="time-label" data-es="Hora (opcional)" data-en="Time (optional)">Hora (opcional)</span>
         <input class="time-input" type="time" id="timeB" placeholder="--:--">
@@ -321,7 +320,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     </div>
     <button class="cta-btn" onclick="startCalc()" data-es="Revelar compatibilidad ✦" data-en="Reveal compatibility ✦">Revelar compatibilidad ✦</button>
     <div class="free-hint" id="freeHint" data-es="1 lectura gratis por día · sin registro" data-en="1 free reading per day · no sign-up">1 lectura gratis por día · sin registro</div>
-
   </div>
   <div class="bnav">
     <button class="bitem on" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
@@ -357,13 +355,9 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <div style="height:14px;"></div>
     <div class="verdict-card"><div class="vtitle" id="verdictTitle"></div><div class="vtext" id="verdictText"></div></div>
     <div class="section"><div class="section-title" data-es="CARTAS NATALES" data-en="NATAL CHARTS">CARTAS NATALES</div></div>
-    <div style="margin:0 14px 8px;font-size:10px;color:var(--txt3);opacity:0.75;line-height:1.5;">
-      <span data-es="✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna." data-en="✦ Add birth time for better accuracy, especially for the Moon.">✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna.</span>
-    </div>
+    <div style="margin:0 14px 8px;font-size:10px;color:var(--txt3);opacity:0.75;line-height:1.5;"><span data-es="✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna." data-en="✦ Add birth time for better accuracy, especially for the Moon.">✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna.</span></div>
     <div class="natal-mini" id="natalMini"></div>
-    <div style="margin:-2px 14px 12px;font-size:10px;color:var(--txt3);opacity:0.6;line-height:1.55;">
-      <span data-es="✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente." data-en="✎ Any planet off? Tap the icon to correct it — the score recalculates automatically.">✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente.</span>
-    </div>
+    <div style="margin:-2px 14px 12px;font-size:10px;color:var(--txt3);opacity:0.6;line-height:1.55;"><span data-es="✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente." data-en="✎ Any planet off? Tap the icon to correct it — the score recalculates automatically.">✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente.</span></div>
     <div class="share-row">
       <button class="share-btn" onclick="shareResult()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg><span data-es="Compartir ↗" data-en="Share ↗">Compartir ↗</span></button>
       <button class="share-btn" onclick="saveToHistory()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span data-es="Guardar" data-en="Save">Guardar</span></button>
@@ -530,27 +524,24 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- TUTORIAL DE BIENVENIDA -->
 <div id="tutorialOverlay" style="position:fixed;inset:0;background:rgba(5,3,14,0.92);z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;backdrop-filter:blur(16px);">
   <div style="width:100%;max-width:340px;">
-    <!-- Paso actual -->
     <div id="tutStep" style="text-align:center;">
       <div id="tutIcon" style="font-size:48px;margin-bottom:20px;">✦</div>
       <div id="tutTitle" style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#F2EEF9;margin-bottom:12px;"></div>
       <div id="tutDesc" style="font-size:14px;color:rgba(242,238,249,0.7);line-height:1.75;margin-bottom:32px;"></div>
     </div>
-    <!-- Dots -->
     <div style="display:flex;justify-content:center;gap:8px;margin-bottom:28px;">
       <div class="tut-dot" id="td0"></div>
       <div class="tut-dot" id="td1"></div>
       <div class="tut-dot" id="td2"></div>
       <div class="tut-dot" id="td3"></div>
     </div>
-    <!-- Botones -->
     <button id="tutNext" onclick="tutorialNext()" style="width:100%;padding:15px;background:var(--rose);border:none;border-radius:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;margin-bottom:12px;"></button>
     <button onclick="tutorialSkip()" style="width:100%;padding:10px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(242,238,249,0.35);cursor:pointer;" id="tutSkip"></button>
   </div>
 </div>
+
 <div class="card-preview-overlay" id="cardPreviewOverlay">
   <div class="card-preview-header">
     <span class="card-preview-title" data-es="✦ Vista previa" data-en="✦ Preview">✦ Vista previa</span>
@@ -566,114 +557,45 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 </div>
 
 <script>
-// PAYPAL — URLs de checkout
-const LS_MONTHLY = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=4.99&currency_code=USD&item_name=Duual+Premium+Monthly&return=https://duual.vercel.app?paid=monthly";
-const LS_ANNUAL  = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=29.99&currency_code=USD&item_name=Duual+Premium+Annual&return=https://duual.vercel.app?paid=annual";
-
-// ACCESS CODES — agrega emails de clientas que pagaron
-const ACCESS_CODES = [
-  "lupitascreations.01@gmail.com",
-  // "clienta@gmail.com",
-];
-
+const LS_MONTHLY="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=4.99&currency_code=USD&item_name=Duual+Premium+Monthly&return=https://duual.vercel.app?paid=monthly";
+const LS_ANNUAL="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=zaniz.shop@gmail.com&amount=29.99&currency_code=USD&item_name=Duual+Premium+Annual&return=https://duual.vercel.app?paid=annual";
+const ACCESS_CODES=["lupitascreations.01@gmail.com"];
 const DEG=Math.PI/180;
 const SIGN_ELEM=["fire","earth","air","water","fire","earth","air","water","fire","earth","air","water"];
-const SIGN_SHORT=["Ari","Tau","Gem","Can","Leo","Vir","Lib","Sco","Sag","Cap","Aqu","Pis"];
 const PG={Sun:"☀",Moon:"☽",Mercury:"☿",Venus:"♀",Mars:"♂",Jupiter:"♃",Saturn:"♄",Uranus:"⛢",Neptune:"♆",Pluto:"♇",Chiron:"⚷",NNode:"☊"};
 const PES={Sun:"Sol",Moon:"Luna",Mercury:"Mercurio",Venus:"Venus",Mars:"Marte",Jupiter:"Júpiter",Saturn:"Saturno",Uranus:"Urano",Neptune:"Neptuno",Pluto:"Plutón",Chiron:"Quirón",NNode:"Nodo Norte"};
 const PEN={Sun:"Sun",Moon:"Moon",Mercury:"Mercury",Venus:"Venus",Mars:"Mars",Jupiter:"Jupiter",Saturn:"Saturn",Uranus:"Uranus",Neptune:"Neptune",Pluto:"Pluto",Chiron:"Chiron",NNode:"North Node"};
-
 function n360(x){return((x%360)+360)%360;}
 function sinD(d){return Math.sin(d*DEG);}
 function jd(y,m,d){if(m<=2){y--;m+=12;}const A=Math.floor(y/100);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+2-A+Math.floor(A/4)-1524.5;}
 function T(y,m,d){return(jd(y,m,d)-2451545)/36525;}
 function sun(t){const L=n360(280.46646+36000.76983*t),M=n360(357.52911+35999.05029*t-0.0001537*t*t),C=(1.914602-0.004817*t)*sinD(M)+(0.019993-0.000101*t)*sinD(2*M)+0.000289*sinD(3*M);return n360(L+C);}
 function moon(t){const Mp=n360(134.96298+477198.867398*t+0.0086972*t*t),D=n360(297.85036+445267.111480*t),M=n360(357.52772+35999.050340*t),F=n360(93.27191+483202.017538*t);return n360(218.3165+481267.8813*t+6.289*sinD(Mp)-1.274*sinD(Mp-2*D)+0.658*sinD(2*D)-0.214*sinD(2*Mp)-0.186*sinD(M)-0.114*sinD(2*F)+0.059*sinD(2*Mp-2*D)+0.041*sinD(Mp-M));}
-
-function geoLon(hl,hr,el,er){
-  const x=hr*Math.cos(hl*DEG)-er*Math.cos(el*DEG);
-  const y=hr*Math.sin(hl*DEG)-er*Math.sin(el*DEG);
-  return n360(Math.atan2(y,x)/DEG);
-}
-function earthPos(t){
-  const M=n360(357.52911+35999.05029*t);
-  return{l:n360(sun(t)+180),r:1.0-0.01671*Math.cos(M*DEG)};
-}
-
-function merc(t){
-  const L=n360(252.250906+149472.6746358*t),M=n360(174.7948+149472.5153*t);
-  const e2=0.20563;
-  const hl=n360(L+(2*e2-0.25*e2*e2*e2)*sinD(M)+(1.25*e2*e2)*sinD(2*M)+(13/12*e2*e2*e2)*sinD(3*M));
-  const hr=0.387098*(1-e2*e2)/(1+e2*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function venus(t){
-  const L=n360(181.979801+58517.8156760*t),M=n360(212.2606+58517.8039*t);
-  const e2=0.006773;
-  const hl=n360(L+0.7758*sinD(M)+0.0033*sinD(2*M)-0.0235*sinD(M-n360(357.52911+35999.05029*t)));
-  const hr=0.72333*(1-e2*e2)/(1+e2*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function mars(t){
-  const L=n360(355.433+19140.2993*t),M=n360(19.373+19140.3023*t);
-  const hl=n360(L+10.6912*sinD(M)+0.6228*sinD(2*M)+0.0503*sinD(3*M));
-  const hr=1.52366*(1-0.09341*0.09341)/(1+0.09341*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function jupit(t){
-  const L=n360(34.351519+3034.9056606*t),M=n360(20.9+3034.906*t);
-  const hl=n360(L+5.5549*sinD(M)+0.1683*sinD(2*M));
-  const hr=5.20336*(1-0.04839*0.04839)/(1+0.04839*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function saturn(t){
-  const L=n360(50.077444+1222.1138488*t),M=n360(317.0207+1221.5515*t);
-  const hl=n360(L+6.3585*sinD(M)+0.2204*sinD(2*M));
-  const hr=9.53707*(1-0.05415*0.05415)/(1+0.05415*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function uranus(t){
-  const L=n360(314.055005+428.4669983*t),M=n360(143+428.467*t);
-  const hl=n360(L+5.3048*sinD(M));
-  const hr=19.1913*(1-0.04717*0.04717)/(1+0.04717*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
-function neptune(t){
-  const L=n360(304.348665+218.4862002*t),M=n360(206+218.486*t);
-  const hl=n360(L+1.0236*sinD(M));
-  const hr=30.0690*(1-0.00859*0.00859)/(1+0.00859*Math.cos(M*DEG));
-  const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);
-}
+function geoLon(hl,hr,el,er){const x=hr*Math.cos(hl*DEG)-er*Math.cos(el*DEG);const y=hr*Math.sin(hl*DEG)-er*Math.sin(el*DEG);return n360(Math.atan2(y,x)/DEG);}
+function earthPos(t){const M=n360(357.52911+35999.05029*t);return{l:n360(sun(t)+180),r:1.0-0.01671*Math.cos(M*DEG)};}
+function merc(t){const L=n360(252.250906+149472.6746358*t),M=n360(174.7948+149472.5153*t);const e2=0.20563;const hl=n360(L+(2*e2-0.25*e2*e2*e2)*sinD(M)+(1.25*e2*e2)*sinD(2*M)+(13/12*e2*e2*e2)*sinD(3*M));const hr=0.387098*(1-e2*e2)/(1+e2*Math.cos(M*DEG));const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);}
+function venus(t){const L=n360(181.979801+58517.8156760*t),M=n360(212.2606+58517.8039*t);const e2=0.006773;const hl=n360(L+0.7758*sinD(M)+0.0033*sinD(2*M)-0.0235*sinD(M-n360(357.52911+35999.05029*t)));const hr=0.72333*(1-e2*e2)/(1+e2*Math.cos(M*DEG));const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);}
+function mars(t){const L=n360(355.433+19140.2993*t),M=n360(19.373+19140.3023*t);const hl=n360(L+10.6912*sinD(M)+0.6228*sinD(2*M)+0.0503*sinD(3*M));const hr=1.52366*(1-0.09341*0.09341)/(1+0.09341*Math.cos(M*DEG));const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);}
+function jupit(t){const L=n360(34.351519+3034.9056606*t),M=n360(20.9+3034.906*t);const hl=n360(L+5.5549*sinD(M)+0.1683*sinD(2*M));const hr=5.20336*(1-0.04839*0.04839)/(1+0.04839*Math.cos(M*DEG));const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);}
+function saturn(t){const L=n360(50.077444+1222.1138488*t),M=n360(317.0207+1221.5515*t);const hl=n360(L+6.3585*sinD(M)+0.2204*sinD(2*M));const hr=9.53707*(1-0.05415*0.05415)/(1+0.05415*Math.cos(M*DEG));const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);}
+function uranus(t){const L=n360(314.055005+428.4669983*t),M=n360(143+428.467*t);const hl=n360(L+5.3048*sinD(M));const hr=19.1913*(1-0.04717*0.04717)/(1+0.04717*Math.cos(M*DEG));const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);}
+function neptune(t){const L=n360(304.348665+218.4862002*t),M=n360(206+218.486*t);const hl=n360(L+1.0236*sinD(M));const hr=30.0690*(1-0.00859*0.00859)/(1+0.00859*Math.cos(M*DEG));const e=earthPos(t);return geoLon(hl,hr,e.l,e.r);}
 function pluto(t){const Jp=n360(34.35+3034.9057*t),Sp=n360(50.08+1222.1138*t),P=n360(238.9508+144.96*t);return n360(P+3.82*sinD(Jp-P)-2.46*sinD(2*Jp-P-Sp)+1.52*sinD(3*Jp-2*Sp));}
-function chiron(t){
-  const hl=n360(208.67+0.01977*t*36525);
-  const e=earthPos(t);return geoLon(hl,13.7,e.l,e.r);
-}
+function chiron(t){const hl=n360(208.67+0.01977*t*36525);const e=earthPos(t);return geoLon(hl,13.7,e.l,e.r);}
 function nnode(t){return n360(125.0445-1934.1363*t);}
 function planets(y,m,d){const t=T(y,m,d);return{Sun:sun(t),Moon:moon(t),Mercury:merc(t),Venus:venus(t),Mars:mars(t),Jupiter:jupit(t),Saturn:saturn(t),Uranus:uranus(t),Neptune:neptune(t),Pluto:pluto(t),Chiron:chiron(t),NNode:nnode(t)};}
-
 function planetsPrecise(y,m,d,h){
-  try {
-    if(typeof Astronomy === 'undefined') throw new Error('no lib');
-    const hour = h||12;
-    const date = new Date(Date.UTC(y, m-1, d, Math.floor(hour), Math.round((hour%1)*60), 0));
-    const time = Astronomy.MakeTime(date);
-    const bodies = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'];
-    const result = {};
-    for(const body of bodies){
-      const vec = Astronomy.GeoVector(body, time, true);
-      const ecl = Astronomy.Ecliptic(vec);
-      result[body] = n360(ecl.elon);
-    }
-    const t = T(y,m,d+hour/24);
-    result.Chiron = chiron(t);
-    result.NNode = nnode(t);
-    return result;
-  } catch(e) {
-    return planets(y,m,d+(h||12)/24);
-  }
+  try{
+    if(typeof Astronomy==='undefined') throw new Error('no lib');
+    const hour=h||12;
+    const date=new Date(Date.UTC(y,m-1,d,Math.floor(hour),Math.round((hour%1)*60),0));
+    const time=Astronomy.MakeTime(date);
+    const bodies=['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'];
+    const result={};
+    for(const body of bodies){const vec=Astronomy.GeoVector(body,time,true);const ecl=Astronomy.Ecliptic(vec);result[body]=n360(ecl.elon);}
+    const t=T(y,m,d+hour/24);result.Chiron=chiron(t);result.NNode=nnode(t);return result;
+  }catch(e){return planets(y,m,d+(h||12)/24);}
 }
-
 const SIGN_ES=["Aries","Tauro","Géminis","Cáncer","Leo","Virgo","Libra","Escorpio","Sagitario","Capricornio","Acuario","Piscis"];
 const SIGN_EN=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
 const SIGN_ABB_ES=["Ari","Tau","Gém","Cán","Leo","Vir","Lib","Esc","Sag","Cap","Acu","Pis"];
@@ -682,169 +604,34 @@ const SIGN_GLYPH=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","�
 function signOf(deg){return Math.floor(n360(deg)/30);}
 function signAbb(deg,l){return(l==="es"?SIGN_ABB_ES:SIGN_ABB_EN)[signOf(deg)];}
 function signFull(deg,l){return(l==="es"?SIGN_ES:SIGN_EN)[signOf(deg)];}
-
 const ASPS=[{es:"Conjunción",en:"Conjunction",s:"☌",a:0,o:8,sc:10,t:"harmonious"},{es:"Sextil",en:"Sextile",s:"⚹",a:60,o:6,sc:6,t:"harmonious"},{es:"Trígono",en:"Trine",s:"△",a:120,o:8,sc:9,t:"harmonious"},{es:"Cuadratura",en:"Square",s:"□",a:90,o:7,sc:3,t:"tense"},{es:"Oposición",en:"Opposition",s:"☍",a:180,o:8,sc:4,t:"neutral"}];
-function asp(l1,l2){let d=Math.abs(l1-l2);if(d>180)d=360-d;for(const a of ASPS){const o=Math.abs(d-a.a);if(o<=a.o)return{...a,orbe:o.toFixed(1)};} return null;}
-
+function asp(l1,l2){let d=Math.abs(l1-l2);if(d>180)d=360-d;for(const a of ASPS){const o=Math.abs(d-a.a);if(o<=a.o)return{...a,orbe:o.toFixed(1)};}return null;}
 const PW={"Sun-Moon":4,"Moon-Sun":4,"Venus-Mars":5,"Mars-Venus":5,"Sun-Venus":3,"Venus-Sun":3,"Sun-Sun":3,"Moon-Moon":3,"Mercury-Mercury":2,"Sun-Mercury":2,"Mercury-Sun":2,"Venus-Venus":2,"Mars-Mars":1,"Sun-Mars":2,"Mars-Sun":2,"Moon-Venus":2,"Venus-Moon":2,"Saturn-Sun":2,"Sun-Saturn":2,"Moon-Jupiter":1,"Jupiter-Moon":1,"Moon-Mars":2,"Mars-Moon":2,"Chiron-Sun":1,"Chiron-Moon":1,"NNode-Sun":1,"NNode-Venus":1};
-
 const AREAS={romance:{es:"Romance",en:"Romance",pairs:["Venus-Mars","Mars-Venus","Sun-Venus","Venus-Sun","Venus-Venus"],c:"#C94B72"},emotion:{es:"Vínculo emocional",en:"Emotional bond",pairs:["Sun-Moon","Moon-Sun","Moon-Moon","Moon-Venus","Venus-Moon"],c:"#1B9E78"},comms:{es:"Comunicación",en:"Communication",pairs:["Mercury-Mercury","Sun-Mercury","Mercury-Sun"],c:"#6B63CC"},longterm:{es:"Largo plazo",en:"Long-term",pairs:["Saturn-Sun","Sun-Saturn","Jupiter-Moon","Moon-Jupiter"],c:"#D4920E"}};
-
 const IT={"Venus-Mars":{es:{conj:"Química instantánea e intensa. Este aspecto es la atracción en su forma más pura.",trig:"La atracción fluye de manera natural — un romance sin esfuerzo.",sext:"Una química suave pero persistente. Se sienten atraídos sin saber exactamente por qué.",sq:"Tensión erótica presente. La atracción existe pero puede tornarse competitiva.",opp:"Polaridad magnética. Se atraen como opuestos en formas que pueden volverse intensas."},en:{conj:"Instant, intense chemistry. This aspect is attraction in its purest form.",trig:"Attraction flows naturally — an effortless romance.",sext:"A soft but persistent chemistry. You feel drawn to each other without knowing why.",sq:"Erotic tension is present. Attraction exists but can become competitive.",opp:"Magnetic polarity. You attract each other as opposites in intense ways."}},"Sun-Moon":{es:{conj:"Una comprensión rara y profunda. Sienten que se conocen desde siempre.",trig:"Fluyen emocionalmente juntos sin esfuerzo aparente.",sext:"Se entienden bien en el día a día. Hay confort mutuo.",sq:"Estilos emocionales distintos que requieren trabajo consciente.",opp:"El Sol ilumina lo que la Luna siente pero no siempre dice."},en:{conj:"A rare and deep understanding. You feel like you've known each other forever.",trig:"You flow together emotionally without apparent effort.",sext:"You understand each other well day to day.",sq:"Different emotional styles that require conscious work.",opp:"The Sun illuminates what the Moon feels but doesn't always say."}},"Mercury-Mercury":{es:{conj:"Piensan de forma similar. Las conversaciones son fluidas e intuitivas.",trig:"La comunicación es natural y placentera.",sext:"Se entienden bien verbalmente.",sq:"Estilos de pensar distintos. Pueden surgir malentendidos.",opp:"Perspectivas opuestas que se enriquecen si se respetan."},en:{conj:"You think similarly. Conversations are fluid and intuitive.",trig:"Communication is natural and enjoyable.",sext:"You understand each other verbally.",sq:"Different thinking styles. Misunderstandings can arise.",opp:"Opposing perspectives that enrich each other if respected."}},"Saturn-Sun":{es:{conj:"Un vínculo serio con potencial de permanencia.",trig:"Saturno da estabilidad sin ahogar. Construyen cosas que duran.",sext:"Hay una seriedad creciente en esta relación.",sq:"Saturno puede sentirse limitante para el Sol.",opp:"Tensión entre libertad y compromiso que puede definir la relación."},en:{conj:"A serious bond with real potential for permanence.",trig:"Saturn gives stability without smothering. You build things that last.",sext:"There's a growing seriousness to this relationship.",sq:"Saturn can feel limiting to the Sun's expression.",opp:"Tension between freedom and commitment that can define the relationship."}},default:{es:{conj:"Energías fusionadas. Conexión fuerte.",trig:"Flujo armonioso. Se potencian mutuamente.",sext:"Apoyo gentil y natural.",sq:"Fricción que puede generar crecimiento.",opp:"Polaridad que puede crear atracción o tensión."},en:{conj:"Fused energies. Strong connection.",trig:"Harmonious flow. You enhance each other.",sext:"Gentle, natural support.",sq:"Friction that can generate growth.",opp:"Polarity that can create attraction or tension."}}};
 function interp(pair,aspEs,l){const k=IT[pair]?pair:"default";const m={"Conjunción":"conj","Trígono":"trig","Sextil":"sext","Cuadratura":"sq","Oposición":"opp"};return IT[k][l][m[aspEs]]||"";}
-
-const VRD={
-es:[
-  [88,"✦ Almas gemelas cósmicas",[
-    "Esta conexión es excepcional — los astros rara vez se alinean así. Lo que {A} y {B} tienen juntos es profundo, real y merece ser cuidado.",
-    "Hay algo entre {A} y {B} que va más allá del azar. Los planetas hablan de un encuentro que fue escrito mucho antes de que se conocieran.",
-    "No todos encuentran esto. {A} y {B} tienen una sintonía que la mayoría busca toda la vida — sus cartas se complementan de maneras que son difíciles de ignorar."
-  ]],
-  [75,"✦ Una conexión que arde lento",[
-    "El vínculo entre {A} y {B} es magnético y de capas — no de los que estallan de inmediato, sino de los que echan raíces profundas con el tiempo.",
-    "{A} y {B} tienen algo que crece: mientras más tiempo pasan juntos, más descubren. Sus planetas sugieren una historia que apenas está comenzando.",
-    "Entre {A} y {B} hay una cadencia natural. No siempre explosiva, pero sí constante — el tipo de conexión que se vuelve más rica con cada estación."
-  ]],
-  [60,"✦ Complementos con potencial",[
-    "{A} y {B} tienen diferencias que, bien trabajadas, pueden ser sus mayores regalos. Lo que uno no tiene, el otro lo lleva en su carta.",
-    "Los planetas muestran contraste entre {A} y {B} — y el contraste, cuando hay respeto, es lo que hace que dos personas se expandan juntas.",
-    "Esta conexión entre {A} y {B} tiene materia prima. No todo es fácil, pero lo que construyan juntos puede ser más sólido por eso."
-  ]],
-  [45,"✦ Caminos que se cruzan",[
-    "La carta de {A} y la de {B} se encuentran con intensidad. Esta relación tiene mucho que enseñarles — aunque no siempre de manera cómoda.",
-    "Entre {A} y {B} hay momentos de gran brillo y otros de fricción real. Los planetas indican que esta conexión transforma, si se le da espacio.",
-    "{A} y {B} se atraen por razones que van más allá de lo obvio. Esta relación requiere trabajo consciente, pero el crecimiento que ofrece es genuino."
-  ]],
-  [0,"✦ Un desafío que transforma",[
-    "Los planetas muestran fricción entre {A} y {B} — pero la fricción pule. Esta conexión tiene el potencial de cambiarlos a ambos de maneras profundas.",
-    "No es el camino más fácil, pero {A} y {B} se encontraron por algo. Las relaciones que más nos transforman rara vez son las más sencillas.",
-    "La carta de {A} y la de {B} chocan en puntos importantes. Ese choque, si se trabaja con honestidad, puede convertirse en el mayor catalizador de ambos."
-  ]]
-],
-en:[
-  [88,"✦ Cosmic soulmates",[
-    "This connection is exceptional — the stars rarely align like this. What {A} and {B} have together is deep, real, and worth protecting.",
-    "There's something between {A} and {B} that goes beyond chance. The planets speak of a meeting that was written long before they found each other.",
-    "Not everyone finds this. {A} and {B} share a resonance that most people spend a lifetime searching for — their charts complement each other in ways that are hard to ignore."
-  ]],
-  [75,"✦ A slow burn that ignites",[
-    "The bond between {A} and {B} is magnetic and layered — not the kind that explodes instantly, but the kind that grows deep roots over time.",
-    "{A} and {B} have something that builds: the more time they spend together, the more they discover. Their planets suggest a story that's just beginning.",
-    "There's a natural cadence between {A} and {B}. Not always explosive, but consistent — the kind of connection that becomes richer with every season."
-  ]],
-  [60,"✦ Complements with potential",[
-    "{A} and {B} have differences that, when worked through, can become their greatest gifts. What one lacks, the other carries in their chart.",
-    "The planets show contrast between {A} and {B} — and contrast, with mutual respect, is what allows two people to expand together.",
-    "This connection between {A} and {B} has raw material. Not everything is easy, but what they build together can be stronger because of it."
-  ]],
-  [45,"✦ Paths that cross",[
-    "{A} and {B}'s charts meet with intensity. This relationship has much to teach them — though not always in the most comfortable way.",
-    "There are moments of great brightness between {A} and {B}, and moments of real friction. The planets suggest this connection transforms, if given space.",
-    "{A} and {B} are drawn to each other for reasons that go beyond the obvious. This relationship requires conscious work, but the growth it offers is real."
-  ]],
-  [0,"✦ A transforming challenge",[
-    "The planets show friction between {A} and {B} — but friction polishes. This connection has the potential to change both of them in profound ways.",
-    "It's not the easiest path, but {A} and {B} found each other for a reason. The relationships that transform us most are rarely the simplest ones.",
-    "{A} and {B}'s charts clash at important points. That clash, worked through with honesty, can become the greatest catalyst for both of them."
-  ]]
-]};
-
-function pickVerdict(vList, pct, nA, nB) {
-  const vE = vList.find(v => pct >= v[0]);
-  const texts = vE[2];
-  // Usa el score como seed para que siempre sea el mismo para la misma pareja
-  const idx = pct % texts.length;
-  const text = texts[idx].replace(/{A}/g, nA).replace(/{B}/g, nB);
-  return [vE[1], text];
-}
+const VRD={es:[[88,"✦ Almas gemelas cósmicas",["Esta conexión es excepcional — los astros rara vez se alinean así. Lo que {A} y {B} tienen juntos es profundo, real y merece ser cuidado.","Hay algo entre {A} y {B} que va más allá del azar. Los planetas hablan de un encuentro que fue escrito mucho antes de que se conocieran.","No todos encuentran esto. {A} y {B} tienen una sintonía que la mayoría busca toda la vida — sus cartas se complementan de maneras que son difíciles de ignorar."]],[75,"✦ Una conexión que arde lento",["El vínculo entre {A} y {B} es magnético y de capas — no de los que estallan de inmediato, sino de los que echan raíces profundas con el tiempo.","{A} y {B} tienen algo que crece: mientras más tiempo pasan juntos, más descubren. Sus planetas sugieren una historia que apenas está comenzando.","Entre {A} y {B} hay una cadencia natural. No siempre explosiva, pero sí constante — el tipo de conexión que se vuelve más rica con cada estación."]],[60,"✦ Complementos con potencial",["{A} y {B} tienen diferencias que, bien trabajadas, pueden ser sus mayores regalos. Lo que uno no tiene, el otro lo lleva en su carta.","Los planetas muestran contraste entre {A} y {B} — y el contraste, cuando hay respeto, es lo que hace que dos personas se expandan juntas.","Esta conexión entre {A} y {B} tiene materia prima. No todo es fácil, pero lo que construyan juntos puede ser más sólido por eso."]],[45,"✦ Caminos que se cruzan",["La carta de {A} y la de {B} se encuentran con intensidad. Esta relación tiene mucho que enseñarles — aunque no siempre de manera cómoda.","Entre {A} y {B} hay momentos de gran brillo y otros de fricción real. Los planetas indican que esta conexión transforma, si se le da espacio.","{A} y {B} se atraen por razones que van más allá de lo obvio. Esta relación requiere trabajo consciente, pero el crecimiento que ofrece es genuino."]],[0,"✦ Un desafío que transforma",["Los planetas muestran fricción entre {A} y {B} — pero la fricción pule. Esta conexión tiene el potencial de cambiarlos a ambos de maneras profundas.","No es el camino más fácil, pero {A} y {B} se encontraron por algo. Las relaciones que más nos transforman rara vez son las más sencillas.","La carta de {A} y la de {B} chocan en puntos importantes. Ese choque, si se trabaja con honestidad, puede convertirse en el mayor catalizador de ambos."]]],en:[[88,"✦ Cosmic soulmates",["This connection is exceptional — the stars rarely align like this. What {A} and {B} have together is deep, real, and worth protecting.","There's something between {A} and {B} that goes beyond chance. The planets speak of a meeting that was written long before they found each other.","Not everyone finds this. {A} and {B} share a resonance that most people spend a lifetime searching for — their charts complement each other in ways that are hard to ignore."]],[75,"✦ A slow burn that ignites",["The bond between {A} and {B} is magnetic and layered — not the kind that explodes instantly, but the kind that grows deep roots over time.","{A} and {B} have something that builds: the more time they spend together, the more they discover. Their planets suggest a story that's just beginning.","There's a natural cadence between {A} and {B}. Not always explosive, but consistent — the kind of connection that becomes richer with every season."]],[60,"✦ Complements with potential",["{A} and {B} have differences that, when worked through, can become their greatest gifts. What one lacks, the other carries in their chart.","The planets show contrast between {A} and {B} — and contrast, with mutual respect, is what allows two people to expand together.","This connection between {A} and {B} has raw material. Not everything is easy, but what they build together can be stronger because of it."]],[45,"✦ Paths that cross",["{A} and {B}'s charts meet with intensity. This relationship has much to teach them — though not always in the most comfortable way.","There are moments of great brightness between {A} and {B}, and moments of real friction. The planets suggest this connection transforms, if given space.","{A} and {B} are drawn to each other for reasons that go beyond the obvious. This relationship requires conscious work, but the growth it offers is real."]],[0,"✦ A transforming challenge",["The planets show friction between {A} and {B} — but friction polishes. This connection has the potential to change both of them in profound ways.","It's not the easiest path, but {A} and {B} found each other for a reason. The relationships that transform us most are rarely the simplest ones.","{A} and {B}'s charts clash at important points. That clash, worked through with honesty, can become the greatest catalyst for both of them."]]]};
+function pickVerdict(vList,pct,nA,nB){const vE=vList.find(v=>pct>=v[0]);const texts=vE[2];const idx=pct%texts.length;const text=texts[idx].replace(/{A}/g,nA).replace(/{B}/g,nB);return[vE[1],text];}
 const AI={romance:{es:[[80,"Atracción potente y natural."],[60,"Química presente con espacio para crecer."],[0,"La atracción requiere cultivo consciente."]],en:[[80,"Powerful, natural attraction."],[60,"Chemistry present with room to grow."],[0,"Attraction needs conscious nurturing."]]},emotion:{es:[[80,"Se entienden emocionalmente sin esfuerzo."],[60,"Conexión emocional real con algunas diferencias."],[0,"Mundos emocionales distintos — enriquecedor si se trabaja."]],en:[[80,"You understand each other emotionally with ease."],[60,"Real emotional connection with some differences."],[0,"Different emotional worlds — enriching if worked through."]]},comms:{es:[[80,"Comunicación fluida e intuitiva."],[60,"Se entienden bien en lo cotidiano."],[0,"Estilos distintos. Requiere paciencia."]],en:[[80,"Fluid, intuitive communication."],[60,"You understand each other well in daily life."],[0,"Different styles. Patience required."]]},longterm:{es:[[80,"Bases sólidas para construir juntos."],[60,"Potencial de permanencia con trabajo."],[0,"La estabilidad hay que construirla activamente."]],en:[[80,"Solid foundations to build on together."],[60,"Potential for permanence with work."],[0,"Stability must be actively built."]]}};
 function ai(k,p,l){const t=AI[k][l];for(const[th,tx]of t)if(p>=th)return tx;return t[t.length-1][1];}
-
 const ELEM_NAMES={es:{fire:"Fuego 🔥",earth:"Tierra 🌿",air:"Aire 💨",water:"Agua 🌊"},en:{fire:"Fire 🔥",earth:"Earth 🌿",air:"Air 💨",water:"Water 🌊"}};
 const ELEM_DESC={es:{"fire-fire":"Dos llamas que se avivan mutuamente. Energía, pasión y acción constante.","earth-earth":"Estabilidad y construcción a largo plazo. Una base sólida y confiable.","air-air":"Conexión mental profunda. Las conversaciones nunca se agotan.","water-water":"Sensibilidad emocional compartida. Se entienden sin palabras.","fire-earth":"El fuego da dirección, la tierra da forma. Se complementan si hay respeto.","fire-air":"El aire aviva el fuego. Entusiasmo, ideas y movimiento constante.","fire-water":"Pasión intensa con tensión también. El calor y la profundidad pueden fundirse.","earth-water":"La tierra contiene el agua. Relación nutritiva y emocionalmente segura.","earth-air":"Lo práctico y lo intelectual. Aprenden mucho el uno del otro.","air-water":"El pensamiento y el sentimiento. Complementarios si aprenden a escucharse."},en:{"fire-fire":"Two flames that ignite each other. Energy, passion and constant action.","earth-earth":"Stability and long-term building. A solid and reliable foundation.","air-air":"Deep mental connection. Conversations never run dry.","water-water":"Shared emotional sensitivity. You understand each other without words.","fire-earth":"Fire gives direction, earth gives form. Complementary with mutual respect.","fire-air":"Air fans the fire. Enthusiasm, ideas and constant movement.","fire-water":"Intense passion but also tension. Heat and depth can merge.","earth-water":"Earth contains water. A nurturing and emotionally secure relationship.","earth-air":"The practical and intellectual. Much to learn from each other.","air-water":"Thought and feeling. Complementary if they learn to listen."}};
 function elemKey(a,b){return ELEM_DESC.es[`${a}-${b}`]?`${a}-${b}`:ELEM_DESC.es[`${b}-${a}`]?`${b}-${a}`:"fire-water";}
-
 const VS={es:["Venus en Aries: ama con intensidad y espontaneidad.","Venus en Tauro: busca estabilidad, lujo y afecto físico.","Venus en Géminis: necesita variedad, conversación y juego.","Venus en Cáncer: ama profundamente y busca seguridad emocional.","Venus en Leo: generosa, apasionada y necesita admiración.","Venus en Virgo: demuestra amor en detalles y actos de servicio.","Venus en Libra: busca armonía, belleza y equilibrio.","Venus en Escorpio: ama con intensidad transformadora.","Venus en Sagitario: necesita libertad y aventura juntos.","Venus en Capricornio: amor maduro, leal y orientado al futuro.","Venus en Acuario: amor libre, amistoso e intelectual.","Venus en Piscis: amor incondicional, romántico e idealizador."],en:["Venus in Aries: loves with intensity and spontaneity.","Venus in Taurus: seeks stability, luxury and physical affection.","Venus in Gemini: needs variety, conversation and playfulness.","Venus in Cancer: loves deeply and seeks emotional security.","Venus in Leo: generous, passionate, needs admiration.","Venus in Virgo: shows love through details and acts of service.","Venus in Libra: seeks harmony, beauty and balance.","Venus in Scorpio: loves with transformative intensity.","Venus in Sagittarius: needs freedom and adventure together.","Venus in Capricorn: mature, loyal, future-oriented love.","Venus in Aquarius: free, friendly, intellectually stimulating love.","Venus in Pisces: unconditional, romantic, idealistic love."]};
 const MS={es:["Marte en Aries: directo, impulsivo y competitivo.","Marte en Tauro: lento para encenderse pero muy persistente.","Marte en Géminis: deseo intelectual, variado y comunicativo.","Marte en Cáncer: deseo emocional y protector.","Marte en Leo: pasional, dramático y busca ser el centro.","Marte en Virgo: meticuloso y orientado al detalle.","Marte en Libra: busca equilibrio pero puede ser indeciso.","Marte en Escorpio: intenso, estratégico y magnético.","Marte en Sagitario: entusiasta y aventurero.","Marte en Capricornio: ambicioso y disciplinado.","Marte en Acuario: rebelde, original e impredecible.","Marte en Piscis: intuitivo, empático y a veces escurridizo."],en:["Mars in Aries: direct, impulsive and competitive.","Mars in Taurus: slow to ignite but very persistent.","Mars in Gemini: intellectual, varied, communicative desire.","Mars in Cancer: emotional, protective desire.","Mars in Leo: passionate, dramatic, seeks the spotlight.","Mars in Virgo: meticulous and detail-oriented.","Mars in Libra: seeks balance but can be indecisive.","Mars in Scorpio: intense, strategic and magnetic.","Mars in Sagittarius: enthusiastic and adventurous.","Mars in Capricorn: ambitious and disciplined.","Mars in Aquarius: rebellious, original and unpredictable.","Mars in Pisces: intuitive, empathetic and elusive."]};
-
-let lang="es", lastResult=null, prevScr="input", selPlan="annual";
-
-function setLang(l){
-  lang=l;
-  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("on",b.textContent===l.toUpperCase()));
-  document.querySelectorAll("[data-"+l+"]").forEach(el=>{
-    if(el.tagName==="INPUT") el.placeholder=el.getAttribute("data-placeholder-"+l)||"";
-    else el.innerHTML=el.dataset[l]||el.innerHTML;
-  });
-  document.querySelectorAll("[data-placeholder-"+l+"]").forEach(el=>el.placeholder=el.getAttribute("data-placeholder-"+l)||"");
-  if(lastResult) renderResults(lastResult);
-  updatePayBtn();
-  document.querySelectorAll(".time-label").forEach(el=>el.textContent=el.getAttribute("data-"+l)||el.textContent);
-  localStorage.setItem('duual_lang',l);
-}
-
-function goScreen(n){
-  const cur=document.querySelector(".screen.active");
-  if(cur) prevScr=cur.id.replace("s-","");
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById("s-"+n).classList.add("active");
-  if(n==="history") renderHistory();
-  updatePremiumUI();
-}
+let lang="es",lastResult=null,prevScr="input",selPlan="annual";
+function setLang(l){lang=l;document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("on",b.textContent===l.toUpperCase()));document.querySelectorAll("[data-"+l+"]").forEach(el=>{if(el.tagName==="INPUT")el.placeholder=el.getAttribute("data-placeholder-"+l)||"";else el.innerHTML=el.dataset[l]||el.innerHTML;});document.querySelectorAll("[data-placeholder-"+l+"]").forEach(el=>el.placeholder=el.getAttribute("data-placeholder-"+l)||"");if(lastResult)renderResults(lastResult);updatePayBtn();document.querySelectorAll(".time-label").forEach(el=>el.textContent=el.getAttribute("data-"+l)||el.textContent);localStorage.setItem('duual_lang',l);}
+function goScreen(n){const cur=document.querySelector(".screen.active");if(cur)prevScr=cur.id.replace("s-","");document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("s-"+n).classList.add("active");if(n==="history")renderHistory();updatePremiumUI();}
 function goBack(){goScreen(prevScr||"input");}
-
 const signOverrides={};
-function editSign(pid,planet,currentDeg,btn){
-  const l=lang==="es"?SIGN_ES:SIGN_EN;
-  const cur=signOf(currentDeg);
-  const select=document.createElement("select");
-  select.className="natal-select";
-  l.forEach((s,i)=>{const o=document.createElement("option");o.value=i*30+15;o.textContent=s;if(i===cur)o.selected=true;select.appendChild(o);});
-  select.onchange=()=>{
-    const newDeg=parseFloat(select.value);
-    if(!signOverrides[pid]) signOverrides[pid]={};
-    signOverrides[pid][planet]=newDeg;
-    if(lastResult) lastResult[pid==="A"?"pA":"pB"][planet]=newDeg;
-    const span=document.getElementById(`ns_${pid}_${planet}`);
-    if(span) span.textContent=signAbb(newDeg,lang)+" "+SIGN_GLYPH[signOf(newDeg)];
-    select.replaceWith(btn);
-    if(lastResult) try{renderResults(lastResult);}catch(e){}
-  };
-  select.onblur=()=>setTimeout(()=>select.replaceWith(btn),200);
-  btn.replaceWith(select);
-  select.focus();
-}
-function goLastResult(){
-  if(lastResult){
-    try{renderResults(lastResult);}catch(e){console.error(e);}
-    goScreen("results");
-  } else {
-    goScreen("input");
-    setTimeout(()=>showToast(lang==="es"?"Ingresa dos fechas para comenzar ✦":"Enter two dates to begin ✦"),300);
-  }
-}
-
-function isPremium(){
-  const p=localStorage.getItem("duual_premium");
-  if(!p) return false;
-  try{const{expiry}=JSON.parse(p);return Date.now()<expiry;}catch{return false;}
-}
-function setPremium(plan){
-  const expiry=plan==="annual"?Date.now()+365*24*36e5:Date.now()+30*24*36e5;
-  localStorage.setItem("duual_premium",JSON.stringify({plan,expiry}));
-  updatePremiumUI();
-}
-function updatePremiumUI(){
-  const p=isPremium();
-  document.getElementById("premiumBadgeHeader").style.display=p?"block":"none";
-  const h=document.getElementById("freeHint");
-  if(h) h.style.display=p?"none":"block";
-}
-
-function todayKey(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;}
+function editSign(pid,planet,currentDeg,btn){const l=lang==="es"?SIGN_ES:SIGN_EN;const cur=signOf(currentDeg);const select=document.createElement("select");select.className="natal-select";l.forEach((s,i)=>{const o=document.createElement("option");o.value=i*30+15;o.textContent=s;if(i===cur)o.selected=true;select.appendChild(o);});select.onchange=()=>{const newDeg=parseFloat(select.value);if(!signOverrides[pid])signOverrides[pid]={};signOverrides[pid][planet]=newDeg;if(lastResult)lastResult[pid==="A"?"pA":"pB"][planet]=newDeg;const span=document.getElementById(`ns_${pid}_${planet}`);if(span)span.textContent=signAbb(newDeg,lang)+" "+SIGN_GLYPH[signOf(newDeg)];select.replaceWith(btn);if(lastResult)try{renderResults(lastResult);}catch(e){}};select.onblur=()=>setTimeout(()=>select.replaceWith(btn),200);btn.replaceWith(select);select.focus();}
+function goLastResult(){if(lastResult){try{renderResults(lastResult);}catch(e){console.error(e);}goScreen("results");}else{goScreen("input");setTimeout(()=>showToast(lang==="es"?"Ingresa dos fechas para comenzar ✦":"Enter two dates to begin ✦"),300);}}
+function isPremium(){const p=localStorage.getItem("duual_premium");if(!p)return false;try{const{expiry}=JSON.parse(p);return Date.now()<expiry;}catch{return false;}}
+function setPremium(plan){const expiry=plan==="annual"?Date.now()+365*24*36e5:Date.now()+30*24*36e5;localStorage.setItem("duual_premium",JSON.stringify({plan,expiry}));updatePremiumUI();}
+function updatePremiumUI(){const p=isPremium();document.getElementById("premiumBadgeHeader").style.display=p?"block":"none";const h=document.getElementById("freeHint");if(h)h.style.display=p?"none":"block";}
+function todayKey(){const d=new Date();return`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;}
 function canRead(){return isPremium()||(localStorage.getItem("duual_last_read")!==todayKey());}
-function markRead(){if(!isPremium()) localStorage.setItem("duual_last_read",todayKey());}
-
+function markRead(){if(!isPremium())localStorage.setItem("duual_last_read",todayKey());}
 function startCalc(){
   const dA=document.getElementById("dateA").value;
   const dB=document.getElementById("dateB").value;
@@ -855,93 +642,61 @@ function startCalc(){
   const nB=document.getElementById("nameB").value.trim()||(lang==="es"?"Persona B":"Person B");
   goScreen("loading");
   setTimeout(()=>{
-    const [yA,mA,dAd]=dA.split("-").map(Number);
-    const [yB,mB,dBd]=dB.split("-").map(Number);
+    const[yA,mA,dAd]=dA.split("-").map(Number);
+    const[yB,mB,dBd]=dB.split("-").map(Number);
     const tA=document.getElementById("timeA").value;
     const tB=document.getElementById("timeB").value;
     const hA=tA?parseInt(tA.split(":")[0])+parseInt(tA.split(":")[1])/60:12;
     const hB=tB?parseInt(tB.split(":")[0])+parseInt(tB.split(":")[1])/60:12;
     const pA=planetsPrecise(yA,mA,dAd,hA),pB=planetsPrecise(yB,mB,dBd,hB);
-    markRead();
-    lastResult={pA,pB,nA,nB};
+    markRead();lastResult={pA,pB,nA,nB};
     try{localStorage.setItem('duual_last',JSON.stringify(lastResult));}catch(e){}
     try{renderResults(lastResult);}catch(e){console.error("Render error:",e);}
     goScreen("results");
   },2600);
 }
-
 function renderResults(r){
   const{pA,pB,nA,nB}=r;
   const premium=isPremium();
   const keys=["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune","Pluto"];
-  let found=[],total=0,maxP=0;
-  for(const pa of keys) for(const pb of keys){
-    const k=`${pa}-${pb}`,w=PW[k]||0;if(!w) continue;
-    maxP+=w*10;const a=asp(pA[pa],pB[pb]);
-    if(a){total+=a.sc*w;found.push({pa,pb,a,pts:a.sc*w,interp:interp(k,a.es,lang)});}
-  }
+  let found=[],total=0;
+  for(const pa of keys)for(const pb of keys){const k=`${pa}-${pb}`,w=PW[k]||0;if(!w)continue;const a=asp(pA[pa],pB[pb]);if(a){total+=a.sc*w;found.push({pa,pb,a,pts:a.sc*w,interp:interp(k,a.es,lang)});}}
   const maxFound=found.reduce((s,x)=>s+ASPS[0].sc*(PW[x.pa+"-"+x.pb]||1),0)||1;
   const rawPct=total/maxFound*100;
   const pct=Math.min(99,Math.max(5,Math.round(30+rawPct*0.7)));
   const vList=VRD[lang];
-  const [vTitle, vText] = pickVerdict(vList, pct, nA, nB);
+  const[vTitle,vText]=pickVerdict(vList,pct,nA,nB);
   document.getElementById("bigScore").innerHTML=`${pct}<span class="pct">%</span>`;
   document.getElementById("rpair").innerHTML=`${nA} <span class="ramp">&</span> ${nB}`;
   document.getElementById("verdictBadge").textContent=vTitle;
   document.getElementById("verdictTitle").textContent=vTitle;
   document.getElementById("verdictText").textContent=vText;
   renderCompatSection(pA);
-
-  const pl = lang==="es"
-    ? {Sun:"☀ Sol",Moon:"☽ Luna",Venus:"♀ Venus",Mars:"♂ Marte",Mercury:"☿ Mercurio"}
-    : {Sun:"☀ Sun",Moon:"☽ Moon",Venus:"♀ Venus",Mars:"♂ Mars",Mercury:"☿ Mercury"};
+  const pl=lang==="es"?{Sun:"☀ Sol",Moon:"☽ Luna",Venus:"♀ Venus",Mars:"♂ Marte",Mercury:"☿ Mercurio"}:{Sun:"☀ Sun",Moon:"☽ Moon",Venus:"♀ Venus",Mars:"♂ Mars",Mercury:"☿ Mercury"};
   const natalCard=(name,pid,p)=>`<div class="natal-person"><div class="natal-pname">${name}</div>${["Sun","Moon","Venus","Mars","Mercury"].map(k=>`<div class="natal-row"><span class="natal-pl">${pl[k]}</span><span class="natal-sg" id="ns_${pid}_${k}">${signAbb(p[k],lang)} ${SIGN_GLYPH[signOf(p[k])]}</span><button class="natal-edit" onclick="editSign('${pid}','${k}',${Math.floor(p[k])},this)" title="Corregir">✎</button></div>`).join("")}</div>`;
   document.getElementById("natalMini").innerHTML=natalCard(nA,"A",pA)+natalCard(nB,"B",pB);
-
   const top=found.sort((a,b)=>b.pts-a.pts).slice(0,2);
   document.getElementById("constRow").innerHTML=top.map(x=>`<span class="const-tag">${PG[x.pa]} ${x.a.s} ${PG[x.pb]}</span>`).join("");
-
   const aS={};
-  const AREA_EXT={
-    romance:["Venus","Mars","Sun","Moon"],
-    emotion:["Moon","Sun","Venus","Jupiter"],
-    comms:["Mercury","Sun","Moon","Uranus"],
-    longterm:["Saturn","Sun","Jupiter","Moon"]
-  };
-  for(const[k,ad] of Object.entries(AREAS)){
-    let s=0,cnt=0;
-    const ps=AREA_EXT[k]||[];
-    for(const pa of ps) for(const pb of ps){
-      if(pA[pa]===undefined||pB[pb]===undefined) continue;
-      const a=asp(pA[pa],pB[pb]);
-      cnt++;
-      if(a){
-        const bonus=a.t==="harmonious"?a.sc:a.t==="tense"?a.sc*0.4:a.sc*0.6;
-        s+=bonus;
-      }
-    }
-    // Anclar las áreas al score global: varían ±20pts alrededor del pct
-    const rawArea=cnt>0?Math.round((s/cnt)*10):0;
-    const anchored=Math.min(99,Math.max(20,Math.round(pct*0.7 + rawArea*0.3)));
-    aS[k]=anchored;
-  }
-  document.getElementById("areasGrid").innerHTML=Object.entries(AREAS).map(([k,ad])=>{const p=aS[k],label=lang==="es"?ad.es:ad.en;return `<div class="acard"><div class="ahead"><div class="aname">${label}</div><div class="apct">${p}%</div></div><div class="track"><div class="bar" style="width:${p}%;background:${ad.c}"></div></div><div class="ainsight">${ai(k,p,lang)}</div></div>`;}).join("");
-
+  const AREA_EXT={romance:["Venus","Mars","Sun","Moon"],emotion:["Moon","Sun","Venus","Jupiter"],comms:["Mercury","Sun","Moon","Uranus"],longterm:["Saturn","Sun","Jupiter","Moon"]};
+  for(const[k,ad]of Object.entries(AREAS)){let s=0,cnt=0;const ps=AREA_EXT[k]||[];for(const pa of ps)for(const pb of ps){if(pA[pa]===undefined||pB[pb]===undefined)continue;const a=asp(pA[pa],pB[pb]);cnt++;if(a){const bonus=a.t==="harmonious"?a.sc:a.t==="tense"?a.sc*0.4:a.sc*0.6;s+=bonus;}}const rawArea=cnt>0?Math.round((s/cnt)*10):0;const anchored=Math.min(99,Math.max(20,Math.round(pct*0.7+rawArea*0.3)));aS[k]=anchored;}
+  document.getElementById("areasGrid").innerHTML=Object.entries(AREAS).map(([k,ad])=>{const p=aS[k],label=lang==="es"?ad.es:ad.en;return`<div class="acard"><div class="ahead"><div class="aname">${label}</div><div class="apct">${p}%</div></div><div class="track"><div class="bar" style="width:${p}%;background:${ad.c}"></div></div><div class="ainsight">${ai(k,p,lang)}</div></div>`;}).join("");
   const sorted=found.sort((a,b)=>b.pts-a.pts);
   const pname=lang==="es"?PES:PEN;
- const aspVisible = premium ? sorted : sorted.slice(0,3);
-  document.getElementById("aspList").innerHTML=aspVisible.map((x,i)=>{
+  // FIX 3: Primeros 3 visibles, luego overlay único de paywall
+  const aspVisible=premium?sorted:sorted.slice(0,3);
+  document.getElementById("aspList").innerHTML=aspVisible.map(x=>{
     const aName=lang==="es"?x.a.es:x.a.en;
-    const sgA=signAbb(pA[x.pa],lang), sgB=signAbb(pB[x.pb],lang);
-    return `<div class="asp-row">}).join("")+(premium?"":
+    const sgA=signAbb(pA[x.pa],lang),sgB=signAbb(pB[x.pb],lang);
+    return`<div class="asp-row"><div class="asp-glyph">${PG[x.pa]}</div><div class="asp-body"><div class="asp-title">${pname[x.pa]} <span style="color:var(--txt3);font-size:11px">${sgA}</span> ${x.a.s} ${pname[x.pb]} <span style="color:var(--txt3);font-size:11px">${sgB}</span></div><div class="asp-subtitle">${aName} · ${x.a.orbe}° ${lang==="es"?"orbe":"orb"}</div><div class="asp-interp">${x.interp}</div><span class="asp-badge ${x.a.t}">${x.a.s} ${aName}</span></div></div>`;
+  }).join("")+(premium?"":
     `<div style="margin:8px 0;background:var(--plum-l);border:0.5px solid var(--plum-b);border-radius:var(--r-lg);padding:16px;text-align:center;">
       <div style="font-size:13px;font-weight:500;color:#B0AAEE;margin-bottom:6px;">${lang==="es"?"✦ "+sorted.length+" aspectos en total":"✦ "+sorted.length+" aspects total"}</div>
       <div style="font-size:12px;color:rgba(176,170,238,0.7);margin-bottom:12px;">${lang==="es"?"Desbloquea todos con Premium":"Unlock all with Premium"}</div>
       <button onclick="goScreen('paywall')" style="padding:9px 22px;background:var(--plum);border:none;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#fff;cursor:pointer;">${lang==="es"?"Ver Premium ✦":"See Premium ✦"}</button>
     </div>`
   );
-
- if(premium){
+  if(premium){
     document.getElementById("premiumResults").style.display="block";
     document.getElementById("unlockCard").style.display="none";
     document.getElementById("chironWrapper").classList.remove("locked");
@@ -949,7 +704,7 @@ function renderResults(r){
     document.getElementById("nodeWrapper").classList.remove("locked");
     document.getElementById("nodePaywall").style.display="none";
     renderPremium(pA,pB,nA,nB);
-  } else {
+  }else{
     document.getElementById("premiumResults").style.display="block";
     document.getElementById("unlockCard").style.display="block";
     document.getElementById("chironWrapper").classList.add("locked");
@@ -959,7 +714,6 @@ function renderResults(r){
     renderPremium(pA,pB,nA,nB);
   }
 }
-
 function renderPremium(pA,pB,nA,nB){
   const l=lang;
   const eA=SIGN_ELEM[Math.floor(pA.Sun/30)],eB=SIGN_ELEM[Math.floor(pB.Sun/30)];
@@ -967,445 +721,98 @@ function renderPremium(pA,pB,nA,nB){
   const ek=elemKey(eA,eB);
   const EN=ELEM_NAMES[l]||ELEM_NAMES.es,ED=ELEM_DESC[l]||ELEM_DESC.es;
   document.getElementById("elemSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">☀ ${l==="es"?"Elementos Solares":"Solar Elements"}</div><div class="element-grid"><div class="elem-tag"><div class="elem-name">A: Sol</div><div class="elem-val">${EN[eA]}</div></div><div class="elem-tag"><div class="elem-name">B: Sol</div><div class="elem-val">${EN[eB]}</div></div><div class="elem-tag"><div class="elem-name">A: ☽</div><div class="elem-val">${EN[meA]}</div></div><div class="elem-tag"><div class="elem-name">B: ☽</div><div class="elem-val">${EN[meB]}</div></div></div><div class="premium-card-body" style="margin-top:10px;">${ED[ek]||""}</div></div>`;
-
   const vsA=Math.floor(pA.Venus/30),vsB=Math.floor(pB.Venus/30);
   const msA=Math.floor(pA.Mars/30),msB=Math.floor(pB.Mars/30);
   const vArr=l==="en"?VS.en:VS.es,mArr=l==="en"?MS.en:MS.es;
-  const vSign=l==="es"?SIGN_ES:SIGN_EN, mSign=l==="es"?SIGN_ES:SIGN_EN;
-  document.getElementById("venusSection").innerHTML=`
-    <div class="premium-card">
-      <div class="premium-card-title">♀ Venus</div>
-      <div class="premium-card-body">
-        <strong style="color:var(--rose-m)">${nA}: Venus en ${vSign[vsA]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsA]}</span>
-        <br><br>
-        <strong style="color:var(--rose-m)">${nB}: Venus en ${vSign[vsB]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsB]}</span>
-      </div>
-    </div>
-    <div class="premium-card">
-      <div class="premium-card-title">♂ ${l==="es"?"Marte":"Mars"}</div>
-      <div class="premium-card-body">
-        <strong style="color:var(--rose-m)">${nA}: ${l==="es"?"Marte":"Mars"} en ${mSign[msA]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msA]}</span>
-        <br><br>
-        <strong style="color:var(--rose-m)">${nB}: ${l==="es"?"Marte":"Mars"} en ${mSign[msB]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msB]}</span>
-      </div>
-    </div>`;
-
+  const vSign=l==="es"?SIGN_ES:SIGN_EN,mSign=l==="es"?SIGN_ES:SIGN_EN;
+  document.getElementById("venusSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">♀ Venus</div><div class="premium-card-body"><strong style="color:var(--rose-m)">${nA}: Venus en ${vSign[vsA]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsA]}</span><br><br><strong style="color:var(--rose-m)">${nB}: Venus en ${vSign[vsB]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsB]}</span></div></div><div class="premium-card"><div class="premium-card-title">♂ ${l==="es"?"Marte":"Mars"}</div><div class="premium-card-body"><strong style="color:var(--rose-m)">${nA}: ${l==="es"?"Marte":"Mars"} en ${mSign[msA]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msA]}</span><br><br><strong style="color:var(--rose-m)">${nB}: ${l==="es"?"Marte":"Mars"} en ${mSign[msB]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msB]}</span></div></div>`;
   const cAsp=asp(pA.Chiron,pB.Sun)||asp(pA.Sun,pB.Chiron)||asp(pA.Chiron,pB.Moon);
   const chText=l==="es"?"Quirón representa las heridas más profundas que llevamos — y el potencial de sanar a través de ellas. En sinastría, el contacto de Quirón de una persona con planetas de la otra revela si esta relación tiene la capacidad de sanar o reabrir viejas heridas. Una conexión con Quirón activo es una relación que transforma.":"Chiron represents our deepest wounds — and the potential to heal through them. In synastry, Chiron contacts reveal whether this relationship has the capacity to heal or reopen old wounds. An active Chiron connection is a transforming relationship.";
   document.getElementById("chironSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">⚷ ${l==="es"?"Quirón":"Chiron"}</div><div class="premium-card-body">${chText}${cAsp?`<br><br><strong style="color:var(--rose-m)">${l==="es"?"Aspecto activo ✦":"Active aspect ✦"}: ${cAsp.s} ${l==="es"?cAsp.es:cAsp.en}</strong>`:""}</div></div>`;
-
   const nnAsp=asp(pA.NNode,pB.Sun)||asp(pA.Sun,pB.NNode)||asp(pA.NNode,pB.Venus);
   const nnText=l==="es"?"El Nodo Norte indica la dirección del crecimiento del alma. Cuando los planetas de una persona contactan el Nodo Norte de la otra, la relación tiene un componente de propósito — como si se hubieran encontrado para crecer juntos hacia algo más grande.":"The North Node indicates the soul's direction of growth. When one person's planets contact the other's North Node, the relationship has a purpose component — as if you were brought together to grow toward something greater.";
   document.getElementById("nodeSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">☊ ${l==="es"?"Nodo Norte":"North Node"}</div><div class="premium-card-body">${nnText}${nnAsp?`<br><br><strong style="color:var(--gold)">${l==="es"?"Contacto de propósito detectado ✦":"Purpose contact detected ✦"}</strong>`:""}</div></div>`;
 }
-
-function selectPlan(p){
-  selPlan=p;
-  document.getElementById("cardMonthly").classList.toggle("featured",p==="monthly");
-  document.getElementById("cardAnnual").classList.toggle("featured",p==="annual");
-  updatePayBtn();
-}
-function updatePayBtn(){
-  const btn=document.getElementById("payBtn");
-  if(selPlan==="monthly"){btn.className="pay-btn pay-btn-monthly";btn.innerHTML=`<span>${lang==="es"?"Empezar plan mensual · $4.99":"Start monthly plan · $4.99"}</span>`;}
-  else{btn.className="pay-btn pay-btn-annual";btn.innerHTML=`<span>${lang==="es"?"Empezar plan anual · $29.99":"Start annual plan · $29.99"}</span>`;}
-}
-
-function handlePayment(){
-  const url=selPlan==="annual"?LS_ANNUAL:LS_MONTHLY;
-  if(url.includes("YOUR_STORE_PLACEHOLDER")){
-    setPremium(selPlan);
-    showToast(lang==="es"?"✦ Demo activado — PayPal configurado ✦":"✦ Demo activated — PayPal configured ✦");
-    setTimeout(()=>goBack(),1500);
-    return;
-  }
-  window.open(url,"_blank");
-  setTimeout(()=>showToast(lang==="es"?"¿Completaste el pago? Toca 'Restaurar acceso'":"Payment complete? Tap 'Restore access'"),3000);
-}
-
+function selectPlan(p){selPlan=p;document.getElementById("cardMonthly").classList.toggle("featured",p==="monthly");document.getElementById("cardAnnual").classList.toggle("featured",p==="annual");updatePayBtn();}
+function updatePayBtn(){const btn=document.getElementById("payBtn");if(selPlan==="monthly"){btn.className="pay-btn pay-btn-monthly";btn.innerHTML=`<span>${lang==="es"?"Empezar plan mensual · $4.99":"Start monthly plan · $4.99"}</span>`;}else{btn.className="pay-btn pay-btn-annual";btn.innerHTML=`<span>${lang==="es"?"Empezar plan anual · $29.99":"Start annual plan · $29.99"}</span>`;}}
+function handlePayment(){const url=selPlan==="annual"?LS_ANNUAL:LS_MONTHLY;if(url.includes("YOUR_STORE_PLACEHOLDER")){setPremium(selPlan);showToast(lang==="es"?"✦ Demo activado":"✦ Demo activated");setTimeout(()=>goBack(),1500);return;}window.open(url,"_blank");setTimeout(()=>showToast(lang==="es"?"¿Completaste el pago? Toca 'Restaurar acceso'":"Payment complete? Tap 'Restore access'"),3000);}
 async function restorePurchase(){
   const email=prompt(lang==="es"?"Ingresa el email con que pagaste:":"Enter the email you used to pay:");
   if(!email||!email.includes("@")){showToast(lang==="es"?"Email no válido":"Invalid email");return;}
   showToast(lang==="es"?"Verificando…":"Verifying…");
-  // Verificar primero en ACCESS_CODES local
-  if(ACCESS_CODES.includes(email.toLowerCase().trim())){
-    setPremium("annual");
-    showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");
-    setTimeout(()=>goBack(),1000);
-    return;
-  }
-  // Luego verificar en Google Sheets
-  try{
-    const res=await fetch("/api/verify-premium",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({email:email.toLowerCase().trim()})
-    });
-    const data=await res.json();
-    if(data.premium){
-      setPremium(data.plan||"annual");
-      showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");
-      setTimeout(()=>goBack(),1000);
-    } else if(data.reason==="expired"){
-      showToast(lang==="es"?"Suscripción vencida · Renueva tu plan":"Subscription expired · Renew your plan");
-    } else {
-      showToast(lang==="es"?"Email no encontrado · Escríbenos":"Email not found · Contact support");
-    }
-  }catch(e){
-    // Fallback si falla la API
-    showToast(lang==="es"?"Error de conexión · Intenta de nuevo":"Connection error · Try again");
-  }
+  if(ACCESS_CODES.includes(email.toLowerCase().trim())){setPremium("annual");showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");setTimeout(()=>goBack(),1000);return;}
+  try{const res=await fetch("/api/verify-premium",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email.toLowerCase().trim()})});const data=await res.json();if(data.premium){setPremium(data.plan||"annual");showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");setTimeout(()=>goBack(),1000);}else if(data.reason==="expired"){showToast(lang==="es"?"Suscripción vencida · Renueva tu plan":"Subscription expired · Renew your plan");}else{showToast(lang==="es"?"Email no encontrado · Escríbenos":"Email not found · Contact support");}}catch(e){showToast(lang==="es"?"Error de conexión · Intenta de nuevo":"Connection error · Try again");}
 }
-
-(function checkReturn(){
-  const p=new URLSearchParams(window.location.search);
-  if(p.get("paid")){
-    showToast(lang==="es"?"✦ Pago recibido · Activa tu acceso abajo":"✦ Payment received · Activate access below");
-    history.replaceState({},document.title,window.location.pathname);
-    setTimeout(()=>goScreen("paywall"),1500);
-  }
-})();
-
-function saveToHistory(){
-  if(!lastResult) return;
-  const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
-  h.unshift({nA:lastResult.nA,nB:lastResult.nB,score:document.getElementById("bigScore").textContent.replace("%","").trim(),verdict:document.getElementById("verdictBadge").textContent,saved:Date.now()});
-  if(h.length>30) h.pop();
-  localStorage.setItem("duual_history",JSON.stringify(h));
-  showToast(lang==="es"?"Guardado ✦":"Saved ✦");
-}
-function renderHistory(){
-  const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
-  const el=document.getElementById("historyScroll");
-  if(!h.length){el.innerHTML=`<div class="hempty">${lang==="es"?"Tu historial aparecerá aquí.<br>Haz tu primera lectura ✦":"Your history will appear here.<br>Make your first reading ✦"}</div>`;return;}
-  el.innerHTML=h.map((x,i)=>`<div class="hcard"><div class="hcard-top"><div class="hnames">${x.nA} <span style="color:var(--rose-m)">&</span> ${x.nB}</div><div style="display:flex;align-items:center;gap:10px;"><div class="hscore">${x.score}%</div><button onclick="deleteHistory(${i})" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;padding:4px;opacity:0.6;" title="Borrar">✕</button></div></div><div class="hdate">${x.verdict} · ${new Date(x.saved).toLocaleDateString(lang==="es"?"es-CL":"en-US")}</div></div>`).join("");
-}
-
-async function shareResult(){
-  const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";
-  const score=document.getElementById("bigScore").textContent;
-  const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Duual\nDescúbrelo en duual.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Duual\nDiscover yours at duual.app`;
-  if(navigator.share) try{await navigator.share({title:"Duual",text});}catch(e){}
-  else navigator.clipboard.writeText(text).then(()=>showToast(lang==="es"?"Copiado ✦":"Copied ✦"));
-}
-function copyForInsta(){
-  const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";
-  const score=document.getElementById("bigScore").textContent;
-  const verdict=document.getElementById("verdictBadge").textContent;
-  const text=lang==="es"
-    ?`${verdict}\n\n${nA} & ${nB}\n${score} compatibilidad astrológica ✦\n\n¿Y tú? Descubre la tuya en duual.app\n\n#astrología #compatibilidad #cartonatal #duual`
-    :`${verdict}\n\n${nA} & ${nB}\n${score} astrological compatibility ✦\n\nDiscover yours at duual.app\n\n#astrology #compatibility #birthchart #duual`;
-  const msg=lang==="es"?"✦ Copiado — pega en Instagram":"✦ Copied — paste on Instagram";
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>showToast(msg)).catch(()=>fallbackCopy(text,msg));
-  } else {
-    fallbackCopy(text,msg);
-  }
-}
-function fallbackCopy(text,msg){
-  const ta=document.createElement("textarea");
-  ta.value=text;ta.style.cssText="position:fixed;top:0;left:0;opacity:0;";
-  document.body.appendChild(ta);ta.focus();ta.select();
-  try{document.execCommand("copy");showToast(msg);}catch(e){showToast(lang==="es"?"Copia el texto manualmente":"Copy text manually");}
-  document.body.removeChild(ta);
-}
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// GENERATE CARD — versión mejorada
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(function checkReturn(){const p=new URLSearchParams(window.location.search);if(p.get("paid")){showToast(lang==="es"?"✦ Pago recibido · Activa tu acceso abajo":"✦ Payment received · Activate access below");history.replaceState({},document.title,window.location.pathname);setTimeout(()=>goScreen("paywall"),1500);}})();
+function saveToHistory(){if(!lastResult)return;const h=JSON.parse(localStorage.getItem("duual_history")||"[]");h.unshift({nA:lastResult.nA,nB:lastResult.nB,score:document.getElementById("bigScore").textContent.replace("%","").trim(),verdict:document.getElementById("verdictBadge").textContent,saved:Date.now()});if(h.length>30)h.pop();localStorage.setItem("duual_history",JSON.stringify(h));showToast(lang==="es"?"Guardado ✦":"Saved ✦");}
+function renderHistory(){const h=JSON.parse(localStorage.getItem("duual_history")||"[]");const el=document.getElementById("historyScroll");if(!h.length){el.innerHTML=`<div class="hempty">${lang==="es"?"Tu historial aparecerá aquí.<br>Haz tu primera lectura ✦":"Your history will appear here.<br>Make your first reading ✦"}</div>`;return;}el.innerHTML=h.map((x,i)=>`<div class="hcard"><div class="hcard-top"><div class="hnames">${x.nA} <span style="color:var(--rose-m)">&</span> ${x.nB}</div><div style="display:flex;align-items:center;gap:10px;"><div class="hscore">${x.score}%</div><button onclick="deleteHistory(${i})" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;padding:4px;opacity:0.6;" title="Borrar">✕</button></div></div><div class="hdate">${x.verdict} · ${new Date(x.saved).toLocaleDateString(lang==="es"?"es-CL":"en-US")}</div></div>`).join("");}
+async function shareResult(){const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";const score=document.getElementById("bigScore").textContent;const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Duual\nDescúbrelo en duual.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Duual\nDiscover yours at duual.app`;if(navigator.share)try{await navigator.share({title:"Duual",text});}catch(e){}else navigator.clipboard.writeText(text).then(()=>showToast(lang==="es"?"Copiado ✦":"Copied ✦"));}
+function fallbackCopy(text,msg){const ta=document.createElement("textarea");ta.value=text;ta.style.cssText="position:fixed;top:0;left:0;opacity:0;";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy");showToast(msg);}catch(e){showToast(lang==="es"?"Copia el texto manualmente":"Copy text manually");}document.body.removeChild(ta);}
 function generateCard(){
-  const nA=lastResult?.nA||"A", nB=lastResult?.nB||"B";
+  const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";
   const score=document.getElementById("bigScore").textContent.replace("%","").trim();
   const verdict=document.getElementById("verdictBadge").textContent.replace("✦","").trim();
-  const W=1080, H=1920;
-  const cv=document.createElement("canvas");
-  cv.width=W; cv.height=H;
+  const W=1080,H=1920;
+  const cv=document.createElement("canvas");cv.width=W;cv.height=H;
   const ctx=cv.getContext("2d");
-
-  const drawAll = async () => {
-    // Background gradient
-    const bg=ctx.createLinearGradient(0,0,W,H);
-    bg.addColorStop(0,"#0D0A18");
-    bg.addColorStop(0.5,"#130B20");
-    bg.addColorStop(1,"#0A0812");
-    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-
-    // Glow top left
-    const g1=ctx.createRadialGradient(W*0.15,H*0.2,0,W*0.15,H*0.2,W*0.6);
-    g1.addColorStop(0,"rgba(201,75,114,0.18)"); g1.addColorStop(1,"transparent");
-    ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
-
-    // Glow bottom right
-    const g2=ctx.createRadialGradient(W*0.85,H*0.75,0,W*0.85,H*0.75,W*0.55);
-    g2.addColorStop(0,"rgba(107,99,204,0.15)"); g2.addColorStop(1,"transparent");
-    ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
-
-    // Stars
-    ctx.fillStyle="rgba(255,252,255,0.7)";
-    for(let i=0;i<200;i++){
-      const x=Math.random()*W, y=Math.random()*H, r=Math.random()*2+0.5;
-      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
-    }
-
-    // Score — círculo con número más pequeño (opción A)
-    const cx=W/2, cy=H*0.38, cr=260;
-
-    // Outer ring
-    ctx.beginPath(); ctx.arc(cx,cy,cr+15,0,Math.PI*2);
-    ctx.strokeStyle="rgba(201,75,114,0.15)"; ctx.lineWidth=1.5; ctx.stroke();
-
-    // Inner ring
-    ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2);
-    ctx.strokeStyle="rgba(201,75,114,0.4)"; ctx.lineWidth=2; ctx.stroke();
-
-    // Arc fill based on score
-    const pct=parseInt(score)/100;
-    ctx.beginPath(); ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);
-    const arcG=ctx.createLinearGradient(cx-cr,cy,cx+cr,cy);
-    arcG.addColorStop(0,"#C94B72"); arcG.addColorStop(1,"#6B63CC");
-    ctx.strokeStyle=arcG; ctx.lineWidth=8; ctx.stroke();
-
-    // Score canvas — Montserrat, número más pequeño para que quepa bien en el círculo
-    try {
-      const mf = new FontFace('Montserrat','url(https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2)');
-      await mf.load();
-      document.fonts.add(mf);
-    } catch(e) {}
-
-    const numSize = 180;
-    const pctSize = 70;
-
-    // Número centrado exacto
-    ctx.font = `200 ${numSize}px Montserrat, sans-serif`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#F2EEF9";
-    ctx.fillText(score, cx, cy);
-
-    // % offset fijo según cantidad de dígitos
-    const pctOffsetX = score.length === 1 ? 115 : score.length === 2 ? 155 : 195;
-    ctx.font = `300 ${pctSize}px Montserrat, sans-serif`;
-    ctx.fillStyle = "#ED93B1";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
-    ctx.fillText("%", cx + pctOffsetX, cy - 75);
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-
-    // COMPATIBILIDAD debajo del círculo
-    ctx.textAlign="center";
-    ctx.font="400 42px 'Arial', sans-serif";
-    ctx.fillStyle="rgba(237,147,177,0.9)";
-    ctx.letterSpacing="12px";
-    ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY", cx, cy+cr+58);
-    ctx.letterSpacing="0px";
-
-    // ✅ Nombres — tamaño dinámico para que no se corten
-    const fullName=`${nA} & ${nB}`;
-    let nameFontSize=88;
-    ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;
-    while(ctx.measureText(fullName).width > W*0.86 && nameFontSize > 40){
-      nameFontSize -= 4;
-      ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;
-    }
-    ctx.fillStyle="rgba(242,238,249,0.92)";
-    ctx.fillText(fullName, cx, H*0.635);
-
-    // Verdict
-    ctx.font="300 50px 'Georgia', serif";
-    ctx.fillStyle="#ED93B1";
-    ctx.fillText(verdict, cx, H*0.715);
-
-    // Divider line
-    ctx.beginPath(); ctx.moveTo(W*0.32,H*0.772); ctx.lineTo(W*0.68,H*0.772);
-    ctx.strokeStyle="rgba(242,238,249,0.15)"; ctx.lineWidth=1; ctx.stroke();
-
-    // ✅ Logo + "Duual" — agrupados y centrados
-    const duuFont = "300 50px 'Georgia', serif";
-    const alFont  = "italic 300 50px 'Georgia', serif";
-    ctx.font = duuFont;
-    const duuW = ctx.measureText("Duu").width;
-    ctx.font = alFont;
-    const alW = ctx.measureText("al").width;
-
-    // ✅ Logo grande centrado arriba del texto
-    const logoSize = 110;
-    const logoY = H * 0.785;
-
-    if(logoImg.complete && logoImg.naturalWidth > 0){
-      const lx = cx - logoSize/2;
-      const ly = logoY;
-      const r = 22;
-      ctx.save();
-      ctx.globalAlpha = 0.8;
-      ctx.beginPath();
-      ctx.moveTo(lx+r, ly); ctx.lineTo(lx+logoSize-r, ly);
-      ctx.quadraticCurveTo(lx+logoSize, ly, lx+logoSize, ly+r);
-      ctx.lineTo(lx+logoSize, ly+logoSize-r);
-      ctx.quadraticCurveTo(lx+logoSize, ly+logoSize, lx+logoSize-r, ly+logoSize);
-      ctx.lineTo(lx+r, ly+logoSize); ctx.quadraticCurveTo(lx, ly+logoSize, lx, ly+logoSize-r);
-      ctx.lineTo(lx, ly+r); ctx.quadraticCurveTo(lx, ly, lx+r, ly);
-      ctx.closePath(); ctx.clip();
-      ctx.drawImage(logoImg, lx, ly, logoSize, logoSize);
-      ctx.restore();
-      ctx.globalAlpha = 1.0;
-    }
-
-    // "Duual" centrado debajo del logo
-    const brandY = (logoImg.complete && logoImg.naturalWidth > 0)
-      ? logoY + logoSize + 40
-      : H * 0.855;
-    const brandStartX = cx - (duuW + alW) / 2;
-
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
-    ctx.font = duuFont;
-    ctx.fillStyle = "rgba(242,238,249,0.65)";
-    ctx.fillText("Duu", brandStartX, brandY);
-
-    ctx.font = alFont;
-    ctx.fillStyle = "#ED93B1";
-    ctx.fillText("al", brandStartX + duuW, brandY);
-
-    // URL
-    ctx.textAlign = "center";
-    ctx.font = "400 32px 'Arial', sans-serif";
-    ctx.fillStyle = "rgba(242,238,249,0.28)";
-    ctx.fillText("duual.app", cx, brandY + 52);
-
-    // ✅ Show preview instead of immediate download
-    _cardDataURL = cv.toDataURL("image/png");
-    _cardFileName = `duual-${nA}-${nB}.png`;
-    document.getElementById("cardPreviewImg").src = _cardDataURL;
-    document.getElementById("cardPreviewOverlay").classList.add("open");
+  const drawAll=async()=>{
+    const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(0.5,"#130B20");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    const g1=ctx.createRadialGradient(W*0.15,H*0.2,0,W*0.15,H*0.2,W*0.6);g1.addColorStop(0,"rgba(201,75,114,0.18)");g1.addColorStop(1,"transparent");ctx.fillStyle=g1;ctx.fillRect(0,0,W,H);
+    const g2=ctx.createRadialGradient(W*0.85,H*0.75,0,W*0.85,H*0.75,W*0.55);g2.addColorStop(0,"rgba(107,99,204,0.15)");g2.addColorStop(1,"transparent");ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle="rgba(255,252,255,0.7)";for(let i=0;i<200;i++){const x=Math.random()*W,y=Math.random()*H,r=Math.random()*2+0.5;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
+    const cx=W/2,cy=H*0.38,cr=260;
+    ctx.beginPath();ctx.arc(cx,cy,cr+15,0,Math.PI*2);ctx.strokeStyle="rgba(201,75,114,0.15)";ctx.lineWidth=1.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,cr,0,Math.PI*2);ctx.strokeStyle="rgba(201,75,114,0.4)";ctx.lineWidth=2;ctx.stroke();
+    const pct=parseInt(score)/100;ctx.beginPath();ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);const arcG=ctx.createLinearGradient(cx-cr,cy,cx+cr,cy);arcG.addColorStop(0,"#C94B72");arcG.addColorStop(1,"#6B63CC");ctx.strokeStyle=arcG;ctx.lineWidth=8;ctx.stroke();
+    try{const mf=new FontFace('Montserrat','url(https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2)');await mf.load();document.fonts.add(mf);}catch(e){}
+    ctx.font=`200 180px Montserrat, sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#F2EEF9";ctx.fillText(score,cx,cy);
+    const pctOffsetX=score.length===1?115:score.length===2?155:195;ctx.font="300 70px Montserrat, sans-serif";ctx.fillStyle="#ED93B1";ctx.textAlign="left";ctx.textBaseline="top";ctx.fillText("%",cx+pctOffsetX,cy-75);ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.font="400 42px 'Arial', sans-serif";ctx.fillStyle="rgba(237,147,177,0.9)";ctx.letterSpacing="12px";ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY",cx,cy+cr+58);ctx.letterSpacing="0px";
+    const fullName=`${nA} & ${nB}`;let nameFontSize=88;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;while(ctx.measureText(fullName).width>W*0.86&&nameFontSize>40){nameFontSize-=4;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;}ctx.fillStyle="rgba(242,238,249,0.92)";ctx.fillText(fullName,cx,H*0.635);
+    ctx.font="300 50px 'Georgia', serif";ctx.fillStyle="#ED93B1";ctx.fillText(verdict,cx,H*0.715);
+    ctx.beginPath();ctx.moveTo(W*0.32,H*0.772);ctx.lineTo(W*0.68,H*0.772);ctx.strokeStyle="rgba(242,238,249,0.15)";ctx.lineWidth=1;ctx.stroke();
+    const duuFont="300 50px 'Georgia', serif";const alFont="italic 300 50px 'Georgia', serif";ctx.font=duuFont;const duuW=ctx.measureText("Duu").width;ctx.font=alFont;const alW=ctx.measureText("al").width;
+    const logoSize=110;const logoY=H*0.785;
+    if(logoImg.complete&&logoImg.naturalWidth>0){const lx=cx-logoSize/2;const ly=logoY;const r=22;ctx.save();ctx.globalAlpha=0.8;ctx.beginPath();ctx.moveTo(lx+r,ly);ctx.lineTo(lx+logoSize-r,ly);ctx.quadraticCurveTo(lx+logoSize,ly,lx+logoSize,ly+r);ctx.lineTo(lx+logoSize,ly+logoSize-r);ctx.quadraticCurveTo(lx+logoSize,ly+logoSize,lx+logoSize-r,ly+logoSize);ctx.lineTo(lx+r,ly+logoSize);ctx.quadraticCurveTo(lx,ly+logoSize,lx,ly+logoSize-r);ctx.lineTo(lx,ly+r);ctx.quadraticCurveTo(lx,ly,lx+r,ly);ctx.closePath();ctx.clip();ctx.drawImage(logoImg,lx,ly,logoSize,logoSize);ctx.restore();ctx.globalAlpha=1.0;}
+    const brandY=(logoImg.complete&&logoImg.naturalWidth>0)?logoY+logoSize+40:H*0.855;const brandStartX=cx-(duuW+alW)/2;
+    ctx.textAlign="left";ctx.textBaseline="middle";ctx.font=duuFont;ctx.fillStyle="rgba(242,238,249,0.65)";ctx.fillText("Duu",brandStartX,brandY);
+    ctx.font=alFont;ctx.fillStyle="#ED93B1";ctx.fillText("al",brandStartX+duuW,brandY);
+    ctx.textAlign="center";ctx.font="400 32px 'Arial', sans-serif";ctx.fillStyle="rgba(242,238,249,0.28)";ctx.fillText("duual.app",cx,brandY+52);
+    _cardDataURL=cv.toDataURL("image/png");_cardFileName=`duual-${nA}-${nB}.png`;document.getElementById("cardPreviewImg").src=_cardDataURL;document.getElementById("cardPreviewOverlay").classList.add("open");
   };
-
-  // Carga el logo antes de dibujar
-  const logoImg = new Image();
-  logoImg.crossOrigin = "anonymous";
-  logoImg.onload = drawAll;
-  logoImg.onerror = drawAll;
-  logoImg.src = "icon-192.png";
+  const logoImg=new Image();logoImg.crossOrigin="anonymous";logoImg.onload=drawAll;logoImg.onerror=drawAll;logoImg.src="icon-192.png";
 }
-
-let _cardDataURL = null, _cardFileName = "duual-card.png";
-
-function closeCardPreview(){
-  document.getElementById("cardPreviewOverlay").classList.remove("open");
+let _cardDataURL=null,_cardFileName="duual-card.png";
+function closeCardPreview(){document.getElementById("cardPreviewOverlay").classList.remove("open");}
+function downloadCard(){if(!_cardDataURL)return;const link=document.createElement("a");link.download=_cardFileName;link.href=_cardDataURL;link.style.display="none";document.body.appendChild(link);link.click();document.body.removeChild(link);showToast(lang==="es"?"✦ Tarjeta descargada":"✦ Card downloaded");}
+async function shareCardNative(){if(!_cardDataURL)return;try{const res=await fetch(_cardDataURL);const blob=await res.blob();const file=new File([blob],_cardFileName,{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Duual"});}else{downloadCard();}}catch(e){downloadCard();}}
+const ELEM_COMPAT={fire:{best:["fire","air"],signs:[0,4,8,2,6,10]},earth:{best:["earth","water"],signs:[1,5,9,3,7,11]},air:{best:["air","fire"],signs:[2,6,10,0,4,8]},water:{best:["water","earth"],signs:[3,7,11,1,5,9]}};
+const SIGN_ELEM_MAP=["fire","earth","air","water","fire","earth","air","water","fire","earth","air","water"];
+const COMPAT_TIPS={es:{Sun:["Tu Sol busca una llama afín — alguien que comparta tu energía vital.","Tu Sol florece con quien lo estabilice y dé forma a su luz.","Tu Sol conecta a través de las ideas y la libertad.","Tu Sol encuentra hogar en la profundidad emocional."],Moon:["Tu Luna se siente segura con quien comparta su fuego interior.","Tu Luna necesita estabilidad y presencia constante.","Tu Luna disfruta la variedad y la conversación.","Tu Luna busca fusión emocional y comprensión sin palabras."],Venus:["Tu Venus ama con pasión y necesita chispa.","Tu Venus valora la lealtad y el afecto físico.","Tu Venus se enamora de las mentes brillantes.","Tu Venus ama profundo y busca almas que sientan igual."]},en:{Sun:["Your Sun seeks a kindred flame — someone who matches your vital energy.","Your Sun thrives when grounded and given form.","Your Sun connects through ideas and freedom.","Your Sun finds home in emotional depth."],Moon:["Your Moon feels safe with shared inner fire.","Your Moon needs stability and consistent presence.","Your Moon enjoys variety and conversation.","Your Moon seeks emotional fusion and wordless understanding."],Venus:["Your Venus loves with passion and needs a spark.","Your Venus values loyalty and physical affection.","Your Venus falls for brilliant minds.","Your Venus loves deeply and seeks kindred souls."]}};
+function renderCompatSection(pA){
+  const el=document.getElementById("compatSection");if(!el||!pA)return;
+  const l=lang;const signs=l==="es"?SIGN_ES:SIGN_EN;
+  const planets=[{key:"Sun",glyph:"☀",label:l==="es"?"Tu Sol":"Your Sun"},{key:"Venus",glyph:"♀",label:l==="es"?"Tu Venus":"Your Venus"},{key:"Moon",glyph:"☽",label:l==="es"?"Tu Luna":"Your Moon"}];
+  const rows=planets.map(p=>{const deg=pA[p.key];if(deg===undefined)return"";const signIdx=Math.floor(((deg%360)+360)%360/30);const elem=SIGN_ELEM_MAP[signIdx];const elemGroup=Math.floor(["fire","earth","air","water"].indexOf(elem));const tip=COMPAT_TIPS[l][p.key][elemGroup];const compatSignIdxs=ELEM_COMPAT[elem].signs.filter(s=>s!==signIdx).slice(0,3);const compatNames=compatSignIdxs.map(i=>signs[i]).join(", ");return`<div class="compat-row"><div class="compat-planet">${p.glyph}</div><div class="compat-body"><div class="compat-label">${p.label} ${l==="es"?"en":"in"} ${signs[signIdx]}</div><div class="compat-signs">✦ ${compatNames}</div><div class="compat-tip">${tip}</div></div></div>`;}).join("");
+  const title=l==="es"?"¿Con quién conectas mejor? ✦":"Who do you connect with best? ✦";
+  el.innerHTML=`<div class="compat-title">${title}</div>${rows}`;el.style.display="block";
 }
-function downloadCard(){
-  if(!_cardDataURL) return;
-  const link = document.createElement("a");
-  link.download = _cardFileName;
-  link.href = _cardDataURL;
-  link.style.display = "none";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  showToast(lang==="es"?"✦ Tarjeta descargada":"✦ Card downloaded");
-}
-async function shareCardNative(){
-  if(!_cardDataURL) return;
-  try {
-    const res = await fetch(_cardDataURL);
-    const blob = await res.blob();
-    const file = new File([blob], _cardFileName, {type:"image/png"});
-    if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file], title:"Duual"});
-    } else {
-      downloadCard();
-    }
-  } catch(e){ downloadCard(); }
-}
-
-// ✦ COMPATIBILIDAD SUGERIDA — lógica fija por elemento
-const ELEM_COMPAT = {
-  fire:  { best: ["fire","air"],   signs: [0,4,8,2,6,10] },   // Aries,Leo,Sag + Géminis,Libra,Acuario
-  earth: { best: ["earth","water"], signs: [1,5,9,3,7,11] },  // Tauro,Virgo,Cap + Cáncer,Escorpio,Piscis
-  air:   { best: ["air","fire"],   signs: [2,6,10,0,4,8] },   // Géminis,Libra,Acu + Aries,Leo,Sag
-  water: { best: ["water","earth"], signs: [3,7,11,1,5,9] }   // Cáncer,Esc,Piscis + Tauro,Virgo,Cap
-};
-const SIGN_ELEM_MAP = ["fire","earth","air","water","fire","earth","air","water","fire","earth","air","water"];
-
-const COMPAT_TIPS = {
-  es: {
-    Sun:  ["Tu Sol busca una llama afín — alguien que comparta tu energía vital.", "Tu Sol florece con quien lo estabilice y dé forma a su luz.", "Tu Sol conecta a través de las ideas y la libertad.", "Tu Sol encuentra hogar en la profundidad emocional."],
-    Moon: ["Tu Luna se siente segura con quien comparta su fuego interior.", "Tu Luna necesita estabilidad y presencia constante.", "Tu Luna disfruta la variedad y la conversación.", "Tu Luna busca fusión emocional y comprensión sin palabras."],
-    Venus:["Tu Venus ama con pasión y necesita chispa.", "Tu Venus valora la lealtad y el afecto físico.", "Tu Venus se enamora de las mentes brillantes.", "Tu Venus ama profundo y busca almas que sientan igual."]
-  },
-  en: {
-    Sun:  ["Your Sun seeks a kindred flame — someone who matches your vital energy.", "Your Sun thrives when grounded and given form.", "Your Sun connects through ideas and freedom.", "Your Sun finds home in emotional depth."],
-    Moon: ["Your Moon feels safe with shared inner fire.", "Your Moon needs stability and consistent presence.", "Your Moon enjoys variety and conversation.", "Your Moon seeks emotional fusion and wordless understanding."],
-    Venus:["Your Venus loves with passion and needs a spark.", "Your Venus values loyalty and physical affection.", "Your Venus falls for brilliant minds.", "Your Venus loves deeply and seeks kindred souls."]
-  }
-};
-
-function renderCompatSection(pA) {
-  const el = document.getElementById("compatSection");
-  if(!el || !pA) return;
-  const l = lang;
-  const signs = l === "es" ? SIGN_ES : SIGN_EN;
-
-  const planets = [
-    { key: "Sun",   glyph: "☀", label: l==="es"?"Tu Sol":"Your Sun" },
-    { key: "Venus", glyph: "♀", label: l==="es"?"Tu Venus":"Your Venus" },
-    { key: "Moon",  glyph: "☽", label: l==="es"?"Tu Luna":"Your Moon" }
-  ];
-
-  const rows = planets.map(p => {
-    const deg = pA[p.key];
-    if(deg === undefined) return "";
-    const signIdx = Math.floor(((deg % 360) + 360) % 360 / 30);
-    const elem = SIGN_ELEM_MAP[signIdx];
-    const elemGroup = Math.floor(["fire","earth","air","water"].indexOf(elem));
-    const tip = COMPAT_TIPS[l][p.key][elemGroup];
-    // Get top 3 compatible signs
-    const compatSignIdxs = ELEM_COMPAT[elem].signs.filter(s => s !== signIdx).slice(0, 3);
-    const compatNames = compatSignIdxs.map(i => signs[i]).join(", ");
-    return `<div class="compat-row">
-      <div class="compat-planet">${p.glyph}</div>
-      <div class="compat-body">
-        <div class="compat-label">${p.label} ${l==="es"?"en":"in"} ${signs[signIdx]}</div>
-        <div class="compat-signs">✦ ${compatNames}</div>
-        <div class="compat-tip">${tip}</div>
-      </div>
-    </div>`;
-  }).join("");
-
-  const title = l==="es" ? "¿Con quién conectas mejor? ✦" : "Who do you connect with best? ✦";
-  el.innerHTML = `<div class="compat-title">${title}</div>${rows}`;
-  el.style.display = "block";
-}
-
-function deleteHistory(index){
-  const h=JSON.parse(localStorage.getItem("duual_history")||"[]");
-  h.splice(index,1);
-  localStorage.setItem("duual_history",JSON.stringify(h));
-  renderHistory();
-  showToast(lang==="es"?"Eliminado":"Deleted");
-}
+function deleteHistory(index){const h=JSON.parse(localStorage.getItem("duual_history")||"[]");h.splice(index,1);localStorage.setItem("duual_history",JSON.stringify(h));renderHistory();showToast(lang==="es"?"Eliminado":"Deleted");}
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
 function updateClock(){const n=new Date();document.getElementById("clock").textContent=n.getHours()+":"+(n.getMinutes()<10?"0":"")+n.getMinutes();}
 const splashTag=document.getElementById('splashTag');
 if(splashTag){const sl=localStorage.getItem('duual_lang')||'es';splashTag.textContent=sl==='en'?'your love, written in the stars':'tu amor, escrito en las estrellas';}
+// FIX 1 continued: splash removes itself then calls showTutorial which handles navigation
 setTimeout(()=>{const s=document.getElementById('splash');if(s){s.style.opacity='0';setTimeout(()=>{s.remove();showTutorial();},800);}},2200);
 updateClock();setInterval(updateClock,30000);
 updatePremiumUI();
 selectPlan("annual");
-
-// Restaurar último resultado si existe
 (function restoreSession(){
   try{
     const saved=localStorage.getItem('duual_last');
-    if(saved){
-      lastResult=JSON.parse(saved);
-      // Si había un resultado activo, ir directo a resultados
-      renderResults(lastResult);
-      goScreen("results");
-    }
+    if(saved){lastResult=JSON.parse(saved);renderResults(lastResult);goScreen("results");}
   }catch(e){}
 })();
-
 (function cosmos(){
   const cv=document.getElementById("cosmosCanvas"),ctx=cv.getContext("2d");
   let W,H,stars=[];
@@ -1415,109 +822,61 @@ selectPlan("annual");
   function draw(){ctx.clearRect(0,0,W,H);[[W*.15,H*.12,"rgba(201,75,114,0.055)",W*.4],[W*.85,H*.6,"rgba(107,99,204,0.05)",W*.45]].forEach(([x,y,c,r])=>{const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c);g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);});const cs=stars.filter(s=>s.c);ctx.strokeStyle="rgba(237,147,177,0.14)";ctx.lineWidth=0.5;CL.forEach(([a,b])=>{if(cs[a]&&cs[b]){ctx.beginPath();ctx.moveTo(cs[a].x,cs[a].y);ctx.lineTo(cs[b].x,cs[b].y);ctx.stroke();}});stars.forEach(s=>{s.t+=s.spd;const f=s.o*(0.65+0.35*Math.sin(s.t));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.c?`rgba(237,147,177,${f})`:`rgba(255,252,255,${f})`;ctx.fill();if(s.r>1.1&&Math.sin(s.t)>.85){ctx.strokeStyle=`rgba(255,252,255,${f*.35})`;ctx.lineWidth=.4;ctx.beginPath();ctx.moveTo(s.x-4,s.y);ctx.lineTo(s.x+4,s.y);ctx.moveTo(s.x,s.y-4);ctx.lineTo(s.x,s.y+4);ctx.stroke();}});requestAnimationFrame(draw);}
   window.addEventListener("resize",resize);resize();draw();
 })();
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// TUTORIAL DE BIENVENIDA
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const TUTORIAL_STEPS = {
-  es: [
-    { icon: "📅", title: "Ingresa dos fechas", desc: "Escribe el nombre y fecha de nacimiento de ambas personas. La hora es opcional pero mejora la precisión." },
-    { icon: "🌙", title: "Lee tu resultado", desc: "Obtén un score de compatibilidad, aspectos planetarios y análisis por área: romance, comunicación y más." },
-    { icon: "🪐", title: "Carta natal con IA", desc: "Con Premium, explora interpretaciones personalizadas de cada planeta y haz preguntas a los astros." }
-  ],
-  en: [
-    { icon: "📅", title: "Enter two dates", desc: "Add names and birth dates for both people. Time is optional but improves accuracy." },
-    { icon: "🌙", title: "Read your result", desc: "Get a compatibility score, planetary aspects and analysis by area: romance, communication and more." },
-    { icon: "🪐", title: "AI natal chart", desc: "With Premium, explore personalized interpretations of each planet and ask questions to the stars." }
-  ]
-};
 
-let tutCurrentStep = -1; // -1 = pantalla de idioma
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// TUTORIAL
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const TUTORIAL_STEPS={es:[{icon:"📅",title:"Ingresa dos fechas",desc:"Escribe el nombre y fecha de nacimiento de ambas personas. La hora es opcional pero mejora la precisión."},{icon:"🌙",title:"Lee tu resultado",desc:"Obtén un score de compatibilidad, aspectos planetarios y análisis por área: romance, comunicación y más."},{icon:"🪐",title:"Carta natal con IA",desc:"Con Premium, explora interpretaciones personalizadas de cada planeta y haz preguntas a los astros."}],en:[{icon:"📅",title:"Enter two dates",desc:"Add names and birth dates for both people. Time is optional but improves accuracy."},{icon:"🌙",title:"Read your result",desc:"Get a compatibility score, planetary aspects and analysis by area: romance, communication and more."},{icon:"🪐",title:"AI natal chart",desc:"With Premium, explore personalized interpretations of each planet and ask questions to the stars."}]};
+let tutCurrentStep=-1;
 
-function showTutorial() {
-  if(localStorage.getItem('duual_tutorial_done')) return;
-  const overlay = document.getElementById('tutorialOverlay');
-  overlay.style.display = 'flex';
-  tutCurrentStep = -1;
+// FIX 1: showTutorial navigates to input if tutorial already done
+function showTutorial(){
+  if(localStorage.getItem('duual_tutorial_done')){goScreen('input');return;}
+  const overlay=document.getElementById('tutorialOverlay');
+  overlay.style.display='flex';
+  tutCurrentStep=-1;
   renderTutStep();
 }
 
-function renderTutStep() {
-  const stepEl = document.getElementById('tutStep');
-  const nextBtn = document.getElementById('tutNext');
-  const skipBtn = document.getElementById('tutSkip');
-
-  if(tutCurrentStep === -1) {
-    // Pantalla de selección de idioma
-    document.getElementById('tutIcon').textContent = "✦";
-    document.getElementById('tutTitle').textContent = "Duual";
-    document.getElementById('tutDesc').innerHTML = '';
-    stepEl.querySelector('#tutDesc').style.display = 'none';
-
-    // Botones de idioma
-    nextBtn.style.display = 'none';
-    skipBtn.style.display = 'none';
-
-    // Insertar selector si no existe
-    if(!document.getElementById('tutLangSel')) {
-      const langDiv = document.createElement('div');
-      langDiv.id = 'tutLangSel';
-      langDiv.style.cssText = 'display:flex;gap:12px;justify-content:center;margin-bottom:16px;';
-      langDiv.innerHTML = `
-        <button onclick="tutSelectLang('es')" style="flex:1;padding:14px;background:var(--rose);border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;">Español</button>
-        <button onclick="tutSelectLang('en')" style="flex:1;padding:14px;background:var(--surf2);border:0.5px solid var(--bord2);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--txt2);cursor:pointer;">English</button>
-      `;
-      nextBtn.parentNode.insertBefore(langDiv, nextBtn);
+function renderTutStep(){
+  const nextBtn=document.getElementById('tutNext');
+  const skipBtn=document.getElementById('tutSkip');
+  if(tutCurrentStep===-1){
+    document.getElementById('tutIcon').textContent="✦";
+    document.getElementById('tutTitle').textContent="Duual";
+    document.getElementById('tutDesc').innerHTML='';
+    document.getElementById('tutDesc').style.display='none';
+    nextBtn.style.display='none';skipBtn.style.display='none';
+    if(!document.getElementById('tutLangSel')){
+      const langDiv=document.createElement('div');
+      langDiv.id='tutLangSel';
+      langDiv.style.cssText='display:flex;gap:12px;justify-content:center;margin-bottom:16px;';
+      langDiv.innerHTML=`<button onclick="tutSelectLang('es')" style="flex:1;padding:14px;background:var(--rose);border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;">Español</button><button onclick="tutSelectLang('en')" style="flex:1;padding:14px;background:var(--surf2);border:0.5px solid var(--bord2);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--txt2);cursor:pointer;">English</button>`;
+      nextBtn.parentNode.insertBefore(langDiv,nextBtn);
     }
-
-    // Dots — step 0 de 4
-    for(let i = 0; i < 4; i++) {
-      document.getElementById(`td${i}`).className = 'tut-dot' + (i === 0 ? ' on' : '');
-    }
+    for(let i=0;i<4;i++)document.getElementById(`td${i}`).className='tut-dot'+(i===0?' on':'');
     return;
   }
-
-  // Pasos normales
-  const langSel = document.getElementById('tutLangSel');
-  if(langSel) langSel.style.display = 'none';
-  nextBtn.style.display = 'block';
-  skipBtn.style.display = 'block';
-  document.getElementById('tutDesc').style.display = 'block';
-
-  const steps = TUTORIAL_STEPS[lang] || TUTORIAL_STEPS.es;
-  const step = steps[tutCurrentStep];
-  document.getElementById('tutIcon').textContent = step.icon;
-  document.getElementById('tutTitle').textContent = step.title;
-  document.getElementById('tutDesc').textContent = step.desc;
-  const isLast = tutCurrentStep === steps.length - 1;
-  nextBtn.textContent = isLast
-    ? (lang === 'es' ? '¡Empezar! ✦' : 'Get started! ✦')
-    : (lang === 'es' ? 'Siguiente →' : 'Next →');
-  skipBtn.textContent = lang === 'es' ? 'Saltar tutorial' : 'Skip tutorial';
-
-  for(let i = 0; i < 4; i++) {
-    document.getElementById(`td${i}`).className = 'tut-dot' + (i === tutCurrentStep + 1 ? ' on' : '');
-  }
+  const langSel=document.getElementById('tutLangSel');
+  if(langSel)langSel.style.display='none';
+  nextBtn.style.display='block';skipBtn.style.display='block';
+  document.getElementById('tutDesc').style.display='block';
+  const steps=TUTORIAL_STEPS[lang]||TUTORIAL_STEPS.es;
+  const step=steps[tutCurrentStep];
+  document.getElementById('tutIcon').textContent=step.icon;
+  document.getElementById('tutTitle').textContent=step.title;
+  document.getElementById('tutDesc').textContent=step.desc;
+  const isLast=tutCurrentStep===steps.length-1;
+  nextBtn.textContent=isLast?(lang==='es'?'¡Empezar! ✦':'Get started! ✦'):(lang==='es'?'Siguiente →':'Next →');
+  skipBtn.textContent=lang==='es'?'Saltar tutorial':'Skip tutorial';
+  for(let i=0;i<4;i++)document.getElementById(`td${i}`).className='tut-dot'+(i===tutCurrentStep+1?' on':'');
 }
-
-function tutSelectLang(l) {
-  setLang(l);
-  tutCurrentStep = 0;
-  renderTutStep();
-}
-
-function tutorialNext() {
-  const steps = TUTORIAL_STEPS[lang] || TUTORIAL_STEPS.es;
-  if(tutCurrentStep < steps.length - 1) {
-    tutCurrentStep++;
-    renderTutStep();
-  } else {
-    tutorialSkip();
-  }
-}
-
-function tutorialSkip() {
-  localStorage.setItem('duual_tutorial_done', '1');
-  document.getElementById('tutorialOverlay').style.display = 'none';
+function tutSelectLang(l){setLang(l);tutCurrentStep=0;renderTutStep();}
+function tutorialNext(){const steps=TUTORIAL_STEPS[lang]||TUTORIAL_STEPS.es;if(tutCurrentStep<steps.length-1){tutCurrentStep++;renderTutStep();}else{tutorialSkip();}}
+// FIX 1: tutorialSkip navigates to input
+function tutorialSkip(){
+  localStorage.setItem('duual_tutorial_done','1');
+  document.getElementById('tutorialOverlay').style.display='none';
   goScreen('input');
 }
 
@@ -1530,76 +889,29 @@ const NATAL_QA_FREE_LIMIT=3;
 const NATAL_QA_ANSWERS_STORE=[];
 const NATAL_PLANETS=["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"];
 const NATAL_GLYPH={Sun:"☀",Moon:"☽",Mercury:"☿",Venus:"♀",Mars:"♂",Jupiter:"♃",Saturn:"♄"};
-
 function generateNatalSVG(p,name,l){
   const signs=l==="es"?SIGN_ES:SIGN_EN;
   const W=300,CX=150,CY=150,R_OUT=130,R_IN=95,R_PLANET=112;
   let paths="";
-  for(let i=0;i<12;i++){
-    const angle=(i*30-90)*Math.PI/180;
-    const x1=CX+R_IN*Math.cos(angle),y1=CY+R_IN*Math.sin(angle);
-    const x2=CX+R_OUT*Math.cos(angle),y2=CY+R_OUT*Math.sin(angle);
-    paths+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(242,238,249,0.1)" stroke-width="0.5"/>`;
-  }
-  // Anillo exterior para signos
+  for(let i=0;i<12;i++){const angle=(i*30-90)*Math.PI/180;const x1=CX+R_IN*Math.cos(angle),y1=CY+R_IN*Math.sin(angle);const x2=CX+R_OUT*Math.cos(angle),y2=CY+R_OUT*Math.sin(angle);paths+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(242,238,249,0.1)" stroke-width="0.5"/>`;}
   const R_SIGN=148;
   paths+=`<circle cx="${CX}" cy="${CY}" r="${R_SIGN}" fill="rgba(255,255,255,0.02)" stroke="rgba(242,238,249,0.18)" stroke-width="0.5"/>`;
   paths+=`<circle cx="${CX}" cy="${CY}" r="${R_OUT}" fill="rgba(255,255,255,0.03)" stroke="rgba(242,238,249,0.12)" stroke-width="0.5"/>`;
   paths+=`<circle cx="${CX}" cy="${CY}" r="${R_IN}" fill="none" stroke="rgba(242,238,249,0.08)" stroke-width="0.5"/>`;
-  // Glyphs de signos en anillo exterior más legibles
   const R_SIGN_TXT=(R_OUT+R_SIGN)/2;
-  for(let i=0;i<12;i++){
-    const angle=(i*30+15-90)*Math.PI/180;
-    const x=CX+R_SIGN_TXT*Math.cos(angle),y=CY+R_SIGN_TXT*Math.sin(angle);
-    paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="rgba(242,238,249,0.4)">${SIGN_GLYPH[i]}</text>`;
-  }
+  for(let i=0;i<12;i++){const angle=(i*30+15-90)*Math.PI/180;const x=CX+R_SIGN_TXT*Math.cos(angle),y=CY+R_SIGN_TXT*Math.sin(angle);paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="rgba(242,238,249,0.4)">${SIGN_GLYPH[i]}</text>`;}
   paths+=`<circle cx="${CX}" cy="${CY}" r="5" fill="rgba(201,75,114,0.6)" stroke="rgba(201,75,114,0.8)" stroke-width="1"/>`;
   const colors={Sun:"#F5D76E",Moon:"#C8C0F5",Mercury:"#90E0D0",Venus:"#F49AC2",Mars:"#F08080",Jupiter:"#A0C8F0",Saturn:"#C8B060"};
-  // Anti-solapamiento: separar planetas muy cercanos
-  const positions=NATAL_PLANETS.map(planet=>{
-    if(p[planet]===undefined)return null;
-    const deg=((p[planet]%360)+360)%360;
-    return{planet,deg,angle:(deg-90)*Math.PI/180,r:R_PLANET};
-  }).filter(Boolean);
-  for(let i=0;i<positions.length;i++){
-    for(let j=i+1;j<positions.length;j++){
-      let diff=Math.abs(positions[i].deg-positions[j].deg);
-      if(diff>180)diff=360-diff;
-      if(diff<14){positions[i].r=R_PLANET+13;positions[j].r=R_PLANET-13;}
-    }
-  }
-  // Líneas conectoras
-  positions.forEach(({angle,r})=>{
-    const x1=CX+R_IN*Math.cos(angle),y1=CY+R_IN*Math.sin(angle);
-    const x2=CX+r*Math.cos(angle),y2=CY+r*Math.sin(angle);
-    paths+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(242,238,249,0.06)" stroke-width="0.5"/>`;
-  });
-  // Planetas
-  positions.forEach(({planet,angle,r})=>{
-    const x=CX+r*Math.cos(angle),y=CY+r*Math.sin(angle);
-    const color=colors[planet]||"#FFF";
-    paths+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9" fill="${color}" opacity="0.95"/>`;
-    paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#0D0A18" font-weight="600">${NATAL_GLYPH[planet]}</text>`;
-  });
+  const positions=NATAL_PLANETS.map(planet=>{if(p[planet]===undefined)return null;const deg=((p[planet]%360)+360)%360;return{planet,deg,angle:(deg-90)*Math.PI/180,r:R_PLANET};}).filter(Boolean);
+  for(let i=0;i<positions.length;i++){for(let j=i+1;j<positions.length;j++){let diff=Math.abs(positions[i].deg-positions[j].deg);if(diff>180)diff=360-diff;if(diff<14){positions[i].r=R_PLANET+13;positions[j].r=R_PLANET-13;}}}
+  positions.forEach(({angle,r})=>{const x1=CX+R_IN*Math.cos(angle),y1=CY+R_IN*Math.sin(angle);const x2=CX+r*Math.cos(angle),y2=CY+r*Math.sin(angle);paths+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(242,238,249,0.06)" stroke-width="0.5"/>`;});
+  positions.forEach(({planet,angle,r})=>{const x=CX+r*Math.cos(angle),y=CY+r*Math.sin(angle);const color=colors[planet]||"#FFF";paths+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9" fill="${color}" opacity="0.95"/>`;paths+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#0D0A18" font-weight="600">${NATAL_GLYPH[planet]}</text>`;});
   paths+=`<text x="${CX}" y="${CY-10}" text-anchor="middle" font-size="11" fill="rgba(242,238,249,0.5)" font-family="DM Sans,sans-serif">${name}</text>`;
   paths+=`<text x="${CX}" y="${CY+7}" text-anchor="middle" font-size="9" fill="rgba(242,238,249,0.25)" font-family="DM Sans,sans-serif">${l==="es"?"Carta Natal":"Natal Chart"}</text>`;
   return`<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:auto;">${paths}</svg>`;
 }
-
-function openNatalScreen(){
-  if(!lastResult)return;
-  natalActivePid="A";
-  goScreen("natal");
-  renderNatalScreen();
-}
-
-function switchNatalPerson(pid){
-  natalActivePid=pid;
-  document.getElementById("nptA").classList.toggle("on",pid==="A");
-  document.getElementById("nptB").classList.toggle("on",pid==="B");
-  renderNatalScreen();
-}
-
+function openNatalScreen(){if(!lastResult)return;natalActivePid="A";goScreen("natal");renderNatalScreen();}
+function switchNatalPerson(pid){natalActivePid=pid;document.getElementById("nptA").classList.toggle("on",pid==="A");document.getElementById("nptB").classList.toggle("on",pid==="B");renderNatalScreen();}
 function renderNatalScreen(){
   if(!lastResult)return;
   const pid=natalActivePid;
@@ -1614,31 +926,12 @@ function renderNatalScreen(){
   const pnames=l==="es"?PES:PEN;
   const accordion=document.getElementById("planetAccordion");
   accordion.innerHTML=NATAL_PLANETS.map(planet=>{
-    const deg=p[planet];
-    if(deg===undefined)return"";
+    const deg=p[planet];if(deg===undefined)return"";
     const signIdx=Math.floor(((deg%360)+360)%360/30);
     const signName=signs[signIdx];
     const cacheKey=`${pid}-${planet}`;
     const cached=NATAL_PLANET_CACHE[cacheKey];
-    return`<div class="pacc-item" id="pacc_${pid}_${planet}">
-      <div class="pacc-header" 
-        data-pid="${pid}" data-planet="${planet}" 
-        data-pname="${pnames[planet]}" data-sign="${signName}" data-person="${name}"
-        onclick="togglePlanetCard(this)">
-        <div class="pacc-left">
-          <span class="pacc-glyph">${NATAL_GLYPH[planet]}</span>
-          <span class="pacc-planet">${pnames[planet]}</span>
-          <span class="pacc-sign">${l==="es"?"en":"in"} ${signName}</span>
-        </div>
-        <span class="pacc-arrow" id="arrow_${pid}_${planet}"></span>
-      </div>
-      <div class="pacc-body" id="paccBody_${pid}_${planet}">
-        <div id="paccContent_${pid}_${planet}">${cached
-          ?`<div class="pacc-interp">${cached}</div>${natalShareBtn(pnames[planet],signName,name,cached,l)}`
-          :`<div class="pacc-placeholder" style="height:4px;"></div>`
-        }</div>
-      </div>
-    </div>`;
+    return`<div class="pacc-item" id="pacc_${pid}_${planet}"><div class="pacc-header" data-pid="${pid}" data-planet="${planet}" data-pname="${pnames[planet]}" data-sign="${signName}" data-person="${name}" onclick="togglePlanetCard(this)"><div class="pacc-left"><span class="pacc-glyph">${NATAL_GLYPH[planet]}</span><span class="pacc-planet">${pnames[planet]}</span><span class="pacc-sign">${l==="es"?"en":"in"} ${signName}</span></div><span class="pacc-arrow" id="arrow_${pid}_${planet}"></span></div><div class="pacc-body" id="paccBody_${pid}_${planet}"><div id="paccContent_${pid}_${planet}">${cached?`<div class="pacc-interp">${cached}</div>${natalShareBtn(pnames[planet],signName,name,cached,l)}`:`<div class="pacc-placeholder" style="height:4px;"></div>`}</div></div></div>`;
   }).join("");
   updateQACounter();
   document.getElementById("natalQAAnswers").innerHTML=NATAL_QA_ANSWERS_STORE.filter(a=>a.pid===pid).map(a=>`<div class="natal-qa-answer"><div class="natal-qa-q">${a.question}</div><div class="natal-qa-a">${a.answer}</div></div>`).join("");
@@ -1646,167 +939,60 @@ function renderNatalScreen(){
   document.getElementById("natalQATitle").textContent=l==="es"?"✦ PREGUNTA A LOS ASTROS":"✦ ASK THE STARS";
   document.getElementById("natalScroll").scrollTop=0;
 }
-
 async function togglePlanetCard(el){
-  const pid=el.dataset.pid;
-  const planet=el.dataset.planet;
-  const pname=el.dataset.pname;
-  const signName=el.dataset.sign;
-  const personName=el.dataset.person;
+  const pid=el.dataset.pid,planet=el.dataset.planet,pname=el.dataset.pname,signName=el.dataset.sign,personName=el.dataset.person;
   const body=document.getElementById(`paccBody_${pid}_${planet}`);
   const arrow=document.getElementById(`arrow_${pid}_${planet}`);
   const isOpen=body.classList.contains("open");
   document.querySelectorAll(".pacc-body").forEach(b=>b.classList.remove("open"));
   document.querySelectorAll(".pacc-arrow").forEach(a=>a.classList.remove("open"));
   if(isOpen)return;
-  body.classList.add("open");
-  arrow.classList.add("open");
+  body.classList.add("open");arrow.classList.add("open");
   const cacheKey=`${pid}-${planet}`;
   if(NATAL_PLANET_CACHE[cacheKey])return;
-  // Mostrar spinner inmediatamente al abrir
   const contentEl=document.getElementById(`paccContent_${pid}_${planet}`);
   if(contentEl)contentEl.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:6px 0 2px;"><span class="ai-spin"></span><span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Generando…":"Generating…"}</span></div>`;
   try{
     const res=await fetch("/api/interpret",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"planet",planetA:pname,signA:signName,nameA:personName,lang})});
     const data=await res.json();
-    if(!res.ok){
-      const errMsg=data.error||`Error ${res.status}`;
-      const detail=data.detail||'';
-      if(contentEl)contentEl.innerHTML=`<span style="font-size:11px;color:var(--rose-m);">${errMsg}${detail?' — '+detail:''}</span>`;
-      return;
-    }
+    if(!res.ok){if(contentEl)contentEl.innerHTML=`<span style="font-size:11px;color:var(--rose-m);">${data.error||`Error ${res.status}`}</span>`;return;}
     const text=data.interpretation||"";
     NATAL_PLANET_CACHE[cacheKey]=text;
     if(contentEl)contentEl.innerHTML=`<div class="pacc-interp">${text}</div>${natalShareBtn(pname,signName,personName,text,lang)}`;
-  }catch(e){
-    if(contentEl)contentEl.innerHTML=`<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error — intenta de nuevo":"Error — try again"}</span>`;
-  }
+  }catch(e){if(contentEl)contentEl.innerHTML=`<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error — intenta de nuevo":"Error — try again"}</span>`;}
 }
-
-function natalShareBtn(pname,signName,name,text,l){
-  const safeText=text.replace(/'/g,"&#39;").replace(/"/g,"&quot;");
-  return`<button class="pacc-share" onclick='shareNatalInterp("${pname}","${signName}","${name}","${safeText}")'>
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
-    ${l==="es"?"Compartir interpretación":"Share interpretation"}
-  </button>`;
-}
-
-async function shareNatalInterp(pname,signName,name,text){
-  const shareText=lang==="es"
-    ?`✦ ${name} · ${pname} en ${signName}\n\n${text}\n\nDescubre tu carta natal en duual.app`
-    :`✦ ${name} · ${pname} in ${signName}\n\n${text}\n\nDiscover your natal chart at duual.app`;
-  if(navigator.share){try{await navigator.share({title:"Duual · Carta Natal",text:shareText});return;}catch(e){}}
-  if(navigator.clipboard){await navigator.clipboard.writeText(shareText);showToast(lang==="es"?"Copiado ✦":"Copied ✦");}
-}
-
-function getQAUsed(){
-  if(isPremium())return 0;
-  const stored=JSON.parse(localStorage.getItem("duual_qa_count")||'{"date":"","count":0}');
-  const today=todayKey();
-  if(stored.date!==today)return 0;
-  return stored.count;
-}
-function incrementQAUsed(){
-  if(isPremium())return;
-  const used=getQAUsed();
-  localStorage.setItem("duual_qa_count",JSON.stringify({date:todayKey(),count:used+1}));
-}
-function updateQACounter(){
-  const counter=document.getElementById("natalQACounter");
-  const btn=document.getElementById("natalQABtn");
-  if(!counter||!btn)return;
-  if(isPremium()){counter.textContent=lang==="es"?"Preguntas ilimitadas ✦":"Unlimited questions ✦";btn.disabled=false;return;}
-  const left=Math.max(0,NATAL_QA_FREE_LIMIT-getQAUsed());
-  counter.textContent=lang==="es"?`${left} preguntas restantes hoy`:`${left} questions left today`;
-  btn.disabled=left===0;
-}
-
+function natalShareBtn(pname,signName,name,text,l){const safeText=text.replace(/'/g,"&#39;").replace(/"/g,"&quot;");return`<button class="pacc-share" onclick='shareNatalInterp("${pname}","${signName}","${name}","${safeText}")'><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>${l==="es"?"Compartir interpretación":"Share interpretation"}</button>`;}
+async function shareNatalInterp(pname,signName,name,text){const shareText=lang==="es"?`✦ ${name} · ${pname} en ${signName}\n\n${text}\n\nDescubre tu carta natal en duual.app`:`✦ ${name} · ${pname} in ${signName}\n\n${text}\n\nDiscover your natal chart at duual.app`;if(navigator.share){try{await navigator.share({title:"Duual · Carta Natal",text:shareText});return;}catch(e){}}if(navigator.clipboard){await navigator.clipboard.writeText(shareText);showToast(lang==="es"?"Copiado ✦":"Copied ✦");}}
+function getQAUsed(){if(isPremium())return 0;const stored=JSON.parse(localStorage.getItem("duual_qa_count")||'{"date":"","count":0}');const today=todayKey();if(stored.date!==today)return 0;return stored.count;}
+function incrementQAUsed(){if(isPremium())return;const used=getQAUsed();localStorage.setItem("duual_qa_count",JSON.stringify({date:todayKey(),count:used+1}));}
+function updateQACounter(){const counter=document.getElementById("natalQACounter");const btn=document.getElementById("natalQABtn");if(!counter||!btn)return;if(isPremium()){counter.textContent=lang==="es"?"Preguntas ilimitadas ✦":"Unlimited questions ✦";btn.disabled=false;return;}const left=Math.max(0,NATAL_QA_FREE_LIMIT-getQAUsed());counter.textContent=lang==="es"?`${left} preguntas restantes hoy`:`${left} questions left today`;btn.disabled=left===0;}
 async function submitNatalQuestion(){
-  const input=document.getElementById("natalQAInput");
-  const question=input.value.trim();
-  if(!question)return;
+  const input=document.getElementById("natalQAInput");const question=input.value.trim();if(!question)return;
   if(!isPremium()&&getQAUsed()>=NATAL_QA_FREE_LIMIT){showNatalUpgrade();return;}
-  const btn=document.getElementById("natalQABtn");
-  btn.disabled=true;
-  btn.innerHTML=`<span class="ai-spin"></span>`;
-  const pid=natalActivePid;
-  const p=pid==="A"?lastResult.pA:lastResult.pB;
-  const name=pid==="A"?lastResult.nA:lastResult.nB;
-  const l=lang;
-  const signs=l==="es"?SIGN_ES:SIGN_EN;
-  const pnames=l==="es"?PES:PEN;
-  const chartSummary=NATAL_PLANETS.map(planet=>{
-    if(p[planet]===undefined)return"";
-    const signIdx=Math.floor(((p[planet]%360)+360)%360/30);
-    return`${pnames[planet]} en ${signs[signIdx]}`;
-  }).filter(Boolean).join(", ");
+  const btn=document.getElementById("natalQABtn");btn.disabled=true;btn.innerHTML=`<span class="ai-spin"></span>`;
+  const pid=natalActivePid;const p=pid==="A"?lastResult.pA:lastResult.pB;const name=pid==="A"?lastResult.nA:lastResult.nB;
+  const l=lang;const signs=l==="es"?SIGN_ES:SIGN_EN;const pnames=l==="es"?PES:PEN;
+  const chartSummary=NATAL_PLANETS.map(planet=>{if(p[planet]===undefined)return"";const signIdx=Math.floor(((p[planet]%360)+360)%360/30);return`${pnames[planet]} en ${signs[signIdx]}`;}).filter(Boolean).join(", ");
   try{
     const res=await fetch("/api/interpret",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"freeQuestion",nameA:name,chartSummary,question,lang:l})});
     const data=await res.json();
-    if(!res.ok){
-      const errMsg=data.error||`Error ${res.status}`;
-      showToast(`Error: ${errMsg}`);
-      btn.disabled=false;
-      btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";
-      return;
-    }
+    if(!res.ok){showToast(`Error: ${data.error||res.status}`);btn.disabled=false;btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";return;}
     const answer=data.interpretation||"";
-    if(!answer){
-      showToast(lang==="es"?"Sin respuesta — intenta de nuevo":"No response — try again");
-      btn.disabled=false;
-      btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";
-      return;
-    }
-    incrementQAUsed();
-    NATAL_QA_ANSWERS_STORE.unshift({pid,question,answer});
-    const answersEl=document.getElementById("natalQAAnswers");
-    const div=document.createElement("div");
-    div.className="natal-qa-answer";
-    div.innerHTML=`<div class="natal-qa-q">${question}</div><div class="natal-qa-a">${answer}</div>`;
-    answersEl.insertBefore(div,answersEl.firstChild);
-    input.value="";
-    updateQACounter();
-    if(!isPremium()&&getQAUsed()>=NATAL_QA_FREE_LIMIT)showNatalUpgrade();
-  }catch(e){
-    console.error("QA error:",e);
-    showToast(lang==="es"?`Error: ${e.message}`:`Error: ${e.message}`);
-  }
-  btn.disabled=false;
-  btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";
+    if(!answer){showToast(lang==="es"?"Sin respuesta — intenta de nuevo":"No response — try again");btn.disabled=false;btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";return;}
+    incrementQAUsed();NATAL_QA_ANSWERS_STORE.unshift({pid,question,answer});
+    const answersEl=document.getElementById("natalQAAnswers");const div=document.createElement("div");div.className="natal-qa-answer";div.innerHTML=`<div class="natal-qa-q">${question}</div><div class="natal-qa-a">${answer}</div>`;answersEl.insertBefore(div,answersEl.firstChild);
+    input.value="";updateQACounter();if(!isPremium()&&getQAUsed()>=NATAL_QA_FREE_LIMIT)showNatalUpgrade();
+  }catch(e){console.error("QA error:",e);showToast(lang==="es"?`Error: ${e.message}`:`Error: ${e.message}`);}
+  btn.disabled=false;btn.innerHTML=lang==="es"?"Preguntar ✦":"Ask ✦";
 }
+function showNatalUpgrade(){const answersEl=document.getElementById("natalQAAnswers");if(answersEl.querySelector(".natal-qa-upgrade"))return;const l=lang;const div=document.createElement("div");div.className="natal-qa-upgrade";div.innerHTML=`<div class="natal-qa-upgrade-text">${l==="es"?"Llegaste al límite de 3 preguntas gratuitas hoy.<br>Con Premium, pregunta sin límites.":"You reached the 3 free questions limit for today.<br>With Premium, ask without limits."}</div><button class="natal-qa-upgrade-btn" onclick="goScreen('paywall')">${l==="es"?"Ver Premium ✦":"See Premium ✦"}</button>`;answersEl.appendChild(div);}
 
-function showNatalUpgrade(){
-  const answersEl=document.getElementById("natalQAAnswers");
-  if(answersEl.querySelector(".natal-qa-upgrade"))return;
-  const l=lang;
-  const div=document.createElement("div");
-  div.className="natal-qa-upgrade";
-  div.innerHTML=`<div class="natal-qa-upgrade-text">${l==="es"?"Llegaste al límite de 3 preguntas gratuitas hoy.<br>Con Premium, pregunta sin límites.":"You reached the 3 free questions limit for today.<br>With Premium, ask without limits."}</div><button class="natal-qa-upgrade-btn" onclick="goScreen('paywall')">${l==="es"?"Ver Premium ✦":"See Premium ✦"}</button>`;
-  answersEl.appendChild(div);
-}
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// NOTIFICACIONES PUSH BROADCAST
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function initPushBanner(){
-  const banner=document.getElementById('pushBanner');if(!banner)return;
-  if(!('serviceWorker' in navigator)||!('PushManager' in window))return;
-  if(Notification.permission==='granted'||Notification.permission==='denied')return;
-  if(localStorage.getItem('duual_push_dismissed'))return;
-  setTimeout(()=>{banner.style.display='flex';},4000);
-}
-async function requestPushPermission(){
-  const banner=document.getElementById('pushBanner');
-  try{
-    const permission=await Notification.requestPermission();
-    if(permission==='granted'){
-      showToast(lang==="es"?"🔔 Alertas activadas ✦":"🔔 Alerts activated ✦");
-    }
-    if(banner)banner.style.display='none';
-  }catch(e){if(banner)banner.style.display='none';}
-}
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/sw.js').then(()=>{initPushBanner();}).catch(()=>{});
-}
+// NOTIFICACIONES PUSH
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initPushBanner(){const banner=document.getElementById('pushBanner');if(!banner)return;if(!('serviceWorker' in navigator)||!('PushManager' in window))return;if(Notification.permission==='granted'||Notification.permission==='denied')return;if(localStorage.getItem('duual_push_dismissed'))return;setTimeout(()=>{banner.style.display='flex';},4000);}
+async function requestPushPermission(){const banner=document.getElementById('pushBanner');try{const permission=await Notification.requestPermission();if(permission==='granted'){showToast(lang==="es"?"🔔 Alertas activadas ✦":"🔔 Alerts activated ✦");}if(banner)banner.style.display='none';}catch(e){if(banner)banner.style.display='none';}}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then(()=>{initPushBanner();}).catch(()=>{});}
 </script>
 </body>
 </html>
