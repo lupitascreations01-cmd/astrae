@@ -11,6 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Duual · Tu amor, escrito en las estrellas</title>
+  <script defer data-domain="duual.vercel.app" src="https://plausible.io/js/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2/source/js/astronomy.browser.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
@@ -270,6 +271,18 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
         <span class="pbadge">✦ <span data-es="Premium activo" data-en="Premium active">Premium activo</span></span>
       </div>
     </div>
+    <!-- Push notifications banner -->
+    <div class="push-banner" id="pushBanner" style="display:none;">
+      <span class="push-banner-icon">🔔</span>
+      <div class="push-banner-body">
+        <div class="push-banner-text" id="pushBannerText">Activa alertas de tránsitos planetarios</div>
+        <div class="push-banner-sub">Venus cambia de signo, lunas llenas y más</div>
+      </div>
+      <div class="push-banner-actions">
+        <button class="push-banner-btn" onclick="requestPushPermission()">Activar</button>
+        <button class="push-banner-dismiss" onclick="this.closest('.push-banner').style.display='none';localStorage.setItem('duual_push_dismissed','1')">×</button>
+      </div>
+    </div>
     <div class="pcard">
       <div class="plabel"><span class="pdot da"></span><span data-es="Primera persona" data-en="First person">Primera persona</span></div>
       <input class="ninput" type="text" id="nameA" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
@@ -356,9 +369,25 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <div class="section"><div class="section-title">✦ <span data-es="VENUS & MARTE PROFUNDO" data-en="DEEP VENUS & MARS">VENUS & MARTE PROFUNDO</span></div></div>
       <div id="venusSection"></div>
       <div class="section"><div class="section-title">✦ <span data-es="QUIRÓN — HERIDAS Y SANACIÓN" data-en="CHIRON — WOUNDS & HEALING">QUIRÓN — HERIDAS Y SANACIÓN</span></div></div>
-      <div id="chironSection"></div>
+      <div id="chironWrapper" class="premium-section-wrapper">
+        <div id="chironSection"></div>
+        <div id="chironPaywall" class="premium-paywall-overlay" style="display:none;">
+          <div class="pw-icon">⚷</div>
+          <div class="pw-title">Quirón & Sanación</div>
+          <div class="pw-desc">Descubre las heridas profundas y el potencial de sanación en esta unión.</div>
+          <button class="pw-btn" onclick="goScreen('paywall')">Desbloquear con Premium</button>
+        </div>
+      </div>
       <div class="section"><div class="section-title">✦ <span data-es="NODO NORTE — PROPÓSITO" data-en="NORTH NODE — PURPOSE">NODO NORTE — PROPÓSITO</span></div></div>
-      <div id="nodeSection"></div>
+      <div id="nodeWrapper" class="premium-section-wrapper">
+        <div id="nodeSection"></div>
+        <div id="nodePaywall" class="premium-paywall-overlay" style="display:none;">
+          <div class="pw-icon">☊</div>
+          <div class="pw-title">Nodo Norte & Propósito</div>
+          <div class="pw-desc">El propósito kármico de esta unión, revelado por los nodos lunares.</div>
+          <button class="pw-btn" onclick="goScreen('paywall')">Desbloquear con Premium</button>
+        </div>
+      </div>
     </div>
     <div id="compatSection" class="compat-section" style="display:none;"></div>
     <div id="unlockCard" class="unlock-card">
