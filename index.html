@@ -226,6 +226,21 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .natal-qa-upgrade-btn{padding:9px 20px;background:var(--plum);border:none;border-radius:var(--r-md);font-family:"DM Sans",sans-serif;font-size:13px;color:#fff;cursor:pointer;}
 .ai-spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(201,75,114,0.3);border-top-color:#C94B72;border-radius:50%;animation:aispin 0.8s linear infinite;vertical-align:middle;margin-right:6px;}
 @keyframes aispin{to{transform:rotate(360deg);}}
+  .premium-section-wrapper{position:relative;margin:0 14px 8px;border-radius:var(--r-lg);overflow:hidden;}
+.premium-section-wrapper.locked .premium-card{filter:blur(5px);pointer-events:none;user-select:none;}
+.premium-paywall-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;background:rgba(13,10,24,0.65);border-radius:var(--r-lg);text-align:center;padding:16px;backdrop-filter:blur(2px);border:0.5px solid var(--gold-b);}
+.premium-paywall-overlay .pw-icon{font-size:24px;margin-bottom:8px;}
+.premium-paywall-overlay .pw-title{font-family:"Cormorant Garamond",serif;font-size:17px;color:var(--gold);margin-bottom:5px;}
+.premium-paywall-overlay .pw-desc{font-size:11px;color:rgba(212,146,14,0.7);margin-bottom:12px;line-height:1.5;}
+.premium-paywall-overlay .pw-btn{padding:9px 22px;background:linear-gradient(135deg,var(--gold),#E8A520);border:none;border-radius:20px;font-family:"DM Sans",sans-serif;font-size:12px;font-weight:500;color:#fff;cursor:pointer;}
+.push-banner{margin:0 14px 10px;background:rgba(107,99,204,0.1);border:0.5px solid rgba(107,99,204,0.3);border-radius:var(--r-lg);padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.push-banner-icon{font-size:20px;flex-shrink:0;}
+.push-banner-body{flex:1;}
+.push-banner-text{font-size:12px;color:var(--txt2);}
+.push-banner-sub{font-size:10px;color:var(--txt3);margin-top:2px;}
+.push-banner-actions{display:flex;gap:6px;align-items:center;}
+.push-banner-btn{padding:7px 14px;background:var(--plum);border:none;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:500;color:#fff;cursor:pointer;}
+.push-banner-dismiss{background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
 /* CARD PREVIEW MODAL */
 .card-preview-overlay{position:fixed;inset:0;background:rgba(5,3,14,0.93);z-index:200;display:none;flex-direction:column;align-items:center;backdrop-filter:blur(12px);}
 .card-preview-overlay.open{display:flex;}
@@ -918,13 +933,22 @@ function renderResults(r){
     return `<div class="asp-row${!premium&&i>=3?" blurred":""}"><div class="asp-glyph">${PG[x.pa]}</div><div class="asp-body"><div class="asp-title">${pname[x.pa]} <span style="color:var(--txt3);font-size:11px">${sgA}</span> ${x.a.s} ${pname[x.pb]} <span style="color:var(--txt3);font-size:11px">${sgB}</span></div><div class="asp-subtitle">${aName} · ${x.a.orbe}° ${lang==="es"?"orbe":"orb"}</div><div class="asp-interp">${x.interp}</div><span class="asp-badge ${x.a.t}">${x.a.s} ${aName}</span></div></div>`;
   }).join("");
 
-  if(premium){
+ if(premium){
     document.getElementById("premiumResults").style.display="block";
     document.getElementById("unlockCard").style.display="none";
+    document.getElementById("chironWrapper").classList.remove("locked");
+    document.getElementById("chironPaywall").style.display="none";
+    document.getElementById("nodeWrapper").classList.remove("locked");
+    document.getElementById("nodePaywall").style.display="none";
     renderPremium(pA,pB,nA,nB);
   } else {
-    document.getElementById("premiumResults").style.display="none";
+    document.getElementById("premiumResults").style.display="block";
     document.getElementById("unlockCard").style.display="block";
+    document.getElementById("chironWrapper").classList.add("locked");
+    document.getElementById("chironPaywall").style.display="flex";
+    document.getElementById("nodeWrapper").classList.add("locked");
+    document.getElementById("nodePaywall").style.display="flex";
+    renderPremium(pA,pB,nA,nB);
   }
 }
 
@@ -1750,6 +1774,29 @@ function showNatalUpgrade(){
   div.className="natal-qa-upgrade";
   div.innerHTML=`<div class="natal-qa-upgrade-text">${l==="es"?"Llegaste al límite de 3 preguntas gratuitas hoy.<br>Con Premium, pregunta sin límites.":"You reached the 3 free questions limit for today.<br>With Premium, ask without limits."}</div><button class="natal-qa-upgrade-btn" onclick="goScreen('paywall')">${l==="es"?"Ver Premium ✦":"See Premium ✦"}</button>`;
   answersEl.appendChild(div);
+}
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// NOTIFICACIONES PUSH BROADCAST
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initPushBanner(){
+  const banner=document.getElementById('pushBanner');if(!banner)return;
+  if(!('serviceWorker' in navigator)||!('PushManager' in window))return;
+  if(Notification.permission==='granted'||Notification.permission==='denied')return;
+  if(localStorage.getItem('duual_push_dismissed'))return;
+  setTimeout(()=>{banner.style.display='flex';},4000);
+}
+async function requestPushPermission(){
+  const banner=document.getElementById('pushBanner');
+  try{
+    const permission=await Notification.requestPermission();
+    if(permission==='granted'){
+      showToast(lang==="es"?"🔔 Alertas activadas ✦":"🔔 Alerts activated ✦");
+    }
+    if(banner)banner.style.display='none';
+  }catch(e){if(banner)banner.style.display='none';}
+}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').then(()=>{initPushBanner();}).catch(()=>{});
 }
 </script>
 </body>
