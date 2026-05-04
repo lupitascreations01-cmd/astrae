@@ -761,10 +761,7 @@ function generateCard(){
   const cv=document.createElement("canvas");cv.width=W;cv.height=H;
   const ctx=cv.getContext("2d");
   const drawAll=async()=>{
-    const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(0.5,"#130B20");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    const g1=ctx.createRadialGradient(W*0.15,H*0.2,0,W*0.15,H*0.2,W*0.6);g1.addColorStop(0,"rgba(201,75,114,0.18)");g1.addColorStop(1,"transparent");ctx.fillStyle=g1;ctx.fillRect(0,0,W,H);
-    const g2=ctx.createRadialGradient(W*0.85,H*0.75,0,W*0.85,H*0.75,W*0.55);g2.addColorStop(0,"rgba(107,99,204,0.15)");g2.addColorStop(1,"transparent");ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
-    ctx.fillStyle="rgba(255,252,255,0.7)";for(let i=0;i<200;i++){const x=Math.random()*W,y=Math.random()*H,r=Math.random()*2+0.5;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
+   await new Promise((res)=>{const bgImg=new Image();bgImg.crossOrigin="anonymous";bgImg.onload=()=>{ctx.drawImage(bgImg,0,0,W,H);res();};bgImg.onerror=()=>{const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);res();};bgImg.src="card-bg.png";});
     const cx=W/2,cy=H*0.38,cr=260;
     ctx.beginPath();ctx.arc(cx,cy,cr+15,0,Math.PI*2);ctx.strokeStyle="rgba(201,75,114,0.15)";ctx.lineWidth=1.5;ctx.stroke();
     ctx.beginPath();ctx.arc(cx,cy,cr,0,Math.PI*2);ctx.strokeStyle="rgba(201,75,114,0.4)";ctx.lineWidth=2;ctx.stroke();
