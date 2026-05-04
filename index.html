@@ -779,7 +779,7 @@ function generateCard(){
     const brandY=(logoImg.complete&&logoImg.naturalWidth>0)?logoY+logoSize+40:H*0.855;const brandStartX=cx-(duuW+alW)/2;
     ctx.textAlign="left";ctx.textBaseline="middle";ctx.font=duuFont;ctx.fillStyle="rgba(242,238,249,0.65)";ctx.fillText("Duu",brandStartX,brandY);
     ctx.font=alFont;ctx.fillStyle="#ED93B1";ctx.fillText("al",brandStartX+duuW,brandY);
-    ctx.textAlign="center";ctx.font="400 32px 'Arial', sans-serif";ctx.fillStyle="rgba(242,238,249,0.28)";ctx.fillText("duual.app",cx,brandY+52);
+    
     _cardDataURL=cv.toDataURL("image/png");_cardFileName=`duual-${nA}-${nB}.png`;document.getElementById("cardPreviewImg").src=_cardDataURL;document.getElementById("cardPreviewOverlay").classList.add("open");
   };
   const logoImg=new Image();logoImg.crossOrigin="anonymous";logoImg.onload=drawAll;logoImg.onerror=drawAll;logoImg.src="icon-192.png";
