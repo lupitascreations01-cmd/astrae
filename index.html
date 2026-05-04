@@ -769,7 +769,7 @@ function generateCard(){
     try{const mf=new FontFace('Montserrat','url(https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2)');await mf.load();document.fonts.add(mf);}catch(e){}
     ctx.font=`200 180px Montserrat, sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#F2EEF9";ctx.fillText(score,cx,cy);
     const pctOffsetX=score.length===1?115:score.length===2?155:195;ctx.font="300 70px Montserrat, sans-serif";ctx.fillStyle="#ED93B1";ctx.textAlign="left";ctx.textBaseline="top";ctx.fillText("%",cx+pctOffsetX,cy-75);ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.font="400 42px 'Arial', sans-serif";ctx.fillStyle="rgba(237,147,177,0.9)";ctx.letterSpacing="12px";ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY",cx,cy+cr+58);ctx.letterSpacing="0px";
+    ctx.font="400 42px 'Arial', sans-serif";ctx.fillStyle="rgba(255,255,255,0.9)";ctx.letterSpacing="12px";ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY",cx,cy+cr+58);ctx.letterSpacing="0px";
     const fullName=`${nA} & ${nB}`;let nameFontSize=88;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;while(ctx.measureText(fullName).width>W*0.86&&nameFontSize>40){nameFontSize-=4;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;}ctx.fillStyle="rgba(242,238,249,0.92)";ctx.fillText(fullName,cx,H*0.635);
     ctx.font="300 50px 'Georgia', serif";ctx.fillStyle="#ED93B1";ctx.fillText(verdict,cx,H*0.715);
     ctx.beginPath();ctx.moveTo(W*0.32,H*0.772);ctx.lineTo(W*0.68,H*0.772);ctx.strokeStyle="rgba(242,238,249,0.15)";ctx.lineWidth=1;ctx.stroke();
