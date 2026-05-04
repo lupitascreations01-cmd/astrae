@@ -1,3 +1,17 @@
+module.exports = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-register-secret');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  // Verificar token secreto
+  const secret = req.headers['x-register-secret'];
+  if (!secret || secret !== process.env.REGISTER_SECRET) {
+    return res.status(401).json({ error: 'No autorizado' });
+  }
+
+  // ... resto del código igual
 const { google } = require('googleapis');
 const { registerInSheet } = require('./utils/sheets'); // ← agrega esto
 
