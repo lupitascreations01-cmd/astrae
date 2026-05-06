@@ -790,6 +790,14 @@ glowG.addColorStop(1,"rgba(201,75,114,0)");
 ctx.fillStyle=glowG;
 ctx.beginPath();ctx.arc(cx,cy,cr+80,0,Math.PI*2);ctx.fill();
 
+// Fondo interior oscuro (oscurece la nebulosa dentro del círculo para legibilidad)
+const innerG=ctx.createRadialGradient(cx,cy,0,cx,cy,cr);
+innerG.addColorStop(0,"rgba(13,10,24,0.85)");
+innerG.addColorStop(0.7,"rgba(13,10,24,0.7)");
+innerG.addColorStop(1,"rgba(13,10,24,0.4)");
+ctx.fillStyle=innerG;
+ctx.beginPath();ctx.arc(cx,cy,cr-9,0,Math.PI*2);ctx.fill();
+
 // Track de fondo (anillo gris tenue, como en el componente web)
 ctx.beginPath();ctx.arc(cx,cy,cr,0,Math.PI*2);
 ctx.strokeStyle="rgba(255,255,255,0.06)";
