@@ -780,11 +780,40 @@ function generateCard(){
   const ctx=cv.getContext("2d");
   const drawAll=async()=>{
    await new Promise((res)=>{const bgImg=new Image();bgImg.crossOrigin="anonymous";bgImg.onload=()=>{ctx.drawImage(bgImg,0,0,W,H);res();};bgImg.onerror=()=>{const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);res();};bgImg.src="card-bg.png";});
-    const cx=W/2,cy=H*0.38,cr=260;
-    ctx.beginPath();ctx.arc(cx,cy,cr+15,0,Math.PI*2);ctx.strokeStyle="rgba(201,75,114,0.15)";ctx.lineWidth=1.5;ctx.stroke();
-    ctx.beginPath();ctx.arc(cx,cy,cr,0,Math.PI*2);ctx.strokeStyle="rgba(201,75,114,0.4)";ctx.lineWidth=2;ctx.stroke();
-    const pct=parseInt(score)/100;ctx.beginPath();ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);const arcG=ctx.createLinearGradient(cx-cr,cy,cx+cr,cy);arcG.addColorStop(0,"#C94B72");arcG.addColorStop(1,"#6B63CC");ctx.strokeStyle=arcG;ctx.lineWidth=8;ctx.stroke();
-    try{const mf=new FontFace('Montserrat','url(https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2)');await mf.load();document.fonts.add(mf);}catch(e){}
+  const cx=W/2,cy=H*0.38,cr=260;
+
+// Glow exterior radial (replica el ::before del componente web)
+const glowG=ctx.createRadialGradient(cx,cy,cr-20,cx,cy,cr+80);
+glowG.addColorStop(0,"rgba(201,75,114,0.25)");
+glowG.addColorStop(0.5,"rgba(107,99,204,0.15)");
+glowG.addColorStop(1,"rgba(201,75,114,0)");
+ctx.fillStyle=glowG;
+ctx.beginPath();ctx.arc(cx,cy,cr+80,0,Math.PI*2);ctx.fill();
+
+// Track de fondo (anillo gris tenue, como en el componente web)
+ctx.beginPath();ctx.arc(cx,cy,cr,0,Math.PI*2);
+ctx.strokeStyle="rgba(255,255,255,0.06)";
+ctx.lineWidth=18;
+ctx.stroke();
+
+// Anillo de progreso con gradiente y stroke redondeado
+const pct=parseInt(score)/100;
+const arcG=ctx.createLinearGradient(cx-cr,cy-cr,cx+cr,cy+cr);
+arcG.addColorStop(0,"#C94B72");
+arcG.addColorStop(0.5,"#ED93B1");
+arcG.addColorStop(1,"#6B63CC");
+
+// Sombra rosa para el glow del stroke (replica el drop-shadow del componente web)
+ctx.save();
+ctx.shadowColor="rgba(201,75,114,0.6)";
+ctx.shadowBlur=20;
+ctx.beginPath();
+ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);
+ctx.strokeStyle=arcG;
+ctx.lineWidth=18;
+ctx.lineCap="round";
+ctx.stroke();
+ctx.restore();
     ctx.font=`200 180px Montserrat, sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#F2EEF9";ctx.fillText(score,cx,cy);
     const pctOffsetX=score.length===1?115:score.length===2?155:195;ctx.font="300 70px Montserrat, sans-serif";ctx.fillStyle="#ED93B1";ctx.textAlign="left";ctx.textBaseline="top";ctx.fillText("%",cx+pctOffsetX,cy-75);ctx.textAlign="center";ctx.textBaseline="middle";
     ctx.font="400 42px 'Arial', sans-serif";ctx.fillStyle="rgba(255,255,255,0.9)";ctx.letterSpacing="12px";ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY",cx,cy+cr+58);ctx.letterSpacing="0px";
