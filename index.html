@@ -84,11 +84,15 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .ld:nth-child(2){animation-delay:.22s;}.ld:nth-child(3){animation-delay:.44s;}
 @keyframes lpulse{0%,80%,100%{opacity:.2;transform:scale(.7);}40%{opacity:1;transform:scale(1);}}
 .rhero{text-align:center;padding:20px 20px 16px;border-bottom:0.5px solid var(--bord);}
-.score-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;width:160px;height:160px;}
-.score-ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--rose-m);animation:pulse-ring 2s ease-in-out infinite;}
-@keyframes pulse-ring{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
-.big-score{font-family:"Montserrat",sans-serif;font-size:88px;font-weight:200;color:var(--txt);line-height:1;display:flex;align-items:center;justify-content:center;position:relative;width:130px;text-align:center;}
-.big-score .pct{font-size:24px;color:var(--rose-m);position:absolute;top:-4px;right:-22px;font-weight:300;}
+.score-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;width:200px;height:200px;}
+.score-wrap::before{content:'';position:absolute;inset:-15px;background:radial-gradient(circle,rgba(201,75,114,0.4) 0%,rgba(107,99,204,0.25) 40%,transparent 70%);filter:blur(20px);z-index:0;animation:score-glow 3s ease-in-out infinite;}
+@keyframes score-glow{0%,100%{opacity:0.6;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
+.score-svg{position:relative;z-index:1;width:100%;height:100%;transform:rotate(-90deg);}
+.score-track{fill:none;stroke:rgba(255,255,255,0.06);stroke-width:8;}
+.score-progress{fill:none;stroke:url(#scoreGradient);stroke-width:8;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(201,75,114,0.6));transition:stroke-dashoffset 1.4s cubic-bezier(0.22,1,0.36,1);}
+.big-score{position:absolute;z-index:2;font-family:"Montserrat",sans-serif;font-size:88px;font-weight:200;color:var(--txt);line-height:1;display:flex;align-items:baseline;justify-content:center;letter-spacing:-2px;}
+.big-score .pct{font-size:28px;color:var(--rose-m);font-weight:300;margin-left:4px;align-self:flex-start;margin-top:14px;letter-spacing:0;}
+.score-ring{display:none;}
 .slabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-top:14px;}
 .rpair{font-family:"Cormorant Garamond",serif;font-size:18px;font-style:italic;color:var(--txt2);margin-top:10px;}
 .ramp{color:var(--rose-m);}
@@ -349,7 +353,20 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
   </div>
   <div class="scroll">
     <div class="rhero">
-      <div class="score-wrap"><div class="score-ring"></div><div class="big-score" id="bigScore">—<span class="pct">%</span></div></div>
+    <div class="score-wrap">
+  <svg class="score-svg" viewBox="0 0 200 200">
+    <defs>
+      <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#C94B72"/>
+        <stop offset="50%" stop-color="#ED93B1"/>
+        <stop offset="100%" stop-color="#6B63CC"/>
+      </linearGradient>
+    </defs>
+    <circle class="score-track" cx="100" cy="100" r="85"/>
+    <circle class="score-progress" id="scoreProgress" cx="100" cy="100" r="85" stroke-dasharray="534.07" stroke-dashoffset="534.07"/>
+  </svg>
+  <div class="big-score" id="bigScore">—<span class="pct">%</span></div>
+</div>
       <div class="slabel" data-es="COMPATIBILIDAD" data-en="COMPATIBILITY">COMPATIBILIDAD</div>
       <div class="rpair" id="rpair">A <span class="ramp">&</span> B</div>
       <div class="verdict-badge" id="verdictBadge">✦</div>
@@ -670,7 +687,8 @@ function renderResults(r){
   const pct=Math.min(99,Math.max(5,Math.round(30+rawPct*0.7)));
   const vList=VRD[lang];
   const[vTitle,vText]=pickVerdict(vList,pct,nA,nB);
-  document.getElementById("bigScore").innerHTML=`${pct}<span class="pct">%</span>`;
+ document.getElementById("bigScore").innerHTML=`${pct}<span class="pct">%</span>`;
+const circumference=2*Math.PI*85;const offset=circumference-(pct/100)*circumference;const progressEl=document.getElementById("scoreProgress");if(progressEl){progressEl.style.strokeDashoffset=circumference;setTimeout(()=>{progressEl.style.strokeDashoffset=offset;},50);}
   document.getElementById("rpair").innerHTML=`${nA} <span class="ramp">&</span> ${nB}`;
   document.getElementById("verdictBadge").textContent=vTitle;
   document.getElementById("verdictTitle").textContent=vTitle;
