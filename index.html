@@ -822,8 +822,33 @@ ctx.lineWidth=18;
 ctx.lineCap="round";
 ctx.stroke();
 ctx.restore();
-    ctx.font=`200 180px Montserrat, sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#F2EEF9";ctx.fillText(score,cx,cy);
-    const pctOffsetX=score.length===1?115:score.length===2?155:195;ctx.font="300 70px Montserrat, sans-serif";ctx.fillStyle="#ED93B1";ctx.textAlign="left";ctx.textBaseline="top";ctx.fillText("%",cx+pctOffsetX,cy-75);ctx.textAlign="center";ctx.textBaseline="middle";
+    // Cargar pesos de Montserrat antes de dibujar el score
+    try{
+      const fonts=[
+        new FontFace('Montserrat','url(https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm45_dJE3gnD-w.woff2)',{weight:'200'}),
+        new FontFace('Montserrat','url(https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm45_dJE3g3D-w.woff2)',{weight:'300'})
+      ];
+      await Promise.all(fonts.map(f=>f.load().then(loaded=>document.fonts.add(loaded))));
+    }catch(e){console.warn('Font load failed:',e);}
+
+    // Número principal (mismo estilo que la pantalla de resultados)
+    ctx.font=`200 180px "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif`;
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+    ctx.fillStyle="#F2EEF9";
+    ctx.letterSpacing="-4px";
+    ctx.fillText(score,cx,cy);
+    ctx.letterSpacing="0px";
+
+    // Símbolo %
+    const pctOffsetX=score.length===1?95:score.length===2?135:175;
+    ctx.font=`300 60px "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif`;
+    ctx.fillStyle="#ED93B1";
+    ctx.textAlign="left";
+    ctx.textBaseline="top";
+    ctx.fillText("%",cx+pctOffsetX,cy-60);
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
     ctx.font="400 42px 'Arial', sans-serif";ctx.fillStyle="rgba(255,255,255,0.9)";ctx.letterSpacing="12px";ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY",cx,cy+cr+58);ctx.letterSpacing="0px";
     const fullName=`${nA} & ${nB}`;let nameFontSize=88;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;while(ctx.measureText(fullName).width>W*0.86&&nameFontSize>40){nameFontSize-=4;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;}ctx.fillStyle="rgba(242,238,249,0.92)";ctx.fillText(fullName,cx,H*0.635);
     ctx.font="300 50px 'Georgia', serif";ctx.fillStyle="#ED93B1";ctx.fillText(verdict,cx,H*0.715);
