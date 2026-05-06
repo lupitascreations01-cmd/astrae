@@ -827,7 +827,13 @@ ctx.restore();
     ctx.textAlign="left";ctx.textBaseline="middle";ctx.font=duuFont;ctx.fillStyle="rgba(242,238,249,0.65)";ctx.fillText("Duu",brandStartX,brandY);
     ctx.font=alFont;ctx.fillStyle="#ED93B1";ctx.fillText("al",brandStartX+duuW,brandY);
     
-    _cardDataURL=cv.toDataURL("image/png");_cardFileName=`duual-${nA}-${nB}.png`;document.getElementById("cardPreviewImg").src=_cardDataURL;document.getElementById("cardPreviewOverlay").classList.add("open");
+_cardDataURL=cv.toDataURL("image/png");
+_cardFileName=`duual-${nA}-${nB}.png`;
+const previewImg=document.getElementById("cardPreviewImg");
+previewImg.style.opacity="0";
+previewImg.onload=()=>{previewImg.style.transition="opacity 0.3s";previewImg.style.opacity="1";};
+previewImg.src=_cardDataURL;
+document.getElementById("cardPreviewOverlay").classList.add("open");
   };
   const logoImg=new Image();logoImg.crossOrigin="anonymous";logoImg.onload=drawAll;logoImg.onerror=drawAll;logoImg.src="icon-192.png";
 }
