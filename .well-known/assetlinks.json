@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.duual.app",
+    "sha256_cert_fingerprints": [
+      "03:12:C2:FF:4F:F1:C3:0F:B2:18:5D:23:FC:28:CF:A7:4F:6C:91:31:18:62:D4:53:E9:9D:09:62:90:E4:14:6A"
+    ]
+  }
+}]
