@@ -277,7 +277,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 <div id="app">
 
 <div class="screen" id="s-input">
-  <div class="status"><span id="clock">9:41</span><span style="letter-spacing:2px">· · · ▮</span></div>
+
   <div class="scroll" style="padding-bottom:8px;">
     <div class="home-header">
       <div class="app-logo">Duu<em>al</em></div>
@@ -875,11 +875,11 @@ function renderCompatSection(pA){
 }
 function deleteHistory(index){const h=JSON.parse(localStorage.getItem("duual_history")||"[]");h.splice(index,1);localStorage.setItem("duual_history",JSON.stringify(h));renderHistory();showToast(lang==="es"?"Eliminado":"Deleted");}
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
-function updateClock(){const n=new Date();document.getElementById("clock").textContent=n.getHours()+":"+(n.getMinutes()<10?"0":"")+n.getMinutes();}
+
 const splashTag=document.getElementById('splashTag');
 if(splashTag){const sl=localStorage.getItem('duual_lang')||'es';splashTag.textContent=sl==='en'?'your love, written in the stars':'tu amor, escrito en las estrellas';}
 setTimeout(()=>{const s=document.getElementById('splash');if(s){s.style.opacity='0';setTimeout(()=>{s.remove();showTutorial();},800);}},2200);
-updateClock();setInterval(updateClock,30000);
+
 updatePremiumUI();
 selectPlan("annual");
 (function loadSavedLang(){const sl=localStorage.getItem('duual_lang');if(sl&&sl!=='es')setLang(sl);})();
