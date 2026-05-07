@@ -276,7 +276,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 <canvas id="cosmosCanvas"></canvas>
 <div id="app">
 
-<!-- FIX 1: 'active' removed from s-input — goScreen() handles navigation after splash -->
 <div class="screen" id="s-input">
   <div class="status"><span id="clock">9:41</span><span style="letter-spacing:2px">· · · ▮</span></div>
   <div class="scroll" style="padding-bottom:8px;">
@@ -294,18 +293,17 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <div class="push-banner" id="pushBanner" style="display:none;">
       <span class="push-banner-icon">🔔</span>
       <div class="push-banner-body">
-        <div class="push-banner-text" id="pushBannerText">Activa alertas de tránsitos planetarios</div>
-        <div class="push-banner-sub">Venus cambia de signo, lunas llenas y más</div>
+        <div class="push-banner-text" id="pushBannerText" data-es="Activa alertas de tránsitos planetarios" data-en="Enable planetary transit alerts">Activa alertas de tránsitos planetarios</div>
+        <div class="push-banner-sub" id="pushBannerSub" data-es="Venus cambia de signo, lunas llenas y más" data-en="Venus sign changes, full moons and more">Venus cambia de signo, lunas llenas y más</div>
       </div>
       <div class="push-banner-actions">
-        <button class="push-banner-btn" onclick="requestPushPermission()">Activar</button>
+        <button class="push-banner-btn" onclick="requestPushPermission()" data-es="Activar" data-en="Enable">Activar</button>
         <button class="push-banner-dismiss" onclick="this.closest('.push-banner').style.display='none';localStorage.setItem('duual_push_dismissed','1')">×</button>
       </div>
     </div>
     <div class="pcard">
       <div class="plabel"><span class="pdot da"></span><span data-es="Primera persona" data-en="First person">Primera persona</span></div>
       <input class="ninput" type="text" id="nameA" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
-      <!-- FIX 2: Date label added -->
       <div class="date-label" data-es="Fecha de nacimiento" data-en="Date of birth">Fecha de nacimiento</div>
       <input class="ninput" type="date" id="dateA">
       <div class="time-row">
@@ -317,7 +315,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <div class="pcard">
       <div class="plabel"><span class="pdot db"></span><span data-es="Segunda persona" data-en="Second person">Segunda persona</span></div>
       <input class="ninput" type="text" id="nameB" placeholder="Nombre (opcional)" data-placeholder-es="Nombre (opcional)" data-placeholder-en="Name (optional)">
-      <!-- FIX 2: Date label added -->
       <div class="date-label" data-es="Fecha de nacimiento" data-en="Date of birth">Fecha de nacimiento</div>
       <input class="ninput" type="date" id="dateB">
       <div class="time-row">
@@ -404,9 +401,9 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
         <div id="chironSection"></div>
         <div id="chironPaywall" class="premium-paywall-overlay" style="display:none;">
           <div class="pw-icon">⚷</div>
-          <div class="pw-title">Quirón & Sanación</div>
-          <div class="pw-desc">Descubre las heridas profundas y el potencial de sanación en esta unión.</div>
-          <button class="pw-btn" onclick="goScreen('paywall')">Desbloquear con Premium</button>
+          <div class="pw-title" data-es="Quirón & Sanación" data-en="Chiron & Healing">Quirón & Sanación</div>
+          <div class="pw-desc" data-es="Descubre las heridas profundas y el potencial de sanación en esta unión." data-en="Discover the deep wounds and healing potential in this union.">Descubre las heridas profundas y el potencial de sanación en esta unión.</div>
+          <button class="pw-btn" onclick="goScreen('paywall')" data-es="Desbloquear con Premium" data-en="Unlock with Premium">Desbloquear con Premium</button>
         </div>
       </div>
       <div class="section"><div class="section-title">✦ <span data-es="NODO NORTE — PROPÓSITO" data-en="NORTH NODE — PURPOSE">NODO NORTE — PROPÓSITO</span></div></div>
@@ -414,9 +411,9 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
         <div id="nodeSection"></div>
         <div id="nodePaywall" class="premium-paywall-overlay" style="display:none;">
           <div class="pw-icon">☊</div>
-          <div class="pw-title">Nodo Norte & Propósito</div>
-          <div class="pw-desc">El propósito kármico de esta unión, revelado por los nodos lunares.</div>
-          <button class="pw-btn" onclick="goScreen('paywall')">Desbloquear con Premium</button>
+          <div class="pw-title" data-es="Nodo Norte & Propósito" data-en="North Node & Purpose">Nodo Norte & Propósito</div>
+          <div class="pw-desc" data-es="El propósito kármico de esta unión, revelado por los nodos lunares." data-en="The karmic purpose of this union, revealed by the lunar nodes.">El propósito kármico de esta unión, revelado por los nodos lunares.</div>
+          <button class="pw-btn" onclick="goScreen('paywall')" data-es="Desbloquear con Premium" data-en="Unlock with Premium">Desbloquear con Premium</button>
         </div>
       </div>
     </div>
@@ -483,7 +480,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     </button>
     <div class="pay-note" data-es="Sin sorpresas · Cancela cuando quieras · ES / EN" data-en="No surprises · Cancel anytime · ES / EN">Sin sorpresas · Cancela cuando quieras · ES / EN</div>
     <div style="text-align:center;padding:0 16px 8px;display:flex;align-items:center;justify-content:center;gap:7px;">
-     
       <span style="font-size:11px;color:var(--txt3);" data-es="Pago seguro vía Lemon Squeezy" data-en="Secure payment via Lemon Squeezy">Pago seguro vía Lemon Squeezy</span>
     </div>
     <button class="restore-btn" onclick="restorePurchase()" data-es="¿Ya pagaste? Restaurar acceso" data-en="Already paid? Restore access">¿Ya pagaste? Restaurar acceso</button>
@@ -513,7 +509,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 <div class="screen" id="s-natal">
   <div class="natal-screen-header">
     <button class="natal-back" onclick="goBack()">←</button>
-    <span class="natal-screen-title" id="natalScreenTitle">Carta Natal</span>
+    <span class="natal-screen-title" id="natalScreenTitle" data-es="Carta Natal" data-en="Natal Chart">Carta Natal</span>
   </div>
   <div class="scroll" id="natalScroll" style="padding-bottom:24px;">
     <div class="natal-person-toggle">
@@ -523,11 +519,11 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     <div class="natal-svg-wrap" id="natalSVGWrap"></div>
     <div class="planet-accordion" id="planetAccordion"></div>
     <div class="natal-qa-section">
-      <div class="natal-qa-title" id="natalQATitle">✦ PREGUNTA A LOS ASTROS</div>
-      <textarea class="natal-qa-input" id="natalQAInput" placeholder="¿Algo específico que quieras saber sobre tu carta?" maxlength="300"></textarea>
+      <div class="natal-qa-title" id="natalQATitle" data-es="✦ PREGUNTA A LOS ASTROS" data-en="✦ ASK THE STARS">✦ PREGUNTA A LOS ASTROS</div>
+      <textarea class="natal-qa-input" id="natalQAInput" placeholder="¿Algo específico que quieras saber sobre tu carta?" data-placeholder-es="¿Algo específico que quieras saber sobre tu carta?" data-placeholder-en="Anything specific you want to know about your chart?" maxlength="300"></textarea>
       <div class="natal-qa-meta">
-        <span class="natal-qa-counter" id="natalQACounter">3 preguntas restantes hoy</span>
-        <button class="natal-qa-btn" id="natalQABtn" onclick="submitNatalQuestion()">Preguntar ✦</button>
+        <span class="natal-qa-counter" id="natalQACounter" data-es="3 preguntas restantes hoy" data-en="3 questions left today">3 preguntas restantes hoy</span>
+        <button class="natal-qa-btn" id="natalQABtn" onclick="submitNatalQuestion()" data-es="Preguntar ✦" data-en="Ask ✦">Preguntar ✦</button>
       </div>
       <div class="natal-qa-answers" id="natalQAAnswers"></div>
     </div>
@@ -555,7 +551,6 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <div class="tut-dot" id="td0"></div>
       <div class="tut-dot" id="td1"></div>
       <div class="tut-dot" id="td2"></div>
-    
     </div>
     <button id="tutNext" onclick="tutorialNext()" style="width:100%;padding:15px;background:var(--rose);border:none;border-radius:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;margin-bottom:12px;"></button>
     <button onclick="tutorialSkip()" style="width:100%;padding:10px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(242,238,249,0.35);cursor:pointer;" id="tutSkip"></button>
@@ -640,7 +635,7 @@ function elemKey(a,b){return ELEM_DESC.es[`${a}-${b}`]?`${a}-${b}`:ELEM_DESC.es[
 const VS={es:["Venus en Aries: ama con intensidad y espontaneidad.","Venus en Tauro: busca estabilidad, lujo y afecto físico.","Venus en Géminis: necesita variedad, conversación y juego.","Venus en Cáncer: ama profundamente y busca seguridad emocional.","Venus en Leo: generosa, apasionada y necesita admiración.","Venus en Virgo: demuestra amor en detalles y actos de servicio.","Venus en Libra: busca armonía, belleza y equilibrio.","Venus en Escorpio: ama con intensidad transformadora.","Venus en Sagitario: necesita libertad y aventura juntos.","Venus en Capricornio: amor maduro, leal y orientado al futuro.","Venus en Acuario: amor libre, amistoso e intelectual.","Venus en Piscis: amor incondicional, romántico e idealizador."],en:["Venus in Aries: loves with intensity and spontaneity.","Venus in Taurus: seeks stability, luxury and physical affection.","Venus in Gemini: needs variety, conversation and playfulness.","Venus in Cancer: loves deeply and seeks emotional security.","Venus in Leo: generous, passionate, needs admiration.","Venus in Virgo: shows love through details and acts of service.","Venus in Libra: seeks harmony, beauty and balance.","Venus in Scorpio: loves with transformative intensity.","Venus in Sagittarius: needs freedom and adventure together.","Venus in Capricorn: mature, loyal, future-oriented love.","Venus in Aquarius: free, friendly, intellectually stimulating love.","Venus in Pisces: unconditional, romantic, idealistic love."]};
 const MS={es:["Marte en Aries: directo, impulsivo y competitivo.","Marte en Tauro: lento para encenderse pero muy persistente.","Marte en Géminis: deseo intelectual, variado y comunicativo.","Marte en Cáncer: deseo emocional y protector.","Marte en Leo: pasional, dramático y busca ser el centro.","Marte en Virgo: meticuloso y orientado al detalle.","Marte en Libra: busca equilibrio pero puede ser indeciso.","Marte en Escorpio: intenso, estratégico y magnético.","Marte en Sagitario: entusiasta y aventurero.","Marte en Capricornio: ambicioso y disciplinado.","Marte en Acuario: rebelde, original e impredecible.","Marte en Piscis: intuitivo, empático y a veces escurridizo."],en:["Mars in Aries: direct, impulsive and competitive.","Mars in Taurus: slow to ignite but very persistent.","Mars in Gemini: intellectual, varied, communicative desire.","Mars in Cancer: emotional, protective desire.","Mars in Leo: passionate, dramatic, seeks the spotlight.","Mars in Virgo: meticulous and detail-oriented.","Mars in Libra: seeks balance but can be indecisive.","Mars in Scorpio: intense, strategic and magnetic.","Mars in Sagittarius: enthusiastic and adventurous.","Mars in Capricorn: ambitious and disciplined.","Mars in Aquarius: rebellious, original and unpredictable.","Mars in Pisces: intuitive, empathetic and elusive."]};
 let lang="es",lastResult=null,prevScr="input",selPlan="annual";
-function setLang(l){lang=l;document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("on",b.textContent===l.toUpperCase()));document.querySelectorAll("[data-"+l+"]").forEach(el=>{if(el.tagName==="INPUT")el.placeholder=el.getAttribute("data-placeholder-"+l)||"";else el.innerHTML=el.dataset[l]||el.innerHTML;});document.querySelectorAll("[data-placeholder-"+l+"]").forEach(el=>el.placeholder=el.getAttribute("data-placeholder-"+l)||"");if(lastResult)renderResults(lastResult);updatePayBtn();document.querySelectorAll(".time-label").forEach(el=>el.textContent=el.getAttribute("data-"+l)||el.textContent);localStorage.setItem('duual_lang',l);}
+function setLang(l){lang=l;document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("on",b.textContent===l.toUpperCase()));document.querySelectorAll("[data-"+l+"]").forEach(el=>{if(el.tagName==="INPUT"||el.tagName==="TEXTAREA")el.placeholder=el.getAttribute("data-placeholder-"+l)||el.placeholder;else el.innerHTML=el.dataset[l]||el.innerHTML;});document.querySelectorAll("[data-placeholder-"+l+"]").forEach(el=>el.placeholder=el.getAttribute("data-placeholder-"+l)||"");if(lastResult)renderResults(lastResult);updatePayBtn();updateQACounter();document.querySelectorAll(".time-label").forEach(el=>el.textContent=el.getAttribute("data-"+l)||el.textContent);localStorage.setItem('duual_lang',l);}
 function goScreen(n){const cur=document.querySelector(".screen.active");if(cur)prevScr=cur.id.replace("s-","");document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("s-"+n).classList.add("active");if(n==="paywall")posthog.capture('ver_paywall');if(n==="history")renderHistory();updatePremiumUI();}
 function goBack(){goScreen(prevScr||"input");}
 const signOverrides={};
@@ -695,7 +690,8 @@ const circumference=2*Math.PI*85;const offset=circumference-(pct/100)*circumfere
   document.getElementById("verdictText").textContent=vText;
   renderCompatSection(pA);
   const pl=lang==="es"?{Sun:"☀ Sol",Moon:"☽ Luna",Venus:"♀ Venus",Mars:"♂ Marte",Mercury:"☿ Mercurio"}:{Sun:"☀ Sun",Moon:"☽ Moon",Venus:"♀ Venus",Mars:"♂ Mars",Mercury:"☿ Mercury"};
-  const natalCard=(name,pid,p)=>`<div class="natal-person"><div class="natal-pname">${name}</div>${["Sun","Moon","Venus","Mars","Mercury"].map(k=>`<div class="natal-row"><span class="natal-pl">${pl[k]}</span><span class="natal-sg" id="ns_${pid}_${k}">${signAbb(p[k],lang)} ${SIGN_GLYPH[signOf(p[k])]}</span><button class="natal-edit" onclick="editSign('${pid}','${k}',${Math.floor(p[k])},this)" title="Corregir">✎</button></div>`).join("")}</div>`;
+  const editTitle=lang==="es"?"Corregir":"Edit";
+  const natalCard=(name,pid,p)=>`<div class="natal-person"><div class="natal-pname">${name}</div>${["Sun","Moon","Venus","Mars","Mercury"].map(k=>`<div class="natal-row"><span class="natal-pl">${pl[k]}</span><span class="natal-sg" id="ns_${pid}_${k}">${signAbb(p[k],lang)} ${SIGN_GLYPH[signOf(p[k])]}</span><button class="natal-edit" onclick="editSign('${pid}','${k}',${Math.floor(p[k])},this)" title="${editTitle}">✎</button></div>`).join("")}</div>`;
   document.getElementById("natalMini").innerHTML=natalCard(nA,"A",pA)+natalCard(nB,"B",pB);
   const top=found.sort((a,b)=>b.pts-a.pts).slice(0,2);
   document.getElementById("constRow").innerHTML=top.map(x=>`<span class="const-tag">${PG[x.pa]} ${x.a.s} ${PG[x.pb]}</span>`).join("");
@@ -705,7 +701,6 @@ const circumference=2*Math.PI*85;const offset=circumference-(pct/100)*circumfere
   document.getElementById("areasGrid").innerHTML=Object.entries(AREAS).map(([k,ad])=>{const p=aS[k],label=lang==="es"?ad.es:ad.en;return`<div class="acard"><div class="ahead"><div class="aname">${label}</div><div class="apct">${p}%</div></div><div class="track"><div class="bar" style="width:${p}%;background:${ad.c}"></div></div><div class="ainsight">${ai(k,p,lang)}</div></div>`;}).join("");
   const sorted=found.sort((a,b)=>b.pts-a.pts);
   const pname=lang==="es"?PES:PEN;
-  // FIX 3: Primeros 3 visibles, luego overlay único de paywall
   const aspVisible=premium?sorted:sorted.slice(0,3);
   document.getElementById("aspList").innerHTML=aspVisible.map(x=>{
     const aName=lang==="es"?x.a.es:x.a.en;
@@ -747,7 +742,8 @@ function renderPremium(pA,pB,nA,nB){
   const msA=Math.floor(pA.Mars/30),msB=Math.floor(pB.Mars/30);
   const vArr=l==="en"?VS.en:VS.es,mArr=l==="en"?MS.en:MS.es;
   const vSign=l==="es"?SIGN_ES:SIGN_EN,mSign=l==="es"?SIGN_ES:SIGN_EN;
-  document.getElementById("venusSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">♀ Venus</div><div class="premium-card-body"><strong style="color:var(--rose-m)">${nA}: Venus ${l==="es"?"en":"in"} ${vSign[vsA]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsA]}</span><br><br><strong style="color:var(--rose-m)">${nB}: Venus ${l==="es"?"en":"in"} ${vSign[vsB]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsB]}</span></div></div><div class="premium-card"><div class="premium-card-title">♂ ${l==="es"?"Marte":"Mars"}</div><div class="premium-card-body"><strong style="color:var(--rose-m)">${nA}: ${l==="es"?"Marte":"Mars"} ${l==="es"?"en":"in"} ${mSign[msA]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msA]}</span><br><br><strong style="color:var(--rose-m)">${nB}: ${l==="es"?"Marte":"Mars"} ${l==="es"?"en":"in"} ${mSign[msB]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msB]}</span></div></div>`;
+  const inWord=l==="es"?"en":"in";
+  document.getElementById("venusSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">♀ Venus</div><div class="premium-card-body"><strong style="color:var(--rose-m)">${nA}: Venus ${inWord} ${vSign[vsA]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsA]}</span><br><br><strong style="color:var(--rose-m)">${nB}: Venus ${inWord} ${vSign[vsB]}</strong><br><span style="color:var(--txt3);font-size:11px">${vArr[vsB]}</span></div></div><div class="premium-card"><div class="premium-card-title">♂ ${l==="es"?"Marte":"Mars"}</div><div class="premium-card-body"><strong style="color:var(--rose-m)">${nA}: ${l==="es"?"Marte":"Mars"} ${inWord} ${mSign[msA]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msA]}</span><br><br><strong style="color:var(--rose-m)">${nB}: ${l==="es"?"Marte":"Mars"} ${inWord} ${mSign[msB]}</strong><br><span style="color:var(--txt3);font-size:11px">${mArr[msB]}</span></div></div>`;
   const cAsp=asp(pA.Chiron,pB.Sun)||asp(pA.Sun,pB.Chiron)||asp(pA.Chiron,pB.Moon);
   const chText=l==="es"?"Quirón representa las heridas más profundas que llevamos — y el potencial de sanar a través de ellas. En sinastría, el contacto de Quirón de una persona con planetas de la otra revela si esta relación tiene la capacidad de sanar o reabrir viejas heridas. Una conexión con Quirón activo es una relación que transforma.":"Chiron represents our deepest wounds — and the potential to heal through them. In synastry, Chiron contacts reveal whether this relationship has the capacity to heal or reopen old wounds. An active Chiron connection is a transforming relationship.";
   document.getElementById("chironSection").innerHTML=`<div class="premium-card"><div class="premium-card-title">⚷ ${l==="es"?"Quirón":"Chiron"}</div><div class="premium-card-body">${chText}${cAsp?`<br><br><strong style="color:var(--rose-m)">${l==="es"?"Aspecto activo ✦":"Active aspect ✦"}: ${cAsp.s} ${l==="es"?cAsp.es:cAsp.en}</strong>`:""}</div></div>`;
@@ -768,7 +764,7 @@ async function restorePurchase(){
 }
 (function checkReturn(){const p=new URLSearchParams(window.location.search);if(p.get("paid")){showToast(lang==="es"?"✦ Pago recibido · Activa tu acceso abajo":"✦ Payment received · Activate access below");history.replaceState({},document.title,window.location.pathname);setTimeout(()=>goScreen("paywall"),1500);}})();
 function saveToHistory(){if(!lastResult)return;const h=JSON.parse(localStorage.getItem("duual_history")||"[]");h.unshift({nA:lastResult.nA,nB:lastResult.nB,score:document.getElementById("bigScore").textContent.replace("%","").trim(),verdict:document.getElementById("verdictBadge").textContent,saved:Date.now()});if(h.length>30)h.pop();localStorage.setItem("duual_history",JSON.stringify(h));showToast(lang==="es"?"Guardado ✦":"Saved ✦");}
-function renderHistory(){const h=JSON.parse(localStorage.getItem("duual_history")||"[]");const el=document.getElementById("historyScroll");if(!h.length){el.innerHTML=`<div class="hempty">${lang==="es"?"Tu historial aparecerá aquí.<br>Haz tu primera lectura ✦":"Your history will appear here.<br>Make your first reading ✦"}</div>`;return;}el.innerHTML=h.map((x,i)=>`<div class="hcard"><div class="hcard-top"><div class="hnames">${x.nA} <span style="color:var(--rose-m)">&</span> ${x.nB}</div><div style="display:flex;align-items:center;gap:10px;"><div class="hscore">${x.score}%</div><button onclick="deleteHistory(${i})" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;padding:4px;opacity:0.6;" title="Borrar">✕</button></div></div><div class="hdate">${x.verdict} · ${new Date(x.saved).toLocaleDateString(lang==="es"?"es-CL":"en-US")}</div></div>`).join("");}
+function renderHistory(){const h=JSON.parse(localStorage.getItem("duual_history")||"[]");const el=document.getElementById("historyScroll");if(!h.length){el.innerHTML=`<div class="hempty">${lang==="es"?"Tu historial aparecerá aquí.<br>Haz tu primera lectura ✦":"Your history will appear here.<br>Make your first reading ✦"}</div>`;return;}el.innerHTML=h.map((x,i)=>`<div class="hcard"><div class="hcard-top"><div class="hnames">${x.nA} <span style="color:var(--rose-m)">&</span> ${x.nB}</div><div style="display:flex;align-items:center;gap:10px;"><div class="hscore">${x.score}%</div><button onclick="deleteHistory(${i})" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;padding:4px;opacity:0.6;" title="${lang==='es'?'Borrar':'Delete'}">✕</button></div></div><div class="hdate">${x.verdict} · ${new Date(x.saved).toLocaleDateString(lang==="es"?"es-CL":"en-US")}</div></div>`).join("");}
 async function shareResult(){const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";const score=document.getElementById("bigScore").textContent;const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Duual\nDescúbrelo en duual.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Duual\nDiscover yours at duual.app`;if(navigator.share)try{await navigator.share({title:"Duual",text});}catch(e){}else navigator.clipboard.writeText(text).then(()=>showToast(lang==="es"?"Copiado ✦":"Copied ✦"));}
 function fallbackCopy(text,msg){const ta=document.createElement("textarea");ta.value=text;ta.style.cssText="position:fixed;top:0;left:0;opacity:0;";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy");showToast(msg);}catch(e){showToast(lang==="es"?"Copia el texto manualmente":"Copy text manually");}document.body.removeChild(ta);}
 function generateCard(){
@@ -782,7 +778,6 @@ function generateCard(){
    await new Promise((res)=>{const bgImg=new Image();bgImg.crossOrigin="anonymous";bgImg.onload=()=>{ctx.drawImage(bgImg,0,0,W,H);res();};bgImg.onerror=()=>{const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);res();};bgImg.src="card-bg.png";});
   const cx=W/2,cy=H*0.38,cr=260;
 
-// Glow exterior radial (replica el ::before del componente web)
 const glowG=ctx.createRadialGradient(cx,cy,cr-20,cx,cy,cr+80);
 glowG.addColorStop(0,"rgba(201,75,114,0.25)");
 glowG.addColorStop(0.5,"rgba(107,99,204,0.15)");
@@ -790,7 +785,6 @@ glowG.addColorStop(1,"rgba(201,75,114,0)");
 ctx.fillStyle=glowG;
 ctx.beginPath();ctx.arc(cx,cy,cr+80,0,Math.PI*2);ctx.fill();
 
-// Fondo interior oscuro (oscurece la nebulosa dentro del círculo para legibilidad)
 const innerG=ctx.createRadialGradient(cx,cy,0,cx,cy,cr);
 innerG.addColorStop(0,"rgba(13,10,24,0.85)");
 innerG.addColorStop(0.7,"rgba(13,10,24,0.7)");
@@ -798,20 +792,17 @@ innerG.addColorStop(1,"rgba(13,10,24,0.4)");
 ctx.fillStyle=innerG;
 ctx.beginPath();ctx.arc(cx,cy,cr-9,0,Math.PI*2);ctx.fill();
 
-// Track de fondo (anillo gris tenue, como en el componente web)
 ctx.beginPath();ctx.arc(cx,cy,cr,0,Math.PI*2);
 ctx.strokeStyle="rgba(255,255,255,0.06)";
 ctx.lineWidth=18;
 ctx.stroke();
 
-// Anillo de progreso con gradiente y stroke redondeado
 const pct=parseInt(score)/100;
 const arcG=ctx.createLinearGradient(cx-cr,cy-cr,cx+cr,cy+cr);
 arcG.addColorStop(0,"#C94B72");
 arcG.addColorStop(0.5,"#ED93B1");
 arcG.addColorStop(1,"#6B63CC");
 
-// Sombra rosa para el glow del stroke (replica el drop-shadow del componente web)
 ctx.save();
 ctx.shadowColor="rgba(201,75,114,0.6)";
 ctx.shadowBlur=20;
@@ -822,7 +813,6 @@ ctx.lineWidth=18;
 ctx.lineCap="round";
 ctx.stroke();
 ctx.restore();
-    // Cargar pesos de Montserrat antes de dibujar el score
     try{
       const fonts=[
         new FontFace('Montserrat','url(https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm45_dJE3gnD-w.woff2)',{weight:'200'}),
@@ -831,7 +821,6 @@ ctx.restore();
       await Promise.all(fonts.map(f=>f.load().then(loaded=>document.fonts.add(loaded))));
     }catch(e){console.warn('Font load failed:',e);}
 
-    // Número principal (mismo estilo que la pantalla de resultados)
     ctx.font=`200 180px "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif`;
     ctx.textAlign="center";
     ctx.textBaseline="middle";
@@ -840,7 +829,6 @@ ctx.restore();
     ctx.fillText(score,cx,cy);
     ctx.letterSpacing="0px";
 
-    // Símbolo %
     const pctOffsetX=score.length===1?95:score.length===2?135:175;
     ctx.font=`300 60px "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif`;
     ctx.fillStyle="#ED93B1";
@@ -890,11 +878,11 @@ function showToast(msg){const t=document.getElementById("toast");t.textContent=m
 function updateClock(){const n=new Date();document.getElementById("clock").textContent=n.getHours()+":"+(n.getMinutes()<10?"0":"")+n.getMinutes();}
 const splashTag=document.getElementById('splashTag');
 if(splashTag){const sl=localStorage.getItem('duual_lang')||'es';splashTag.textContent=sl==='en'?'your love, written in the stars':'tu amor, escrito en las estrellas';}
-// FIX 1 continued: splash removes itself then calls showTutorial which handles navigation
 setTimeout(()=>{const s=document.getElementById('splash');if(s){s.style.opacity='0';setTimeout(()=>{s.remove();showTutorial();},800);}},2200);
 updateClock();setInterval(updateClock,30000);
 updatePremiumUI();
 selectPlan("annual");
+(function loadSavedLang(){const sl=localStorage.getItem('duual_lang');if(sl&&sl!=='es')setLang(sl);})();
 (function restoreSession(){
   try{
     const saved=localStorage.getItem('duual_last');
@@ -916,13 +904,9 @@ selectPlan("annual");
   window.addEventListener("resize",resize);resize();draw();
 })();
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// TUTORIAL
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const TUTORIAL_STEPS={es:[{icon:"📅",title:"Ingresa dos fechas",desc:"Escribe el nombre y fecha de nacimiento de ambas personas. La hora es opcional pero mejora la precisión."},{icon:"🌙",title:"Lee tu resultado",desc:"Obtén un score de compatibilidad, aspectos planetarios y análisis por área: romance, comunicación y más."},{icon:"🪐",title:"Carta natal con IA",desc:"Con Premium, explora interpretaciones personalizadas de cada planeta y haz preguntas a los astros."}],en:[{icon:"📅",title:"Enter two dates",desc:"Add names and birth dates for both people. Time is optional but improves accuracy."},{icon:"🌙",title:"Read your result",desc:"Get a compatibility score, planetary aspects and analysis by area: romance, communication and more."},{icon:"🪐",title:"AI natal chart",desc:"With Premium, explore personalized interpretations of each planet and ask questions to the stars."}]};
 let tutCurrentStep=-1;
 
-// FIX 1: showTutorial navigates to input if tutorial already done
 function showTutorial(){
   if(localStorage.getItem('duual_tutorial_done')){goScreen('input');return;}
   const overlay=document.getElementById('tutorialOverlay');
@@ -966,16 +950,12 @@ for(let i=0;i<3;i++)document.getElementById(`td${i}`).className='tut-dot'+(i===t
 }
 function tutSelectLang(l){setLang(l);tutCurrentStep=0;renderTutStep();}
 function tutorialNext(){const steps=TUTORIAL_STEPS[lang]||TUTORIAL_STEPS.es;if(tutCurrentStep<steps.length-1){tutCurrentStep++;renderTutStep();}else{tutorialSkip();}}
-// FIX 1: tutorialSkip navigates to input
 function tutorialSkip(){
   localStorage.setItem('duual_tutorial_done','1');
   document.getElementById('tutorialOverlay').style.display='none';
   goScreen('input');
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// CARTA NATAL CON IA
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 let natalActivePid="A";
 const NATAL_PLANET_CACHE={};
 const NATAL_QA_FREE_LIMIT=3;
@@ -1055,7 +1035,7 @@ async function togglePlanetCard(el){
   }catch(e){if(contentEl)contentEl.innerHTML=`<span style="font-size:12px;color:var(--txt3);">${lang==="es"?"Error — intenta de nuevo":"Error — try again"}</span>`;}
 }
 function natalShareBtn(pname,signName,name,text,l){const safeText=text.replace(/'/g,"&#39;").replace(/"/g,"&quot;");return`<button class="pacc-share" onclick='shareNatalInterp("${pname}","${signName}","${name}","${safeText}")'><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>${l==="es"?"Compartir interpretación":"Share interpretation"}</button>`;}
-async function shareNatalInterp(pname,signName,name,text){const shareText=lang==="es"?`✦ ${name} · ${pname} en ${signName}\n\n${text}\n\nDescubre tu carta natal en duual.app`:`✦ ${name} · ${pname} in ${signName}\n\n${text}\n\nDiscover your natal chart at duual.app`;if(navigator.share){try{await navigator.share({title:"Duual · Carta Natal",text:shareText});return;}catch(e){}}if(navigator.clipboard){await navigator.clipboard.writeText(shareText);showToast(lang==="es"?"Copiado ✦":"Copied ✦");}}
+async function shareNatalInterp(pname,signName,name,text){const inWord=lang==="es"?"en":"in";const shareText=lang==="es"?`✦ ${name} · ${pname} ${inWord} ${signName}\n\n${text}\n\nDescubre tu carta natal en duual.app`:`✦ ${name} · ${pname} ${inWord} ${signName}\n\n${text}\n\nDiscover your natal chart at duual.app`;if(navigator.share){try{await navigator.share({title:"Duual · Carta Natal",text:shareText});return;}catch(e){}}if(navigator.clipboard){await navigator.clipboard.writeText(shareText);showToast(lang==="es"?"Copiado ✦":"Copied ✦");}}
 function getQAUsed(){if(isPremium())return 0;const stored=JSON.parse(localStorage.getItem("duual_qa_count")||'{"date":"","count":0}');const today=todayKey();if(stored.date!==today)return 0;return stored.count;}
 function incrementQAUsed(){if(isPremium())return;const used=getQAUsed();localStorage.setItem("duual_qa_count",JSON.stringify({date:todayKey(),count:used+1}));}
 function updateQACounter(){const counter=document.getElementById("natalQACounter");const btn=document.getElementById("natalQABtn");if(!counter||!btn)return;if(isPremium()){counter.textContent=lang==="es"?"Preguntas ilimitadas ✦":"Unlimited questions ✦";btn.disabled=false;return;}const left=Math.max(0,NATAL_QA_FREE_LIMIT-getQAUsed());counter.textContent=lang==="es"?`${left} preguntas restantes hoy`:`${left} questions left today`;btn.disabled=left===0;}
@@ -1065,7 +1045,8 @@ async function submitNatalQuestion(){
   const btn=document.getElementById("natalQABtn");btn.disabled=true;btn.innerHTML=`<span class="ai-spin"></span>`;
   const pid=natalActivePid;const p=pid==="A"?lastResult.pA:lastResult.pB;const name=pid==="A"?lastResult.nA:lastResult.nB;
   const l=lang;const signs=l==="es"?SIGN_ES:SIGN_EN;const pnames=l==="es"?PES:PEN;
-  const chartSummary=NATAL_PLANETS.map(planet=>{if(p[planet]===undefined)return"";const signIdx=Math.floor(((p[planet]%360)+360)%360/30);return`${pnames[planet]} en ${signs[signIdx]}`;}).filter(Boolean).join(", ");
+  const inWord=l==="es"?"en":"in";
+  const chartSummary=NATAL_PLANETS.map(planet=>{if(p[planet]===undefined)return"";const signIdx=Math.floor(((p[planet]%360)+360)%360/30);return`${pnames[planet]} ${inWord} ${signs[signIdx]}`;}).filter(Boolean).join(", ");
   try{
     const res=await fetch("/api/interpret",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type:"freeQuestion",nameA:name,chartSummary,question,lang:l})});
     const data=await res.json();
@@ -1080,9 +1061,6 @@ async function submitNatalQuestion(){
 }
 function showNatalUpgrade(){const answersEl=document.getElementById("natalQAAnswers");if(answersEl.querySelector(".natal-qa-upgrade"))return;const l=lang;const div=document.createElement("div");div.className="natal-qa-upgrade";div.innerHTML=`<div class="natal-qa-upgrade-text">${l==="es"?"Llegaste al límite de 3 preguntas gratuitas hoy.<br>Con Premium, pregunta sin límites.":"You reached the 3 free questions limit for today.<br>With Premium, ask without limits."}</div><button class="natal-qa-upgrade-btn" onclick="goScreen('paywall')">${l==="es"?"Ver Premium ✦":"See Premium ✦"}</button>`;answersEl.appendChild(div);}
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// NOTIFICACIONES PUSH
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function initPushBanner(){const banner=document.getElementById('pushBanner');if(!banner)return;if(!('serviceWorker' in navigator)||!('PushManager' in window))return;if(Notification.permission==='granted'||Notification.permission==='denied')return;if(localStorage.getItem('duual_push_dismissed'))return;setTimeout(()=>{banner.style.display='flex';},4000);}
 async function requestPushPermission(){const banner=document.getElementById('pushBanner');try{const permission=await Notification.requestPermission();if(permission==='granted'){showToast(lang==="es"?"🔔 Alertas activadas ✦":"🔔 Alerts activated ✦");}if(banner)banner.style.display='none';}catch(e){if(banner)banner.style.display='none';}}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then(()=>{initPushBanner();}).catch(()=>{});}
