@@ -1068,7 +1068,172 @@ function showNatalUpgrade(){const answersEl=document.getElementById("natalQAAnsw
 function initPushBanner(){const banner=document.getElementById('pushBanner');if(!banner)return;if(!('serviceWorker' in navigator)||!('PushManager' in window))return;if(Notification.permission==='granted'||Notification.permission==='denied')return;if(localStorage.getItem('duual_push_dismissed'))return;setTimeout(()=>{banner.style.display='flex';},4000);}
 async function requestPushPermission(){const banner=document.getElementById('pushBanner');try{const permission=await Notification.requestPermission();if(permission==='granted'){showToast(lang==="es"?"🔔 Alertas activadas ✦":"🔔 Alerts activated ✦");}if(banner)banner.style.display='none';}catch(e){if(banner)banner.style.display='none';}}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then(()=>{initPushBanner();}).catch(()=>{});}
- function renderCompassDial(aspects){
+ const ASPECT_INTERPRETATIONS = {
+  es: {
+    // ━━━ SOL ━━━
+    "Sun-Sun-conjunction": {title:"Identidades fundidas",desc:"Comparten energía vital y misma forma de mostrarse al mundo. Es como mirarse al espejo: lo que admiras o te incomoda en el otro, también lo cargas tú. Necesitan espacio individual para no fundirse demasiado."},
+    "Sun-Sun-trine":{title:"Misma frecuencia",desc:"Sus voluntades se mueven en la misma dirección sin esfuerzo. Se respetan naturalmente y se admiran sin competir. Una de las bases más sólidas para construir algo a largo plazo."},
+    "Sun-Sun-square":{title:"Egos en tensión",desc:"Ambos quieren brillar y a veces eso choca. Pueden empujarse a ser mejores o agotarse compitiendo. Funciona si aprenden a turnarse el protagonismo en lugar de robárselo."},
+    "Sun-Sun-opposition":{title:"Espejo invertido",desc:"Polos opuestos que se atraen. Lo que a uno le falta, el otro lo tiene de sobra. Pueden completarse hermosamente o agotarse intentando convertir al otro en su versión."},
+    
+    // ━━━ SOL & LUNA ━━━
+    "Sun-Moon-conjunction":{title:"Te ven sin esfuerzo",desc:"Una de las conexiones más cálidas que existen. Las emociones de uno y la identidad del otro se alinean naturalmente. Hay un sentido profundo de 'estar en casa' cuando están juntos."},
+    "Sun-Moon-trine":{title:"Comprensión instintiva",desc:"Sin necesidad de explicarse, se entienden. Las emociones de uno y la voluntad del otro fluyen en la misma corriente. Relación que se siente fácil y nutritiva."},
+    "Sun-Moon-sextile":{title:"Equipo emocional",desc:"Se apoyan sin pedirlo. Cuando uno se cae, el otro sostiene; cuando uno celebra, el otro disfruta. La química emocional aquí es de las que duran."},
+    "Sun-Moon-square":{title:"Razón vs. corazón",desc:"Lo que uno quiere chocar con lo que el otro siente. Pueden malinterpretarse seguido — necesidades emocionales mal leídas, expectativas cruzadas. Es trabajo, pero el aprendizaje vale."},
+    "Sun-Moon-opposition":{title:"Día y noche",desc:"Uno es luz, el otro es reflejo. Se complementan profundamente pero también pueden sentirse en mundos distintos. La clave está en honrar esas diferencias en vez de borrarlas."},
+    
+    // ━━━ SOL & VENUS ━━━
+    "Sun-Venus-conjunction":{title:"Atracción magnética",desc:"Hay carisma mutuo desde el primer momento. Uno se siente hermoso/a en presencia del otro. Conexión que combina admiración con afecto — el ingrediente clásico del enamoramiento real."},
+    "Sun-Venus-trine":{title:"Romance fluido",desc:"El amor aquí no necesita drama para sentirse intenso. Disfrutan estar juntos sin hacer mucho — comer, reír, existir. Una de las conexiones más placenteras de la sinastría."},
+    "Sun-Venus-sextile":{title:"Cariño que crece",desc:"El afecto se profundiza con el tiempo. No hay fuegos artificiales explosivos, pero sí una corriente cálida constante. Ideal para parejas que quieren algo sostenible."},
+    
+    // ━━━ SOL & MARTE ━━━
+    "Sun-Mars-conjunction":{title:"Energía pura",desc:"Hay chispa, deseo, ganas. Se motivan mutuamente a actuar y a tomar riesgos. Cuidado con la competitividad: lo que une también puede convertirse en pulso de fuerzas."},
+    "Sun-Mars-trine":{title:"Aliados de acción",desc:"Cuando uno propone, el otro responde. Hay confianza en la iniciativa del otro y ganas de construir juntos. Excelente para parejas que comparten metas o proyectos."},
+    "Sun-Mars-square":{title:"Chispa con fricción",desc:"Hay atracción intensa pero también roces frecuentes. Ambos quieren dirigir y eso enciende discusiones. La pasión es real — el reto es canalizarla sin lastimarse."},
+    "Sun-Mars-opposition":{title:"Polaridad encendida",desc:"Energías que se desafían y se atraen al mismo tiempo. Pueden empujarse a crecer o terminar agotándose en luchas de poder. La conciencia hace toda la diferencia."},
+    
+    // ━━━ LUNA & LUNA ━━━
+    "Moon-Moon-conjunction":{title:"Mismo paisaje interior",desc:"Sienten el mundo de forma muy parecida. Se entienden en lo que no se dice. Ojo: si uno está en mal momento emocional, puede arrastrar al otro fácilmente."},
+    "Moon-Moon-trine":{title:"Refugio mutuo",desc:"Se sienten seguros estando juntos. No tienen que fingir estados de ánimo — pueden estar tristes, cansados o eufóricos sin necesidad de explicar. Una conexión muy nutritiva."},
+    "Moon-Moon-square":{title:"Necesidades cruzadas",desc:"Lo que uno necesita para sentirse bien puede agotar al otro. Diferentes ritmos emocionales, diferentes formas de cuidar. Requiere aprender a leerse sin asumir."},
+    "Moon-Moon-opposition":{title:"Mareas opuestas",desc:"Cuando uno necesita cercanía, el otro busca espacio — y viceversa. Se complementan en teoría, pero exige negociar mucho los tiempos emocionales."},
+    
+    // ━━━ LUNA & VENUS ━━━
+    "Moon-Venus-conjunction":{title:"Ternura profunda",desc:"Mucho cariño, mucho cuidado. Las emociones de uno se sienten como amor para el otro. Una de las conexiones más afectivas — ideal para vínculos que sostienen lo cotidiano."},
+    "Moon-Venus-trine":{title:"Amor que abraza",desc:"Hay calidez, paciencia y ganas de cuidarse. Los pequeños gestos importan aquí: un mensaje, un café, una mano en el hombro. Estabilidad emocional sin perder romance."},
+    "Moon-Venus-sextile":{title:"Confort emocional",desc:"Se sienten cómodos siendo cariñosos sin que se vuelva pegajoso. Hay equilibrio entre afecto y espacio. Ideal para construir intimidad sin asfixia."},
+    
+    // ━━━ LUNA & MARTE ━━━
+    "Moon-Mars-conjunction":{title:"Pasión emocional",desc:"Las emociones se viven con intensidad y se expresan con acción. Puede ser muy apasionado o muy reactivo. Los conflictos no se guardan — se sacan, para bien o para mal."},
+    "Moon-Mars-trine":{title:"Protección mutua",desc:"Cuando uno está vulnerable, el otro defiende; cuando uno tiene rabia, el otro contiene. Hay calor y respaldo. Buena para parejas que enfrentan retos juntos."},
+    "Moon-Mars-square":{title:"Botones que se aprietan",desc:"Saben exactamente cómo herirse sin proponérselo. Las emociones se inflaman rápido y los reproches escalan. Si aprenden a pausar antes de reaccionar, esta tensión los hace más fuertes."},
+    
+    // ━━━ VENUS & MARTE (la clásica) ━━━
+    "Venus-Mars-conjunction":{title:"Química pura",desc:"El clásico aspecto de atracción sexual y romántica. Lo que uno desea, el otro lo despierta. Conexión física e intensidad emocional combinadas — el ingrediente del 'no puedo dejar de pensar en ti'."},
+    "Venus-Mars-trine":{title:"Deseo en sintonía",desc:"Saben qué quiere el otro en lo íntimo casi sin palabras. Atracción que se sostiene en el tiempo porque hay respeto + deseo. De las conexiones más placenteras posibles."},
+    "Venus-Mars-sextile":{title:"Atracción cómplice",desc:"Hay coqueteo, juego, complicidad. La pasión está pero no domina — convive con la amistad y el cariño. Excelente base para parejas que quieren sostener la chispa."},
+    "Venus-Mars-square":{title:"Atracción que arde",desc:"Hay deseo, pero también fricción. Lo que enciende a uno puede sentirse demasiado para el otro. La química es innegable — el reto es que no se vuelva consumidora."},
+    "Venus-Mars-opposition":{title:"Polos magnéticos",desc:"Se atraen como imanes y a veces se chocan igual. Estilos de afecto y deseo opuestos pero complementarios. Si se respetan las diferencias, la atracción se sostiene años."},
+    
+    // ━━━ MERCURIO ━━━
+    "Mercury-Mercury-conjunction":{title:"Misma longitud de onda",desc:"Piensan parecido y se comunican fácil. Las conversaciones fluyen sin malentendidos. Pueden hablar horas sin aburrirse — base ideal para amistad profunda dentro del amor."},
+    "Mercury-Mercury-trine":{title:"Conversación fluida",desc:"Se entienden hablando, escribiendo, en silencio. Ideas que se complementan, no que compiten. Una de las conexiones mentales más cómodas posibles."},
+    "Mercury-Mercury-square":{title:"Idiomas distintos",desc:"Procesan información de formas diferentes y eso genera malentendidos. Uno quiere ir al grano, el otro contextualizar. Aprender el estilo del otro es la clave."},
+    "Mercury-Venus-conjunction":{title:"Palabras que enamoran",desc:"Se hablan bonito, se escriben bonito, se coquetean con palabras. La conversación es seducción aquí. Las parejas con este aspecto suelen tener mucho diálogo afectuoso."},
+    "Mercury-Venus-trine":{title:"Diálogo cálido",desc:"Hablar con el otro se siente como un abrazo. Hay diplomacia, escucha, tono amable. Pocas peleas verbales — y cuando las hay, se resuelven con palabras suaves."},
+    "Mercury-Mars-square":{title:"Discusiones intensas",desc:"Las diferencias se debaten con pasión, a veces demasiada. Pueden chocar fuerte verbalmente sin querer herirse. Si aprenden a discutir sin atacar, este aspecto los agudiza."},
+    
+    // ━━━ JÚPITER (suele dar suerte) ━━━
+    "Sun-Jupiter-trine":{title:"Crecen juntos",desc:"Uno expande la visión del otro. Se inspiran mutuamente a soñar más grande, viajar, aprender. Una de las conexiones más optimistas y de futuro abierto."},
+    "Venus-Jupiter-trine":{title:"Amor expansivo",desc:"El cariño aquí no es escaso — hay generosidad, alegría, ganas de celebrar al otro. Pareja a la que la gente quiere ver junta porque irradian bienestar."},
+    "Moon-Jupiter-conjunction":{title:"Optimismo emocional",desc:"Cuando uno está bajón, el otro recuerda lo bueno. Hay esperanza, fe en la relación, ganas de seguir aún en momentos difíciles. Combustible emocional sano."},
+    
+    // ━━━ SATURNO (suele dar peso/lecciones) ━━━
+    "Sun-Saturn-conjunction":{title:"Compromiso serio",desc:"Hay sensación de 'esto va en serio' desde el principio. Uno aporta estructura, el otro busca dirección. Puede sentirse pesado a veces, pero construye relaciones que duran."},
+    "Sun-Saturn-square":{title:"Maestro y aprendiz",desc:"Uno trae estructura, el otro empuje. Pueden enseñarse mucho, pero también sentir que el otro 'frena' o 'presiona'. La madurez de ambos define si sostienen o se cansan."},
+    "Venus-Saturn-square":{title:"Amor con peso",desc:"Hay afecto pero también miedo, distancia o autocensura. Uno puede sentirse no suficientemente querido, el otro responsabilizado. Funciona si ambos se animan a ablandarse."},
+    "Moon-Saturn-opposition":{title:"Frío y refugio",desc:"Uno busca apoyo emocional, el otro tiende a la distancia. Puede generar soledad dentro de la pareja. Si se trabaja, también puede dar contención madura — pero requiere intención."}
+  },
+  en: {
+    // ━━━ SUN ━━━
+    "Sun-Sun-conjunction":{title:"Merged identities",desc:"You share life force and how you show up in the world. It's like looking in a mirror: what you admire or dislike in them, you also carry. You need individual space to avoid losing yourselves in each other."},
+    "Sun-Sun-trine":{title:"Same frequency",desc:"Your wills move in the same direction effortlessly. You respect each other naturally and admire without competing. One of the strongest foundations for the long term."},
+    "Sun-Sun-square":{title:"Egos in tension",desc:"Both of you want to shine and sometimes that clashes. You can push each other to grow or burn out competing. Works if you learn to take turns being the lead."},
+    "Sun-Sun-opposition":{title:"Inverted mirror",desc:"Opposite poles that attract. What one lacks, the other has in spades. You can complete each other beautifully or burn out trying to convert the other into your version."},
+    "Sun-Moon-conjunction":{title:"Seen without effort",desc:"One of the warmest connections that exists. Their emotions and your identity align naturally. There's a deep sense of 'being home' when together."},
+    "Sun-Moon-trine":{title:"Instinctive understanding",desc:"No need to explain — you just get each other. Their feelings and your will flow in the same current. A relationship that feels easy and nourishing."},
+    "Sun-Moon-sextile":{title:"Emotional team",desc:"You support each other without being asked. When one falls, the other holds; when one celebrates, the other enjoys. The emotional chemistry here lasts."},
+    "Sun-Moon-square":{title:"Reason vs. heart",desc:"What one wants clashes with what the other feels. Misunderstandings happen often — emotional needs misread, crossed expectations. It's work, but the learning is worth it."},
+    "Sun-Moon-opposition":{title:"Day and night",desc:"One is light, the other is reflection. You complement deeply but can also feel like you live in different worlds. The key is honoring those differences instead of erasing them."},
+    "Sun-Venus-conjunction":{title:"Magnetic attraction",desc:"Mutual charisma from moment one. You feel beautiful in their presence. A connection that mixes admiration with affection — the classic ingredient of real love."},
+    "Sun-Venus-trine":{title:"Smooth romance",desc:"Love here doesn't need drama to feel intense. You enjoy being together without doing much — eating, laughing, existing. One of the most pleasurable synastry connections."},
+    "Sun-Venus-sextile":{title:"Affection that grows",desc:"Affection deepens with time. No explosive fireworks, but a constant warm current. Ideal for couples wanting something sustainable."},
+    "Sun-Mars-conjunction":{title:"Pure energy",desc:"There's spark, desire, drive. You motivate each other to act and take risks. Watch for competitiveness: what unites you can become a power struggle."},
+    "Sun-Mars-trine":{title:"Action allies",desc:"When one proposes, the other responds. There's trust in each other's initiative and a desire to build together. Excellent for couples sharing goals or projects."},
+    "Sun-Mars-square":{title:"Spark with friction",desc:"Intense attraction but also frequent rubs. Both want to lead and that ignites arguments. The passion is real — the challenge is channeling it without hurting."},
+    "Sun-Mars-opposition":{title:"Charged polarity",desc:"Energies that challenge and attract simultaneously. You can push each other to grow or burn out in power struggles. Awareness makes all the difference."},
+    "Moon-Moon-conjunction":{title:"Same inner landscape",desc:"You feel the world very similarly. You understand the unsaid. Watch out: if one's in a bad emotional spot, it can drag the other easily."},
+    "Moon-Moon-trine":{title:"Mutual sanctuary",desc:"You feel safe being together. No need to fake moods — you can be sad, tired, or euphoric without explaining. A very nourishing connection."},
+    "Moon-Moon-square":{title:"Crossed needs",desc:"What one needs to feel okay can drain the other. Different emotional rhythms, different ways of caring. Requires learning to read each other without assuming."},
+    "Moon-Moon-opposition":{title:"Opposite tides",desc:"When one needs closeness, the other seeks space — and vice versa. Theoretically complementary, but requires lots of emotional timing negotiation."},
+    "Moon-Venus-conjunction":{title:"Deep tenderness",desc:"Lots of affection, lots of care. Their feelings register as love for you. One of the most affectionate connections — ideal for bonds that hold daily life."},
+    "Moon-Venus-trine":{title:"Love that holds",desc:"Warmth, patience, desire to take care. Small gestures matter here: a text, a coffee, a hand on the shoulder. Emotional stability without losing romance."},
+    "Moon-Venus-sextile":{title:"Emotional comfort",desc:"You feel comfortable being affectionate without it getting clingy. Balance between warmth and space. Ideal for building intimacy without suffocation."},
+    "Moon-Mars-conjunction":{title:"Emotional passion",desc:"Emotions are lived intensely and expressed through action. Can be very passionate or very reactive. Conflicts don't get stored — they come out, for better or worse."},
+    "Moon-Mars-trine":{title:"Mutual protection",desc:"When one is vulnerable, the other defends; when one is angry, the other contains. There's warmth and backup. Good for couples facing challenges together."},
+    "Moon-Mars-square":{title:"Buttons that get pushed",desc:"You know exactly how to hurt each other without meaning to. Emotions inflame fast and reproaches escalate. If you learn to pause before reacting, this tension makes you stronger."},
+    "Venus-Mars-conjunction":{title:"Pure chemistry",desc:"The classic aspect of sexual and romantic attraction. What one desires, the other awakens. Physical connection and emotional intensity combined — the 'can't stop thinking about you' ingredient."},
+    "Venus-Mars-trine":{title:"Desire in sync",desc:"You know what the other wants intimately almost without words. Attraction that lasts because there's respect + desire. One of the most pleasurable possible connections."},
+    "Venus-Mars-sextile":{title:"Playful attraction",desc:"There's flirting, play, complicity. Passion is there but doesn't dominate — coexists with friendship and care. Excellent base for couples wanting to keep the spark."},
+    "Venus-Mars-square":{title:"Attraction that burns",desc:"There's desire, but also friction. What ignites one can feel like too much for the other. The chemistry is undeniable — the challenge is keeping it from consuming you."},
+    "Venus-Mars-opposition":{title:"Magnetic poles",desc:"You attract like magnets and clash the same way. Opposite but complementary affection and desire styles. If you respect the differences, the attraction lasts years."},
+    "Mercury-Mercury-conjunction":{title:"Same wavelength",desc:"You think similarly and communicate easily. Conversations flow without misunderstandings. You can talk for hours without getting bored — ideal foundation for deep friendship within love."},
+    "Mercury-Mercury-trine":{title:"Smooth conversation",desc:"You understand each other talking, writing, in silence. Ideas that complement instead of compete. One of the most comfortable possible mental connections."},
+    "Mercury-Mercury-square":{title:"Different languages",desc:"You process information differently and that creates misunderstandings. One wants to get to the point, the other to contextualize. Learning each other's style is key."},
+    "Mercury-Venus-conjunction":{title:"Words that charm",desc:"You speak beautifully to each other, write beautifully, flirt with words. Conversation is seduction here. Couples with this aspect tend to have lots of affectionate dialogue."},
+    "Mercury-Venus-trine":{title:"Warm dialogue",desc:"Talking with each other feels like a hug. There's diplomacy, listening, gentle tone. Few verbal fights — and when they happen, they resolve with soft words."},
+    "Mercury-Mars-square":{title:"Intense arguments",desc:"Differences get debated with passion, sometimes too much. You can clash hard verbally without meaning to hurt. If you learn to argue without attacking, this aspect sharpens you."},
+    "Sun-Jupiter-trine":{title:"Growing together",desc:"One expands the other's vision. You inspire each other to dream bigger, travel, learn. One of the most optimistic and future-open connections."},
+    "Venus-Jupiter-trine":{title:"Expansive love",desc:"Care here isn't scarce — there's generosity, joy, desire to celebrate each other. A couple people love seeing together because you radiate wellbeing."},
+    "Moon-Jupiter-conjunction":{title:"Emotional optimism",desc:"When one is down, the other remembers the good. There's hope, faith in the relationship, desire to keep going even in hard times. Healthy emotional fuel."},
+    "Sun-Saturn-conjunction":{title:"Serious commitment",desc:"There's a 'this is real' feel from the start. One brings structure, the other seeks direction. Can feel heavy sometimes, but builds lasting relationships."},
+    "Sun-Saturn-square":{title:"Teacher and student",desc:"One brings structure, the other drive. You can teach each other a lot, but also feel like the other 'brakes' or 'pressures'. Both partners' maturity defines whether you sustain or tire."},
+    "Venus-Saturn-square":{title:"Love with weight",desc:"There's affection but also fear, distance, or self-censorship. One may feel insufficiently loved, the other held responsible. Works if both dare to soften."},
+    "Moon-Saturn-opposition":{title:"Cold and shelter",desc:"One seeks emotional support, the other tends toward distance. Can create loneliness within the couple. With work, can also produce mature containment — but requires intention."}
+  }
+};
+
+// Fallbacks for combinations not in the dictionary
+const ASPECT_FALLBACK = {
+  es: {
+    harmonious: {
+      conjunction: {title:"Energías fundidas",desc:"Estas dos partes de ustedes se alinean naturalmente y se potencian. Hay una sensación de afinidad sin esfuerzo en esta área de la relación."},
+      trine: {title:"Conexión que fluye",desc:"Aspecto armónico clásico. Esta área de la relación se siente cómoda y natural — no necesita trabajo extra para funcionar bien."},
+      sextile: {title:"Oportunidad de crecimiento",desc:"Hay potencial latente aquí. Si lo cultivan conscientemente, esta conexión les regala momentos de complicidad genuina."}
+    },
+    tense: {
+      square: {title:"Fricción que enseña",desc:"Aspecto desafiante que crea roces, pero también motor de crecimiento. Lo que choca aquí también es lo que los obliga a evolucionar como pareja."},
+      opposition: {title:"Polos que se atraen",desc:"Polaridades que se complementan tanto como se desafían. Si aprenden a escuchar la perspectiva del otro, este contraste los enriquece."}
+    }
+  },
+  en: {
+    harmonious: {
+      conjunction: {title:"Merged energies",desc:"These two parts of you align naturally and reinforce each other. There's a sense of effortless affinity in this area of the relationship."},
+      trine: {title:"Flowing connection",desc:"Classic harmonious aspect. This area of the relationship feels comfortable and natural — no extra work needed to function well."},
+      sextile: {title:"Growth opportunity",desc:"Latent potential here. If you cultivate it consciously, this connection brings moments of genuine complicity."}
+    },
+    tense: {
+      square: {title:"Friction that teaches",desc:"Challenging aspect that creates rubs, but also a growth engine. What clashes here is also what forces you to evolve as a couple."},
+      opposition: {title:"Poles that attract",desc:"Polarities that complement as much as they challenge. If you learn to listen to each other's perspective, this contrast enriches you."}
+    }
+  }
+};
+
+// Helper to look up an interpretation
+function getAspectInterp(aspect, lang){
+  const dict = ASPECT_INTERPRETATIONS[lang] || ASPECT_INTERPRETATIONS.es;
+  const aspectType = aspect.a.s; // ☌ △ ⚹ □ ☍
+  const aspectName = (aspect.a.es||"").toLowerCase();
+  
+  // Map symbol to english key for lookup
+  const ASPECT_KEY = {"☌":"conjunction","△":"trine","⚹":"sextile","□":"square","☍":"opposition"};
+  const key = ASPECT_KEY[aspectType] || "conjunction";
+  
+  // Try both orderings (Sun-Moon and Moon-Sun should resolve to same entry)
+  const k1 = `${aspect.pa}-${aspect.pb}-${key}`;
+  const k2 = `${aspect.pb}-${aspect.pa}-${key}`;
+  
+  if(dict[k1]) return dict[k1];
+  if(dict[k2]) return dict[k2];
+  
+  // Fallback by aspect type
+  const fb = ASPECT_FALLBACK[lang] || ASPECT_FALLBACK.es;
+  const tType = aspect.a.t === "harmonious" ? "harmonious" : "tense";
+  return (fb[tType] && fb[tType][key]) || {title:"Conexión astral",desc:"Aspecto presente entre estos planetas que aporta su matiz único a la relación."};
+}
+  function renderCompassDial(aspects){
   const el=document.getElementById("compassDial");
   if(!el)return;
   const harm=aspects.filter(x=>x.a.t==="harmonious").length;
@@ -1081,11 +1246,25 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then
   const topHarm=aspects.filter(x=>x.a.t==="harmonious").slice(0,2);
   const topTense=aspects.filter(x=>x.a.t==="tense").slice(0,2);
   const fmt=x=>{
-    const aspName=lang==="es"?x.a.es:x.a.en;
-    const orbeLabel=lang==="es"?"orbe":"orb";
-    const color=x.a.t==='harmonious'?'#3DB88A':'#ED93B1';
-    return`<div style="margin-bottom:8px;padding:6px 8px;background:rgba(255,255,255,0.025);border-left:2px solid ${color};border-radius:4px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:2px"><span style="font-size:14px">${PG[x.pa]||""}</span><span style="font-size:11px;color:rgba(242,238,249,0.9);font-weight:500">${pname[x.pa]||x.pa}</span><span style="color:${color};font-size:13px;margin:0 2px">${x.a.s}</span><span style="font-size:14px">${PG[x.pb]||""}</span><span style="font-size:11px;color:rgba(242,238,249,0.9);font-weight:500">${pname[x.pb]||x.pb}</span></div><div style="font-size:10px;color:rgba(242,238,249,0.45);letter-spacing:0.3px">${aspName} · ${x.a.orbe}° ${orbeLabel}</div></div>`;
-  };
+  const interp = getAspectInterp(x, lang);
+  const aspName = lang==="es" ? x.a.es : x.a.en;
+  const orbeLabel = lang==="es" ? "orbe" : "orb";
+  const color = x.a.t==='harmonious' ? '#3DB88A' : '#ED93B1';
+  return `
+    <div style="margin-bottom:10px;padding:10px;background:rgba(255,255,255,0.025);border-left:2px solid ${color};border-radius:6px">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap">
+        <span style="font-size:13px">${PG[x.pa]||""}</span>
+        <span style="font-size:10px;color:rgba(242,238,249,0.85);font-weight:500">${pname[x.pa]||x.pa}</span>
+        <span style="color:${color};font-size:12px;margin:0 1px">${x.a.s}</span>
+        <span style="font-size:13px">${PG[x.pb]||""}</span>
+        <span style="font-size:10px;color:rgba(242,238,249,0.85);font-weight:500">${pname[x.pb]||x.pb}</span>
+      </div>
+      <div style="font-size:11px;color:${color};font-weight:500;margin-bottom:3px;letter-spacing:0.2px">${interp.title}</div>
+      <div style="font-size:10.5px;color:rgba(242,238,249,0.7);line-height:1.5;margin-bottom:4px">${interp.desc}</div>
+      <div style="font-size:9px;color:rgba(242,238,249,0.35);letter-spacing:0.3px">${aspName} · ${x.a.orbe}° ${orbeLabel}</div>
+    </div>
+  `;
+};
   const emptyMsg=msg=>`<div style="font-size:10px;color:rgba(242,238,249,0.3);text-align:center;padding:8px;font-style:italic">${msg}</div>`;
   const harmList=topHarm.length?topHarm.map(fmt).join(""):emptyMsg(lang==="es"?"Sin aspectos armónicos":"No harmonious aspects");
   const tenseList=topTense.length?topTense.map(fmt).join(""):emptyMsg(lang==="es"?"Sin tensiones":"No tensions");
@@ -1175,16 +1354,16 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then
         <div style="font-size:8px;color:rgba(242,238,249,0.35);letter-spacing:1.5px;margin-top:3px">${lang==="es"?"DESAFÍO":"CHALLENGE"}</div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div style="background:rgba(61,184,138,0.08);border:0.5px solid rgba(61,184,138,0.25);border-radius:12px;padding:10px">
-        <div style="font-size:8px;letter-spacing:1.5px;color:#3DB88A;margin-bottom:7px">${lang==="es"?"TOP MATCH":"TOP MATCH"}</div>
-        ${topHarm.map(x=>`<div style="font-size:11px;color:rgba(242,238,249,0.7);margin-bottom:4px;line-height:1.3">${fmt(x)}</div>`).join("")||`<div style="font-size:11px;color:rgba(242,238,249,0.35)">${lang==="es"?"Sin aspectos":"No aspects"}</div>`}
+ <div style="padding:0 4px">
+      <div style="margin-bottom:14px">
+        <div style="font-size:10px;color:#3DB88A;letter-spacing:1.5px;margin-bottom:8px;font-weight:500">${lang==="es"?"✦ TUS MATCHES":"✦ YOUR MATCHES"}</div>
+        ${harmList}
       </div>
-      <div style="background:rgba(201,75,114,0.08);border:0.5px solid rgba(201,75,114,0.25);border-radius:12px;padding:10px">
-        <div style="font-size:8px;letter-spacing:1.5px;color:#ED93B1;margin-bottom:7px">${lang==="es"?"TOP DESAFÍO":"TOP CHALLENGE"}</div>
-        ${topTense.map(x=>`<div style="font-size:11px;color:rgba(242,238,249,0.7);margin-bottom:4px;line-height:1.3">${fmt(x)}</div>`).join("")||`<div style="font-size:11px;color:rgba(242,238,249,0.35)">${lang==="es"?"Sin aspectos":"No aspects"}</div>`}
+      <div>
+        <div style="font-size:10px;color:#ED93B1;letter-spacing:1.5px;margin-bottom:8px;font-weight:500">${lang==="es"?"⚡ TUS DESAFÍOS":"⚡ YOUR CHALLENGES"}</div>
+        ${tenseList}
       </div>
-    </div>`;
+    </div>
 }
 </script>
 </body>
