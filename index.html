@@ -851,6 +851,39 @@ ctx.restore();
     ctx.font="400 42px 'Arial', sans-serif";ctx.fillStyle="rgba(255,255,255,0.9)";ctx.letterSpacing="12px";ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY",cx,cy+cr+58);ctx.letterSpacing="0px";
     const fullName=`${nA} & ${nB}`;let nameFontSize=88;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;while(ctx.measureText(fullName).width>W*0.86&&nameFontSize>40){nameFontSize-=4;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;}ctx.fillStyle="rgba(242,238,249,0.92)";ctx.fillText(fullName,cx,H*0.635);
     ctx.font="300 50px 'Georgia', serif";ctx.fillStyle="#ED93B1";ctx.fillText(verdict,cx,H*0.715);
+    const _harmAsp=_lastAspects.filter(x=>x.a.t==="harmonious");
+const _tenseAsp=_lastAspects.filter(x=>x.a.t==="tense");
+const _topHarm=_harmAsp[0];
+const _topTense=_tenseAsp[0];
+const _pn=lang==="es"?PES:PEN;
+const _pg=PG;
+const _sc=parseInt(score);
+const _phrases={
+  high:[
+    `${_topHarm?_pn[_topHarm.pa]+" en "+signOf(_topHarm.a.orbe)+" entiende tu "+_pn[_topHarm.pb]+". Raro, pero existe.":"Los planetas conspiraron para esto."}`,
+    "Los planetas conspiraron para esto. No lo arruines.",
+    "Técnicamente, los astros dijeron que sí.",
+    `${_topHarm?_pg[_topHarm.pa]+" "+_topHarm.a.s+" "+_pg[_topHarm.pb]+": química que no necesita explicación.":"Una conexión escrita antes de conocerse."}`
+  ],
+  mid:[
+    "No es perfecto. Pero tampoco era tu ex.",
+    "Tienen trabajo por hacer. Los planetas ya avisaron.",
+    `Potencial real. Siempre que ${_topTense?_pn[_topTense.pa]:"Marte"} no intervenga.`,
+    "Los astros ven potencial. El resto depende de ustedes."
+  ],
+  low:[
+    "El problema no eras tú. Era su Venus en Acuario.",
+    "Los astros lo vieron venir. Tú también puedes.",
+    "Compatibles en otro universo, quizás.",
+    `${_topTense?_pn[_topTense.pa]+" cuadra tu "+_pn[_topTense.pb]+". Eso explica todo.":"La sinastría no miente. Los planetas tampoco."}`
+  ]
+};
+const _bucket=_sc>=80?"high":_sc>=60?"mid":"low";
+const _phraseArr=_phrases[_bucket];
+const _phrase=_phraseArr[Math.floor(Math.random()*_phraseArr.length)];
+ctx.font="italic 36px 'Georgia', serif";
+ctx.fillStyle="rgba(242,238,249,0.55)";
+ctx.fillText(_phrase,cx,H*0.775);
     ctx.beginPath();ctx.moveTo(W*0.32,H*0.772);ctx.lineTo(W*0.68,H*0.772);ctx.strokeStyle="rgba(242,238,249,0.15)";ctx.lineWidth=1;ctx.stroke();
     const duuFont="300 50px 'Georgia', serif";const alFont="italic 300 50px 'Georgia', serif";ctx.font=duuFont;const duuW=ctx.measureText("Duu").width;ctx.font=alFont;const alW=ctx.measureText("al").width;
     const logoSize=110;const logoY=H*0.785;
