@@ -1080,7 +1080,10 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then
   const pname=lang==="es"?PES:PEN;
   const topHarm=aspects.filter(x=>x.a.t==="harmonious").slice(0,2);
   const topTense=aspects.filter(x=>x.a.t==="tense").slice(0,2);
-  const fmt=x=>`${PG[x.pa]||""} ${pname[x.pa]||x.pa} ${x.a.s} ${PG[x.pb]||""} ${pname[x.pb]||x.pb}`;
+  const fmt=x=>{
+  const aspName=lang==="es"?x.a.es:x.a.en;
+  return`<div style="margin-bottom:6px"><span style="color:${x.a.t==='harmonious'?'#3DB88A':'#ED93B1'};font-size:13px">${x.a.s}</span> <span style="font-size:11px;color:rgba(242,238,249,0.85)">${pname[x.pa]||x.pa} & ${pname[x.pb]||x.pb}</span><br><span style="font-size:10px;color:rgba(242,238,249,0.4)">${aspName} · ${x.a.orbe}° orbe</span></div>`;
+};
   el.innerHTML=`
     <svg viewBox="0 0 200 110" style="width:100%;height:80px">
       <defs>
