@@ -682,7 +682,13 @@ function renderResults(r){
   for(const pa of keys)for(const pb of keys){const k=`${pa}-${pb}`,w=PW[k]||0;if(!w)continue;const a=asp(pA[pa],pB[pb]);if(a){total+=a.sc*w;found.push({pa,pb,a,pts:a.sc*w,interp:interp(k,a.es,lang)});}}
   const maxFound=found.reduce((s,x)=>s+ASPS[0].sc*(PW[x.pa+"-"+x.pb]||1),0)||1;
   const rawPct=total/maxFound*100;
-  const pct=Math.min(99,Math.max(5,Math.round(30+rawPct*0.7)));
+  const harm=found.filter(x=>x.a.t==="harmonious").reduce((s,x)=>s+x.pts,0);
+const tense=found.filter(x=>x.a.t==="tense").reduce((s,x)=>s+x.pts,0);
+const neutral=found.filter(x=>x.a.t==="neutral").reduce((s,x)=>s+x.pts,0);
+const totalFound=harm+tense+neutral||1;
+const harmRatio=harm/totalFound;
+const rawBalance=rawPct*0.6+harmRatio*40;
+const pct=Math.min(97,Math.max(8,Math.round(rawBalance)));
   const vList=VRD[lang];
   const[vTitle,vText]=pickVerdict(vList,pct,nA,nB);
  document.getElementById("bigScore").innerHTML=`${pct}<span class="pct">%</span>`;
@@ -717,6 +723,7 @@ const circumference=2*Math.PI*85;const offset=circumference-(pct/100)*circumfere
     </div>`
   );
   renderCompassDial(found);
+  _lastAspects=found;
   if(premium){
     document.getElementById("premiumResults").style.display="block";
     document.getElementById("unlockCard").style.display="none";
@@ -862,7 +869,7 @@ document.getElementById("cardPreviewOverlay").classList.add("open");
   };
   const logoImg=new Image();logoImg.crossOrigin="anonymous";logoImg.onload=drawAll;logoImg.onerror=drawAll;logoImg.src="icon-192.png";
 }
-let _cardDataURL=null,_cardFileName="duual-card.png";
+let _cardDataURL=null,_cardFileName="duual-card.png",_lastAspects=[];
 function closeCardPreview(){document.getElementById("cardPreviewOverlay").classList.remove("open");}
 function downloadCard(){if(!_cardDataURL)return;const link=document.createElement("a");link.download=_cardFileName;link.href=_cardDataURL;link.style.display="none";document.body.appendChild(link);link.click();document.body.removeChild(link);showToast(lang==="es"?"✦ Tarjeta descargada":"✦ Card downloaded");}
 async function shareCardNative(){if(!_cardDataURL)return;posthog.capture('compartir_carta');try{const res=await fetch(_cardDataURL);const blob=await res.blob();const file=new File([blob],_cardFileName,{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Duual"});}else{downloadCard();}}catch(e){downloadCard();}}
