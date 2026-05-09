@@ -1,61 +1,75 @@
-const https = require('https');
-const querystring = require('querystring');
 const { registerInSheet } = require('./utils/sheets');
 
-function verifyWithPayPal(body) {
-  return new Promise((resolve) => {
-    const verifyBody = 'cmd=_notify-validate&' + body;
-    const options = {
-      hostname: 'ipnpb.paypal.com',
-      path: '/cgi-bin/webscr',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Length': Buffer.byteLength(verifyBody)
-      }
-    };
-    const req = https.request(options, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data === 'VERIFIED'));
-    });
-    req.on('error', () => resolve(false));
-    req.write(verifyBody);
-    req.end();
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
+const BASE_URL = 'https://api-m.paypal.com';
+
+async function getAccessToken() {
+  const credentials = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_CLIENT_SECRET}`).toString('base64');
+  const res = await fetch(`${BASE_URL}/v1/oauth2/token`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${credentials}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: 'grant_type=client_credentials'
   });
+  const data = await res.json();
+  return data.access_token;
+}
+
+async function getSubscriptionDetails(subscriptionId, token) {
+  const res = await fetch(`${BASE_URL}/v1/billing/subscriptions/${subscriptionId}`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  return res.json();
 }
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
 
   try {
-    const chunks = [];
-    for await (const chunk of req) chunks.push(chunk);
-    const rawBody = Buffer.concat(chunks).toString();
-    const params = querystring.parse(rawBody);
+    const event = req.body;
+    console.log('PayPal webhook event:', event.event_type);
 
-    const verified = await verifyWithPayPal(rawBody);
-    if (!verified) {
-      console.log('IPN no verificado');
+    // Eventos que nos interesan
+    const relevantEvents = [
+      'BILLING.SUBSCRIPTION.ACTIVATED',  // suscripción nueva activada
+      'PAYMENT.SALE.COMPLETED',           // pago recibido (renovación)
+    ];
+
+    if (!relevantEvents.includes(event.event_type)) {
       return res.status(200).end();
     }
 
-    if (params.payment_status !== 'Completed') {
-      return res.status(200).end();
-    }
+    const token = await getAccessToken();
 
-    const email = params.payer_email;
-    const itemName = params.item_name || '';
-    const plan = itemName.toLowerCase().includes('annual') ? 'annual' : 'monthly';
+    let subscriptionId, email, plan;
+
+    if (event.event_type === 'BILLING.SUBSCRIPTION.ACTIVATED') {
+      subscriptionId = event.resource?.id;
+      const sub = await getSubscriptionDetails(subscriptionId, token);
+      email = sub.subscriber?.email_address;
+      const planId = sub.plan_id;
+      plan = planId === process.env.PAYPAL_PLAN_ANNUAL ? 'annual' : 'monthly';
+
+    } else if (event.event_type === 'PAYMENT.SALE.COMPLETED') {
+      subscriptionId = event.resource?.billing_agreement_id;
+      if (!subscriptionId) return res.status(200).end();
+      const sub = await getSubscriptionDetails(subscriptionId, token);
+      email = sub.subscriber?.email_address;
+      const planId = sub.plan_id;
+      plan = planId === process.env.PAYPAL_PLAN_ANNUAL ? 'annual' : 'monthly';
+    }
 
     if (email) {
       await registerInSheet(email, plan);
-      console.log(`Premium registrado (PayPal): ${email} — ${plan}`);
+      console.log(`✅ Premium registrado: ${email} — ${plan}`);
     }
 
     return res.status(200).end();
   } catch (error) {
-    console.error('IPN error:', error);
+    console.error('Webhook error:', error);
     return res.status(200).end();
   }
 };
