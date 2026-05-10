@@ -788,44 +788,10 @@ function generateCard(){
   const cv=document.createElement("canvas");cv.width=W;cv.height=H;
   const ctx=cv.getContext("2d");
   const drawAll=async()=>{
-   await new Promise((res)=>{const bgImg=new Image();bgImg.crossOrigin="anonymous";bgImg.onload=()=>{ctx.drawImage(bgImg,0,0,W,H);res();};bgImg.onerror=()=>{const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);res();};bgImg.src="card-bg.png";});
-  const cx=W/2,cy=H*0.38,cr=260;
+    // Fondo
+    await new Promise((res)=>{const bgImg=new Image();bgImg.crossOrigin="anonymous";bgImg.onload=()=>{ctx.drawImage(bgImg,0,0,W,H);res();};bgImg.onerror=()=>{const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);res();};bgImg.src="card-bg.png";});
 
-const glowG=ctx.createRadialGradient(cx,cy,cr-20,cx,cy,cr+80);
-glowG.addColorStop(0,"rgba(201,75,114,0.25)");
-glowG.addColorStop(0.5,"rgba(107,99,204,0.15)");
-glowG.addColorStop(1,"rgba(201,75,114,0)");
-ctx.fillStyle=glowG;
-ctx.beginPath();ctx.arc(cx,cy,cr+80,0,Math.PI*2);ctx.fill();
-
-const innerG=ctx.createRadialGradient(cx,cy,0,cx,cy,cr);
-innerG.addColorStop(0,"rgba(13,10,24,0.85)");
-innerG.addColorStop(0.7,"rgba(13,10,24,0.7)");
-innerG.addColorStop(1,"rgba(13,10,24,0.4)");
-ctx.fillStyle=innerG;
-ctx.beginPath();ctx.arc(cx,cy,cr-9,0,Math.PI*2);ctx.fill();
-
-ctx.beginPath();ctx.arc(cx,cy,cr,0,Math.PI*2);
-ctx.strokeStyle="rgba(255,255,255,0.06)";
-ctx.lineWidth=18;
-ctx.stroke();
-
-const pct=parseInt(score)/100;
-const arcG=ctx.createLinearGradient(cx-cr,cy-cr,cx+cr,cy+cr);
-arcG.addColorStop(0,"#C94B72");
-arcG.addColorStop(0.5,"#ED93B1");
-arcG.addColorStop(1,"#6B63CC");
-
-ctx.save();
-ctx.shadowColor="rgba(201,75,114,0.6)";
-ctx.shadowBlur=20;
-ctx.beginPath();
-ctx.arc(cx,cy,cr,-Math.PI/2,-Math.PI/2+pct*Math.PI*2);
-ctx.strokeStyle=arcG;
-ctx.lineWidth=18;
-ctx.lineCap="round";
-ctx.stroke();
-ctx.restore();
+    // Cargar fuentes
     try{
       const fonts=[
         new FontFace('Montserrat','url(https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm45_dJE3gnD-w.woff2)',{weight:'200'}),
@@ -834,73 +800,143 @@ ctx.restore();
       await Promise.all(fonts.map(f=>f.load().then(loaded=>document.fonts.add(loaded))));
     }catch(e){console.warn('Font load failed:',e);}
 
-    ctx.font=`200 180px "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif`;
-    ctx.textAlign="center";
-    ctx.textBaseline="middle";
+    const cx=W/2;
+
+    // ── SCORE GRANDE (arriba) ──
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.font=`200 280px "Montserrat", sans-serif`;
     ctx.fillStyle="#F2EEF9";
-    ctx.letterSpacing="-4px";
-    ctx.fillText(score,cx,cy);
+    ctx.letterSpacing="-6px";
+    ctx.fillText(score,cx,H*0.2);
     ctx.letterSpacing="0px";
 
-    const pctOffsetX=score.length===1?95:score.length===2?135:175;
-    ctx.font=`300 60px "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif`;
+    // % pequeño al lado
+    const pctOffsetX=score.length===1?150:score.length===2?200:240;
+    ctx.font=`300 80px "Montserrat", sans-serif`;
     ctx.fillStyle="#ED93B1";
-    ctx.textAlign="left";
-    ctx.textBaseline="top";
-    ctx.fillText("%",cx+pctOffsetX,cy-60);
-    ctx.textAlign="center";
+    ctx.textAlign="left";ctx.textBaseline="top";
+    ctx.fillText("%",cx+pctOffsetX,H*0.165);
+
+    // "compatibilidad"
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.font="300 44px 'Georgia', serif";
+    ctx.fillStyle="rgba(255,255,255,0.6)";
+    ctx.letterSpacing="8px";
+    ctx.fillText(lang==="es"?"compatibilidad":"compatibility",cx,H*0.285);
+    ctx.letterSpacing="0px";
+
+    // ── NOMBRES A LOS LADOS ──
+    ctx.font="700 72px 'Montserrat', sans-serif";
     ctx.textBaseline="middle";
-    ctx.font="400 42px 'Arial', sans-serif";ctx.fillStyle="rgba(255,255,255,0.9)";ctx.letterSpacing="12px";ctx.fillText(lang==="es"?"COMPATIBILIDAD":"COMPATIBILITY",cx,cy+cr+58);ctx.letterSpacing="0px";
-    const fullName=`${nA} & ${nB}`;let nameFontSize=88;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;while(ctx.measureText(fullName).width>W*0.86&&nameFontSize>40){nameFontSize-=4;ctx.font=`italic 300 ${nameFontSize}px 'Georgia', serif`;}ctx.fillStyle="rgba(242,238,249,0.92)";ctx.fillText(fullName,cx,H*0.635);
-    ctx.font="300 50px 'Georgia', serif";ctx.fillStyle="#ED93B1";ctx.fillText(verdict,cx,H*0.715);
-    const _harmAsp=_lastAspects.filter(x=>x.a.t==="harmonious");
-const _tenseAsp=_lastAspects.filter(x=>x.a.t==="tense");
-const _topHarm=_harmAsp[0];
-const _topTense=_tenseAsp[0];
-const _pn=lang==="es"?PES:PEN;
-const _pg=PG;
-const _sc=parseInt(score);
-const _phrases={
-  high:[
-    `${_topHarm?_pn[_topHarm.pa]+" en "+signOf(_topHarm.a.orbe)+" entiende tu "+_pn[_topHarm.pb]+". Raro, pero existe.":"Los planetas conspiraron para esto."}`,
-    "Los planetas conspiraron para esto. No lo arruines.",
-    "Técnicamente, los astros dijeron que sí.",
-    `${_topHarm?_pg[_topHarm.pa]+" "+_topHarm.a.s+" "+_pg[_topHarm.pb]+": química que no necesita explicación.":"Una conexión escrita antes de conocerse."}`
-  ],
-  mid:[
-    "No es perfecto. Pero tampoco era tu ex.",
-    "Tienen trabajo por hacer. Los planetas ya avisaron.",
-    `Potencial real. Siempre que ${_topTense?_pn[_topTense.pa]:"Marte"} no intervenga.`,
-    "Los astros ven potencial. El resto depende de ustedes."
-  ],
-  low:[
-    "El problema no eras tú. Era su Venus en Acuario.",
-    "Los astros lo vieron venir. Tú también puedes.",
-    "Compatibles en otro universo, quizás.",
-    `${_topTense?_pn[_topTense.pa]+" cuadra tu "+_pn[_topTense.pb]+". Eso explica todo.":"La sinastría no miente. Los planetas tampoco."}`
-  ]
-};
-const _bucket=_sc>=80?"high":_sc>=60?"mid":"low";
-const _phraseArr=_phrases[_bucket];
-const _phrase=_phraseArr[Math.floor(Math.random()*_phraseArr.length)];
-ctx.font="italic 36px 'Georgia', serif";
-ctx.fillStyle="rgba(242,238,249,0.55)";
-ctx.fillText(_phrase,cx,H*0.775);
-    ctx.beginPath();ctx.moveTo(W*0.32,H*0.772);ctx.lineTo(W*0.68,H*0.772);ctx.strokeStyle="rgba(242,238,249,0.15)";ctx.lineWidth=1;ctx.stroke();
-    const duuFont="300 50px 'Georgia', serif";const alFont="italic 300 50px 'Georgia', serif";ctx.font=duuFont;const duuW=ctx.measureText("Duu").width;ctx.font=alFont;const alW=ctx.measureText("al").width;
-    const logoSize=110;const logoY=H*0.785;
-    if(logoImg.complete&&logoImg.naturalWidth>0){const lx=cx-logoSize/2;const ly=logoY;const r=22;ctx.save();ctx.globalAlpha=0.8;ctx.beginPath();ctx.moveTo(lx+r,ly);ctx.lineTo(lx+logoSize-r,ly);ctx.quadraticCurveTo(lx+logoSize,ly,lx+logoSize,ly+r);ctx.lineTo(lx+logoSize,ly+logoSize-r);ctx.quadraticCurveTo(lx+logoSize,ly+logoSize,lx+logoSize-r,ly+logoSize);ctx.lineTo(lx+r,ly+logoSize);ctx.quadraticCurveTo(lx,ly+logoSize,lx,ly+logoSize-r);ctx.lineTo(lx,ly+r);ctx.quadraticCurveTo(lx,ly,lx+r,ly);ctx.closePath();ctx.clip();ctx.drawImage(logoImg,lx,ly,logoSize,logoSize);ctx.restore();ctx.globalAlpha=1.0;}
-    const brandY=(logoImg.complete&&logoImg.naturalWidth>0)?logoY+logoSize+40:H*0.855;const brandStartX=cx-(duuW+alW)/2;
-    ctx.textAlign="left";ctx.textBaseline="middle";ctx.font=duuFont;ctx.fillStyle="rgba(242,238,249,0.65)";ctx.fillText("Duu",brandStartX,brandY);
+
+    // nombre A (izquierda)
+    ctx.textAlign="left";
+    ctx.fillStyle="rgba(242,238,249,0.92)";
+    ctx.fillText(nA.toUpperCase(),W*0.08,H*0.375);
+
+    // nombre B (derecha)
+    ctx.textAlign="right";
+    ctx.fillStyle="rgba(242,238,249,0.92)";
+    ctx.fillText(nB.toUpperCase(),W*0.92,H*0.375);
+
+    // ── PLANETAS KAWAII (centro) ──
+    // Espacio reservado: H*0.42 a H*0.72
+    // Se llena con drawPlanetPair() cuando las imágenes estén listas
+    // Por ahora dibuja placeholder de estrellas
+    const planetY=H*0.57;
+    const aspects=window._lastAspects||[];
+    const topAspect=aspects[0]||{};
+    const p1=(topAspect.p1||"venus").toLowerCase();
+    const p2=(topAspect.p2||"luna").toLowerCase();
+    const state=topAspect.t==="harmonious"?"love":topAspect.t==="tense"?"tense":"neutral";
+    const imgKey=`${p1}-${p2}-${state}`;
+    const CDN="https://cdn.jsdelivr.net/gh/lupitascreations01-cmd/astrae@main/assets/planetas/";
+
+    await new Promise((res)=>{
+      const pImg=new Image();
+      pImg.crossOrigin="anonymous";
+      pImg.onload=()=>{
+        // centrar imagen manteniendo proporción
+        const maxSize=820;
+        const ratio=Math.min(maxSize/pImg.width,maxSize/pImg.height);
+        const pw=pImg.width*ratio;
+        const ph=pImg.height*ratio;
+        ctx.drawImage(pImg,cx-pw/2,planetY-ph/2,pw,ph);
+        res();
+      };
+      pImg.onerror=()=>{
+        // fallback: dibuja estrellas decorativas si no hay imagen
+        ctx.font="120px serif";ctx.textAlign="center";ctx.textBaseline="middle";
+        ctx.fillStyle="rgba(237,147,177,0.4)";
+        ctx.fillText("✦",cx-180,planetY);
+        ctx.fillText("✦",cx,planetY-60);
+        ctx.fillText("✦",cx+180,planetY);
+        res();
+      };
+      pImg.src=`${CDN}${imgKey}.png`;
+    });
+
+    // ── FRASE / VERDICT ──
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    let verdictFontSize=58;
+    ctx.font=`300 ${verdictFontSize}px 'Georgia', serif`;
+    const maxVerdictW=W*0.82;
+    // wrap texto si es muy largo
+    const words=verdict.split(" ");
+    const lines=[];let currentLine="";
+    words.forEach(word=>{
+      const test=currentLine?`${currentLine} ${word}`:word;
+      if(ctx.measureText(test).width>maxVerdictW&&currentLine){
+        lines.push(currentLine);currentLine=word;
+      }else{currentLine=test;}
+    });
+    lines.push(currentLine);
+    const lineH=verdictFontSize*1.4;
+    const verdictStartY=H*0.79-(lines.length-1)*lineH/2;
+    ctx.fillStyle="#ED93B1";
+    lines.forEach((line,i)=>{
+      ctx.fillText(line,cx,verdictStartY+i*lineH);
+    });
+
+    // línea separadora
+    ctx.beginPath();ctx.moveTo(W*0.35,H*0.855);ctx.lineTo(W*0.65,H*0.855);
+    ctx.strokeStyle="rgba(242,238,249,0.15)";ctx.lineWidth=1;ctx.stroke();
+
+    // ── LOGO + MARCA ──
+    const duuFont="300 50px 'Georgia', serif";
+    const alFont="italic 300 50px 'Georgia', serif";
+    ctx.font=duuFont;const duuW=ctx.measureText("Duu").width;
+    ctx.font=alFont;const alW=ctx.measureText("al").width;
+    const logoSize=100;const logoY=H*0.868;
+
+    if(logoImg.complete&&logoImg.naturalWidth>0){
+      const lx=cx-logoSize/2;const r=20;
+      ctx.save();ctx.globalAlpha=0.8;
+      ctx.beginPath();ctx.moveTo(lx+r,logoY);ctx.lineTo(lx+logoSize-r,logoY);
+      ctx.quadraticCurveTo(lx+logoSize,logoY,lx+logoSize,logoY+r);
+      ctx.lineTo(lx+logoSize,logoY+logoSize-r);
+      ctx.quadraticCurveTo(lx+logoSize,logoY+logoSize,lx+logoSize-r,logoY+logoSize);
+      ctx.lineTo(lx+r,logoY+logoSize);
+      ctx.quadraticCurveTo(lx,logoY+logoSize,lx,logoY+logoSize-r);
+      ctx.lineTo(lx,logoY+r);ctx.quadraticCurveTo(lx,logoY,lx+r,logoY);
+      ctx.closePath();ctx.clip();
+      ctx.drawImage(logoImg,lx,logoY,logoSize,logoSize);
+      ctx.restore();ctx.globalAlpha=1.0;
+    }
+
+    const brandY=logoY+logoSize+36;
+    const brandStartX=cx-(duuW+alW)/2;
+    ctx.textAlign="left";ctx.textBaseline="middle";
+    ctx.font=duuFont;ctx.fillStyle="rgba(242,238,249,0.65)";ctx.fillText("Duu",brandStartX,brandY);
     ctx.font=alFont;ctx.fillStyle="#ED93B1";ctx.fillText("al",brandStartX+duuW,brandY);
-    
-_cardDataURL=cv.toDataURL("image/png");
-_cardFileName=`duual-${nA}-${nB}.png`;
-const previewImg=document.getElementById("cardPreviewImg");
-previewImg.style.opacity="0";
-previewImg.onload=()=>{previewImg.style.transition="opacity 0.3s";previewImg.style.opacity="1";};
-previewImg.src=_cardDataURL;
-document.getElementById("cardPreviewOverlay").classList.add("open");
+
+    _cardDataURL=cv.toDataURL("image/png");
+    _cardFileName=`duual-${nA}-${nB}.png`;
+    const previewImg=document.getElementById("cardPreviewImg");
+    previewImg.style.opacity="0";
+    previewImg.onload=()=>{previewImg.style.transition="opacity 0.3s";previewImg.style.opacity="1";};
+    previewImg.src=_cardDataURL;
+    document.getElementById("cardPreviewOverlay").classList.add("open");
   };
   const logoImg=new Image();logoImg.crossOrigin="anonymous";logoImg.onload=drawAll;logoImg.onerror=drawAll;logoImg.src="icon-192.png";
 }
