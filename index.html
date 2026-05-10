@@ -789,8 +789,7 @@ function generateCard(){
   const ctx=cv.getContext("2d");
   const drawAll=async()=>{
     // Fondo
-    await new Promise((res)=>{const bgImg=new Image();bgImg.crossOrigin="anonymous";bgImg.onload=()=>{ctx.drawImage(bgImg,0,0,W,H);res();};bgImg.onerror=()=>{const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);res();};bgImg.src="card-bg.png?v=2";});
-
+   await new Promise((res)=>{const bgImg=new Image();bgImg.crossOrigin="anonymous";bgImg.onload=()=>{console.log("✅ fondo cargado:",bgImg.src);ctx.drawImage(bgImg,0,0,W,H);res();};bgImg.onerror=()=>{console.warn("❌ fondo falló, usando gradiente");const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);res();};bgImg.src="card-bg.png?v=2";});
     // Cargar fuentes
     try{
       const fonts=[
