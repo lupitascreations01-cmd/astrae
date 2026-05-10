@@ -825,19 +825,18 @@ function generateCard(){
     ctx.fillText(lang==="es"?"compatibilidad":"compatibility",cx,H*0.285);
     ctx.letterSpacing="0px";
 
-    // ── NOMBRES A LOS LADOS ──
-    ctx.font="700 72px 'Montserrat', sans-serif";
+     // ── NOMBRES A LOS LADOS ──
     ctx.textBaseline="middle";
-
-    // nombre A (izquierda)
+    let nameFontSize=96;
+    ctx.font=`200 ${nameFontSize}px "Montserrat", sans-serif`;
+    while((ctx.measureText(nA.toUpperCase()).width>W*0.4||ctx.measureText(nB.toUpperCase()).width>W*0.4)&&nameFontSize>48){
+      nameFontSize-=4;ctx.font=`200 ${nameFontSize}px "Montserrat", sans-serif`;
+    }
+    ctx.fillStyle="rgba(242,238,249,0.92)";
     ctx.textAlign="left";
-    ctx.fillStyle="rgba(242,238,249,0.92)";
-    ctx.fillText(nA.toUpperCase(),W*0.08,H*0.375);
-
-    // nombre B (derecha)
+    ctx.fillText(nA.toUpperCase(),W*0.06,H*0.375);
     ctx.textAlign="right";
-    ctx.fillStyle="rgba(242,238,249,0.92)";
-    ctx.fillText(nB.toUpperCase(),W*0.92,H*0.375);
+    ctx.fillText(nB.toUpperCase(),W*0.94,H*0.375);
 
    // ── PLANETAS KAWAII (centro) ──
     const planetY=H*0.57;
@@ -864,28 +863,56 @@ function generateCard(){
       else{ctx.font="120px serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="rgba(237,147,177,0.4)";ctx.fillText("✦",cx-180,planetY);ctx.fillText("✦",cx,planetY-60);ctx.fillText("✦",cx+180,planetY);res();}
     });
 
-    // ── FRASE / VERDICT ──
+    // ── FRASE IRÓNICA ──
+    const _sc2=parseInt(score);
+    const _harmAsp=_lastAspects.filter(x=>x.a&&x.a.t==="harmonious");
+    const _tenseAsp=_lastAspects.filter(x=>x.a&&x.a.t==="tense");
+    const _topHarm=_harmAsp[0];
+    const _topTense=_tenseAsp[0];
+    const _pn=lang==="es"?PES:PEN;
+    const _bucket=_sc2>=80?"high":_sc2>=60?"mid":"low";
+    const _phrases={
+      high:[
+        `${_topHarm?PG[_topHarm.pa]+" "+_topHarm.a.s+" "+PG[_topHarm.pb]+": química que no necesita explicación.":"Los planetas conspiraron para esto. No lo arruines."}`,
+        "Técnicamente, los astros dijeron que sí.",
+        `${_topHarm?_pn[_topHarm.pa]+" entiende tu "+_pn[_topHarm.pb]+". Raro, pero existe.":"Una conexión escrita antes de conocerse."}`,
+        "Los planetas conspiraron para esto. No lo arruines."
+      ],
+      mid:[
+        "No es perfecto. Pero tampoco era tu ex.",
+        "Tienen trabajo por hacer. Los planetas ya avisaron.",
+        `Potencial real. Siempre que ${_topTense?_pn[_topTense.pa]:"Marte"} no intervenga.`,
+        "Los astros ven potencial. El resto depende de ustedes."
+      ],
+      low:[
+        "El problema no eras tú. Era su Venus en Acuario.",
+        "Los astros lo vieron venir. Tú también puedes.",
+        "Compatibles en otro universo, quizás.",
+        `${_topTense?_pn[_topTense.pa]+" cuadra tu "+_pn[_topTense.pb]+". Eso explica todo.":"La sinastría no miente. Los planetas tampoco."}`
+      ]
+    };
+    const _phraseArr=_phrases[_bucket];
+    const _phrase=_phraseArr[Math.floor(Math.random()*_phraseArr.length)];
     ctx.textAlign="center";ctx.textBaseline="middle";
-    let verdictFontSize=58;
-    ctx.font=`300 ${verdictFontSize}px 'Georgia', serif`;
-    const maxVerdictW=W*0.82;
-    // wrap texto si es muy largo
-    const words=verdict.split(" ");
-    const lines=[];let currentLine="";
-    words.forEach(word=>{
-      const test=currentLine?`${currentLine} ${word}`:word;
-      if(ctx.measureText(test).width>maxVerdictW&&currentLine){
-        lines.push(currentLine);currentLine=word;
-      }else{currentLine=test;}
-    });
-    lines.push(currentLine);
-    const lineH=verdictFontSize*1.4;
-    const verdictStartY=H*0.79-(lines.length-1)*lineH/2;
-    ctx.fillStyle="#ED93B1";
-    lines.forEach((line,i)=>{
-      ctx.fillText(line,cx,verdictStartY+i*lineH);
-    });
+    ctx.font="italic 42px 'Georgia', serif";
+    ctx.fillStyle="rgba(242,238,249,0.6)";
+    const _maxPhraseW=W*0.8;
+    const _pw=_phrase.split(" ");let _pl="";const _pls=[];
+    _pw.forEach(w=>{const t=_pl?_pl+" "+w:w;if(ctx.measureText(t).width>_maxPhraseW&&_pl){_pls.push(_pl);_pl=w;}else _pl=t;});
+    _pls.push(_pl);
+    const _plH=64,_pSY=H*0.808-(_pls.length-1)*_plH/2;
+    _pls.forEach((l,i)=>ctx.fillText(l,cx,_pSY+i*_plH));
 
+    // ── VERDICT ──
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.font="300 52px 'Georgia', serif";
+    ctx.fillStyle="#ED93B1";
+    const _vwords=verdict.split(" ");const _vlines=[];let _vcl="";
+    _vwords.forEach(w=>{const t=_vcl?_vcl+" "+w:w;if(ctx.measureText(t).width>W*0.82&&_vcl){_vlines.push(_vcl);_vcl=w;}else _vcl=t;});
+    _vlines.push(_vcl);
+    const _vSY=H*0.865-(_vlines.length-1)*74/2;
+    _vlines.forEach((l,i)=>ctx.fillText(l,cx,_vSY+i*74));
+    
     // línea separadora
     ctx.beginPath();ctx.moveTo(W*0.35,H*0.855);ctx.lineTo(W*0.65,H*0.855);
     ctx.strokeStyle="rgba(242,238,249,0.15)";ctx.lineWidth=1;ctx.stroke();
