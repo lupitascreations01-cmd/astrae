@@ -789,7 +789,7 @@ function generateCard(){
   const ctx=cv.getContext("2d");
   const drawAll=async()=>{
     // Fondo
-    await new Promise((res)=>{const bgImg=new Image();bgImg.crossOrigin="anonymous";bgImg.onload=()=>{ctx.drawImage(bgImg,0,0,W,H);res();};bgImg.onerror=()=>{const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);res();};bgImg.src="card-bg.png";});
+    await new Promise((res)=>{const bgImg=new Image();bgImg.crossOrigin="anonymous";bgImg.onload=()=>{ctx.drawImage(bgImg,0,0,W,H);res();};bgImg.onerror=()=>{const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#0D0A18");bg.addColorStop(1,"#0A0812");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);res();};bgImg.src="card-bg.png?v=2";});
 
     // Cargar fuentes
     try{
@@ -859,7 +859,7 @@ function generateCard(){
     if(!_pImg)_pImg=await tryLoadImg(`${CDN}${_p2}-${_p1}-${_imgState}.png`);
     if(!_pImg)_pImg=await tryLoadImg(`${CDN}${_fallbacks[_imgState]}`);
     await new Promise((res)=>{
-      if(_pImg){const maxSize=820;const ratio=Math.min(maxSize/_pImg.width,maxSize/_pImg.height);const pw=_pImg.width*ratio,ph=_pImg.height*ratio;ctx.drawImage(_pImg,cx-pw/2,planetY-ph/2,pw,ph);res();}
+      if(_pImg){const maxSize=1400;const ratio=Math.min(maxSize/_pImg.width,maxSize/_pImg.height);const pw=_pImg.width*ratio,ph=_pImg.height*ratio;ctx.drawImage(_pImg,cx-pw/2,planetY-ph/2,pw,ph);res();}
       else{ctx.font="120px serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="rgba(237,147,177,0.4)";ctx.fillText("✦",cx-180,planetY);ctx.fillText("✦",cx,planetY-60);ctx.fillText("✦",cx+180,planetY);res();}
     });
 
@@ -901,16 +901,6 @@ function generateCard(){
     _pls.push(_pl);
     const _plH=64,_pSY=H*0.808-(_pls.length-1)*_plH/2;
     _pls.forEach((l,i)=>ctx.fillText(l,cx,_pSY+i*_plH));
-
-    // ── VERDICT ──
-    ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.font="300 52px 'Georgia', serif";
-    ctx.fillStyle="#ED93B1";
-    const _vwords=verdict.split(" ");const _vlines=[];let _vcl="";
-    _vwords.forEach(w=>{const t=_vcl?_vcl+" "+w:w;if(ctx.measureText(t).width>W*0.82&&_vcl){_vlines.push(_vcl);_vcl=w;}else _vcl=t;});
-    _vlines.push(_vcl);
-    const _vSY=H*0.865-(_vlines.length-1)*74/2;
-    _vlines.forEach((l,i)=>ctx.fillText(l,cx,_vSY+i*74));
     
     // línea separadora
     ctx.beginPath();ctx.moveTo(W*0.35,H*0.855);ctx.lineTo(W*0.65,H*0.855);
