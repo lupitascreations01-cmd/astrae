@@ -839,41 +839,29 @@ function generateCard(){
     ctx.fillStyle="rgba(242,238,249,0.92)";
     ctx.fillText(nB.toUpperCase(),W*0.92,H*0.375);
 
-    // ── PLANETAS KAWAII (centro) ──
-    // Espacio reservado: H*0.42 a H*0.72
-    // Se llena con drawPlanetPair() cuando las imágenes estén listas
-    // Por ahora dibuja placeholder de estrellas
+   // ── PLANETAS KAWAII (centro) ──
     const planetY=H*0.57;
-    const aspects=window._lastAspects||[];
-    const topAspect=aspects[0]||{};
-    const p1=(topAspect.p1||"venus").toLowerCase();
-    const p2=(topAspect.p2||"luna").toLowerCase();
-    const state=topAspect.t==="harmonious"?"love":topAspect.t==="tense"?"tense":"neutral";
-    const imgKey=`${p1}-${p2}-${state}`;
+    const _sc2=parseInt(score);
+    const _harmAsp2=_lastAspects.filter(x=>x.a&&x.a.t==="harmonious");
+    const _tenseAsp2=_lastAspects.filter(x=>x.a&&x.a.t==="tense");
+    const _topHarm2=_harmAsp2[0];
+    const _topTense2=_tenseAsp2[0];
+    const _imgState=_sc2>=80?"love":_sc2>=60?"neutral":"tense";
+    const _PFILE={Sun:"sol",Moon:"luna",Venus:"venus",Mars:"marte",Mercury:"mercurio",Jupiter:"jupiter",Saturn:"saturno",Uranus:"urano",Neptune:"neptuno",Pluto:"pluton",Chiron:"quiron",NNode:"nodo"};
+    let _p1="venus",_p2="luna";
+    if(_imgState==="love"&&_topHarm2){_p1=_PFILE[_topHarm2.pa]||"venus";_p2=_PFILE[_topHarm2.pb]||"luna";}
+    else if(_imgState==="tense"&&_topTense2){_p1=_PFILE[_topTense2.pa]||"marte";_p2=_PFILE[_topTense2.pb]||"luna";}
+    else if(_topHarm2){_p1=_PFILE[_topHarm2.pa]||"venus";_p2=_PFILE[_topHarm2.pb]||"luna";}
+    else if(_topTense2){_p1=_PFILE[_topTense2.pa]||"marte";_p2=_PFILE[_topTense2.pb]||"luna";}
     const CDN="https://cdn.jsdelivr.net/gh/lupitascreations01-cmd/astrae@main/assets/planetas/";
-
+    const _fallbacks={love:"sol-venus-love.png",neutral:"venus-marte-neutral.png",tense:"marte-luna-tense.png"};
+    const tryLoadImg=(src)=>new Promise(res=>{const img=new Image();img.crossOrigin="anonymous";img.onload=()=>res(img);img.onerror=()=>res(null);img.src=src;});
+    let _pImg=await tryLoadImg(`${CDN}${_p1}-${_p2}-${_imgState}.png`);
+    if(!_pImg)_pImg=await tryLoadImg(`${CDN}${_p2}-${_p1}-${_imgState}.png`);
+    if(!_pImg)_pImg=await tryLoadImg(`${CDN}${_fallbacks[_imgState]}`);
     await new Promise((res)=>{
-      const pImg=new Image();
-      pImg.crossOrigin="anonymous";
-      pImg.onload=()=>{
-        // centrar imagen manteniendo proporción
-        const maxSize=820;
-        const ratio=Math.min(maxSize/pImg.width,maxSize/pImg.height);
-        const pw=pImg.width*ratio;
-        const ph=pImg.height*ratio;
-        ctx.drawImage(pImg,cx-pw/2,planetY-ph/2,pw,ph);
-        res();
-      };
-      pImg.onerror=()=>{
-        // fallback: dibuja estrellas decorativas si no hay imagen
-        ctx.font="120px serif";ctx.textAlign="center";ctx.textBaseline="middle";
-        ctx.fillStyle="rgba(237,147,177,0.4)";
-        ctx.fillText("✦",cx-180,planetY);
-        ctx.fillText("✦",cx,planetY-60);
-        ctx.fillText("✦",cx+180,planetY);
-        res();
-      };
-      pImg.src=`${CDN}${imgKey}.png`;
+      if(_pImg){const maxSize=820;const ratio=Math.min(maxSize/_pImg.width,maxSize/_pImg.height);const pw=_pImg.width*ratio,ph=_pImg.height*ratio;ctx.drawImage(_pImg,cx-pw/2,planetY-ph/2,pw,ph);res();}
+      else{ctx.font="120px serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="rgba(237,147,177,0.4)";ctx.fillText("✦",cx-180,planetY);ctx.fillText("✦",cx,planetY-60);ctx.fillText("✦",cx+180,planetY);res();}
     });
 
     // ── FRASE / VERDICT ──
