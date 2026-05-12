@@ -859,7 +859,7 @@ function generateCard(){
     };
     const _availImgs=_IMGS[_imgState];
     const _exactMatch=_availImgs.find(x=>x===`${_p1}-${_p2}`||x===`${_p2}-${_p1}`);
- const _chosenImg="venus-luna-love";
+const _chosenImg=_exactMatch||_availImgs[Math.floor(Math.random()*_availImgs.length)];
     const tryLoadImg=(src)=>new Promise(res=>{const img=new Image();img.crossOrigin="anonymous";img.onload=()=>res(img);img.onerror=()=>res(null);img.src=src;});
     let _pImg=await tryLoadImg(`${CDN}${_chosenImg}.png`);
     if(!_pImg)_pImg=await tryLoadImg(`${CDN}${_availImgs[0]}.png`);
