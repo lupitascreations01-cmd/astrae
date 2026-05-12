@@ -864,7 +864,7 @@ function generateCard(){
     let _pImg=await tryLoadImg(`${CDN}${_chosenImg}.png`);
     if(!_pImg)_pImg=await tryLoadImg(`${CDN}${_availImgs[0]}.png`);
     await new Promise((res)=>{
-if(_pImg){const targetH=650;const targetW=700;const ratio=Math.min(targetH/_pImg.height,targetW/_pImg.width);const pw=_pImg.width*ratio,ph=_pImg.height*ratio;ctx.drawImage(_pImg,cx-pw/2,planetY-ph/2,pw,ph);res();}
+if(_pImg){const targetH=900;const targetW=1000;const ratio=Math.min(targetH/_pImg.height,targetW/_pImg.width);const pw=_pImg.width*ratio,ph=_pImg.height*ratio;ctx.drawImage(_pImg,cx-pw/2,planetY-ph/2,pw,ph);res();}
       else{ctx.font="120px serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="rgba(237,147,177,0.4)";ctx.fillText("✦",cx-180,planetY);ctx.fillText("✦",cx,planetY-60);ctx.fillText("✦",cx+180,planetY);res();}
     });
 
