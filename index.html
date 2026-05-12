@@ -851,12 +851,18 @@ function generateCard(){
     else if(_imgState==="tense"&&_topTense2){_p1=_PFILE[_topTense2.pa]||"marte";_p2=_PFILE[_topTense2.pb]||"luna";}
     else if(_topHarm2){_p1=_PFILE[_topHarm2.pa]||"venus";_p2=_PFILE[_topHarm2.pb]||"luna";}
     else if(_topTense2){_p1=_PFILE[_topTense2.pa]||"marte";_p2=_PFILE[_topTense2.pb]||"luna";}
-    const CDN="https://cdn.jsdelivr.net/gh/lupitascreations01-cmd/astrae@main/assets/planetas/";
-    const _fallbacks={love:"sol-venus-love.png",neutral:"venus-marte-neutral.png",tense:"marte-luna-tense.png"};
+    const CDN="https://raw.githubusercontent.com/lupitascreations01-cmd/astrae/main/assets/planetas/";
+    const _IMGS={
+      love:["sol-venus-love","sol-luna-love","venus-luna-love","venus-marte-love","marte-luna-love","mercurio-venus-love"],
+      neutral:["mercurio-venus-neutral","sol-mercurio-neutral","venus-luna-neutral","venus-marte-neutral"],
+      tense:["marte-luna-tense","sol-luna-tense","mercurio-luna-tense","venus-luna-tense","venus-marte-tense"]
+    };
+    const _availImgs=_IMGS[_imgState];
+    const _exactMatch=_availImgs.find(x=>x===`${_p1}-${_p2}`||x===`${_p2}-${_p1}`);
+    const _chosenImg=_exactMatch||_availImgs[Math.floor(Math.random()*_availImgs.length)];
     const tryLoadImg=(src)=>new Promise(res=>{const img=new Image();img.crossOrigin="anonymous";img.onload=()=>res(img);img.onerror=()=>res(null);img.src=src;});
-    let _pImg=await tryLoadImg(`${CDN}${_p1}-${_p2}-${_imgState}.png`);
-    if(!_pImg)_pImg=await tryLoadImg(`${CDN}${_p2}-${_p1}-${_imgState}.png`);
-    if(!_pImg)_pImg=await tryLoadImg(`${CDN}${_fallbacks[_imgState]}`);
+    let _pImg=await tryLoadImg(`${CDN}${_chosenImg}.png`);
+    if(!_pImg)_pImg=await tryLoadImg(`${CDN}${_availImgs[0]}.png`);
     await new Promise((res)=>{
 if(_pImg){const targetH=650;const ratio=targetH/_pImg.height;const pw=_pImg.width*ratio,ph=_pImg.height*ratio;ctx.drawImage(_pImg,cx-pw/2,planetY-ph/2,pw,ph);res();}
       else{ctx.font="120px serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="rgba(237,147,177,0.4)";ctx.fillText("✦",cx-180,planetY);ctx.fillText("✦",cx,planetY-60);ctx.fillText("✦",cx+180,planetY);res();}
