@@ -868,31 +868,35 @@ if(_pImg){const targetH=900;const targetW=1000;const ratio=Math.min(targetH/_pIm
       else{ctx.font="120px serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="rgba(237,147,177,0.4)";ctx.fillText("✦",cx-180,planetY);ctx.fillText("✦",cx,planetY-60);ctx.fillText("✦",cx+180,planetY);res();}
     });
 
-    // ── FRASE IRÓNICA ──
+   // ── FRASE IRÓNICA ──
     const _harmAsp=_lastAspects.filter(x=>x.a&&x.a.t==="harmonious");
     const _tenseAsp=_lastAspects.filter(x=>x.a&&x.a.t==="tense");
     const _topHarm=_harmAsp[0];
     const _topTense=_tenseAsp[0];
     const _pn=lang==="es"?PES:PEN;
     const _bucket=_sc2>=80?"high":_sc2>=60?"mid":"low";
+    // nombres de planetas sincronizados con la imagen elegida
+    const _pn1=lang==="es"?(PES[_topHarm?.pa]||_p1):(PEN[_topHarm?.pa]||_p1);
+    const _pn2=lang==="es"?(PES[_topHarm?.pb]||_p2):(PEN[_topHarm?.pb]||_p2);
+    const _pnt1=lang==="es"?(PES[_topTense?.pa]||_p1):(PEN[_topTense?.pa]||_p1);
     const _phrases={
       high:[
-        `${_topHarm?PG[_topHarm.pa]+" "+_topHarm.a.s+" "+PG[_topHarm.pb]+": química que no necesita explicación.":"Los planetas conspiraron para esto. No lo arruines."}`,
+        `${_pn1} entiende tu ${_pn2}. Raro, pero existe.`,
+        `${PG[_topHarm?.pa]||"✦"} ${_topHarm?.a?.s||"☌"} ${PG[_topHarm?.pb]||"✦"}: química que no necesita explicación.`,
         "Técnicamente, los astros dijeron que sí.",
-        `${_topHarm?_pn[_topHarm.pa]+" entiende tu "+_pn[_topHarm.pb]+". Raro, pero existe.":"Una conexión escrita antes de conocerse."}`,
         "Los planetas conspiraron para esto. No lo arruines."
       ],
       mid:[
         "No es perfecto. Pero tampoco era tu ex.",
         "Tienen trabajo por hacer. Los planetas ya avisaron.",
-        `Potencial real. Siempre que ${_topTense?_pn[_topTense.pa]:"Marte"} no intervenga.`,
+        `Potencial real. Siempre que ${_pnt1} no intervenga.`,
         "Los astros ven potencial. El resto depende de ustedes."
       ],
       low:[
         "El problema no eras tú. Era su Venus en Acuario.",
-        "Los astros lo vieron venir. Tú también puedes.",
         "Compatibles en otro universo, quizás.",
-        `${_topTense?_pn[_topTense.pa]+" cuadra tu "+_pn[_topTense.pb]+". Eso explica todo.":"La sinastría no miente. Los planetas tampoco."}`
+        `${_pnt1} cuadra tu ${_pn2}. Eso explica todo.`,
+        "La sinastría no miente. Los planetas tampoco."
       ]
     };
     const _phraseArr=_phrases[_bucket];
