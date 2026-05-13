@@ -781,7 +781,7 @@ function renderHistory(){const h=JSON.parse(localStorage.getItem("duual_history"
 async function shareResult(){const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";const score=document.getElementById("bigScore").textContent;const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Duual\nDescúbrelo en duual.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Duual\nDiscover yours at duual.app`;if(navigator.share)try{await navigator.share({title:"Duual",text});}catch(e){}else navigator.clipboard.writeText(text).then(()=>showToast(lang==="es"?"Copiado ✦":"Copied ✦"));}
 function fallbackCopy(text,msg){const ta=document.createElement("textarea");ta.value=text;ta.style.cssText="position:fixed;top:0;left:0;opacity:0;";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy");showToast(msg);}catch(e){showToast(lang==="es"?"Copia el texto manualmente":"Copy text manually");}document.body.removeChild(ta);}
 function generateCard(){
-    const _lang=lang;
+  const _lang=lang;
   const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";
   const score=document.getElementById("bigScore").textContent.replace("%","").trim();
   const verdict=document.getElementById("verdictBadge").textContent.replace("✦","").trim();
@@ -833,10 +833,12 @@ function generateCard(){
       nameFontSize-=4;ctx.font=`200 ${nameFontSize}px "Montserrat", sans-serif`;
     }
     ctx.fillStyle="rgba(242,238,249,0.92)";
-    ctx.textAlign="left";
+    ctx.save();ctx.textAlign="left";
     ctx.fillText(nA.toUpperCase(),W*0.22,H*0.375);
-    ctx.textAlign="right";
-   ctx.fillText(nB.toUpperCase(),W*0.78,H*0.375);
+    ctx.restore();
+    ctx.save();ctx.textAlign="right";
+    ctx.fillText(nB.toUpperCase(),W*0.78,H*0.375);
+    ctx.restore();
 
    // ── PLANETAS KAWAII (centro) ──
     const planetY=H*0.57;
@@ -881,26 +883,20 @@ if(_pImg){const targetH=900;const targetW=1000;const ratio=Math.min(targetH/_pIm
     const _pn2=_lang==="es"?(PES[_topHarm?.pb]||_p2):(PEN[_topHarm?.pb]||_p2);
     const _pnt1=_lang==="es"?(PES[_topTense?.pa]||_p1):(PEN[_topTense?.pa]||_p1);
     const _phrases={
-      high:[
-        `${_pn1} entiende tu ${_pn2}. Raro, pero existe.`,
-        `${PG[_topHarm?.pa]||"✦"} ${_topHarm?.a?.s||"☌"} ${PG[_topHarm?.pb]||"✦"}: química que no necesita explicación.`,
-        "Técnicamente, los astros dijeron que sí.",
-        "Los planetas conspiraron para esto. No lo arruines."
-      ],
-      mid:[
-        "No es el amor de tu vida. Pero el universo ha visto cosas peores.",
-        "Tienen trabajo por hacer. Los planetas ya avisaron.",
-        `Potencial real. Siempre que ${_pnt1} no intervenga.`,
-        "Potencial tienen. Ojalá también tengan paciencia."
-      ],
-      low:[
-        "Incompatibles por diseño. Culpa a los planetas, no a ti.",
-        "Compatibles en otro universo, quizás.",
-        `${_pnt1} cuadra tu ${_pn2}. Eso explica todo.`,
-        "La sinastría no miente. Los planetas tampoco."
-      ]
+      high:{
+        es:[`${_pn1} entiende tu ${_pn2}. Raro, pero existe.`,`${PG[_topHarm?.pa]||"✦"} ${_topHarm?.a?.s||"☌"} ${PG[_topHarm?.pb]||"✦"}: química que no necesita explicación.`,"Técnicamente, los astros dijeron que sí.","Los planetas conspiraron para esto. No lo arruines."],
+        en:[`${_pn1} gets your ${_pn2}. Rare, but it exists.`,`${PG[_topHarm?.pa]||"✦"} ${_topHarm?.a?.s||"☌"} ${PG[_topHarm?.pb]||"✦"}: chemistry that needs no explanation.`,"Technically, the stars said yes.","The planets conspired for this. Don't ruin it."]
+      },
+      mid:{
+        es:["No es el amor de tu vida. Pero el universo ha visto cosas peores.","Tienen trabajo por hacer. Los planetas ya avisaron.",`Potencial real. Siempre que ${_pnt1} no intervenga.`,"Potencial tienen. Ojalá también tengan paciencia."],
+        en:["Not the love of your life. But the universe has seen worse.","They have work to do. The planets already warned them.",`Real potential. As long as ${_pnt1} doesn't interfere.`,"They have potential. Hopefully patience too."]
+      },
+      low:{
+        es:["Incompatibles por diseño. Culpa a los planetas, no a ti.","Compatibles en otro universo, quizás.",`${_pnt1} cuadra tu ${_pn2}. Eso explica todo.`,"La sinastría no miente. Los planetas tampoco."],
+        en:["Incompatible by design. Blame the planets, not yourself.","Compatible in another universe, maybe.",`${_pnt1} squares your ${_pn2}. That explains everything.`,"The synastry doesn't lie. Neither do the planets."]
+      }
     };
-    const _phraseArr=_phrases[_bucket];
+    const _phraseArr=_lang==="es"?_phrases[_bucket].es:_phrases[_bucket].en;
     const _phrase=_phraseArr[Math.floor(Math.random()*_phraseArr.length)];
     ctx.textAlign="center";ctx.textBaseline="middle";
     ctx.font="italic 42px 'Georgia', serif";
