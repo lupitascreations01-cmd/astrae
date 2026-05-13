@@ -781,6 +781,7 @@ function renderHistory(){const h=JSON.parse(localStorage.getItem("duual_history"
 async function shareResult(){const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";const score=document.getElementById("bigScore").textContent;const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Duual\nDescúbrelo en duual.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Duual\nDiscover yours at duual.app`;if(navigator.share)try{await navigator.share({title:"Duual",text});}catch(e){}else navigator.clipboard.writeText(text).then(()=>showToast(lang==="es"?"Copiado ✦":"Copied ✦"));}
 function fallbackCopy(text,msg){const ta=document.createElement("textarea");ta.value=text;ta.style.cssText="position:fixed;top:0;left:0;opacity:0;";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy");showToast(msg);}catch(e){showToast(lang==="es"?"Copia el texto manualmente":"Copy text manually");}document.body.removeChild(ta);}
 function generateCard(){
+    const _lang=lang;
   const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";
   const score=document.getElementById("bigScore").textContent.replace("%","").trim();
   const verdict=document.getElementById("verdictBadge").textContent.replace("✦","").trim();
@@ -821,7 +822,7 @@ function generateCard(){
     ctx.font="300 44px 'Georgia', serif";
     ctx.fillStyle="rgba(255,255,255,0.6)";
     ctx.letterSpacing="8px";
-    ctx.fillText(lang==="es"?"compatibilidad":"compatibility",cx,H*0.285);
+    ctx.fillText(_lang==="es"?"compatibilidad":"compatibility",cx,H*0.285);
     ctx.letterSpacing="0px";
 
      // ── NOMBRES A LOS LADOS ──
@@ -873,12 +874,12 @@ if(_pImg){const targetH=900;const targetW=1000;const ratio=Math.min(targetH/_pIm
     const _tenseAsp=_lastAspects.filter(x=>x.a&&x.a.t==="tense");
     const _topHarm=_harmAsp[0];
     const _topTense=_tenseAsp[0];
-    const _pn=lang==="es"?PES:PEN;
+    const _pn=_lang==="es"?PES:PEN;
     const _bucket=_sc2>=80?"high":_sc2>=60?"mid":"low";
     // nombres de planetas sincronizados con la imagen elegida
-    const _pn1=lang==="es"?(PES[_topHarm?.pa]||_p1):(PEN[_topHarm?.pa]||_p1);
-    const _pn2=lang==="es"?(PES[_topHarm?.pb]||_p2):(PEN[_topHarm?.pb]||_p2);
-    const _pnt1=lang==="es"?(PES[_topTense?.pa]||_p1):(PEN[_topTense?.pa]||_p1);
+    const _pn1=_lang==="es"?(PES[_topHarm?.pa]||_p1):(PEN[_topHarm?.pa]||_p1);
+    const _pn2=_lang==="es"?(PES[_topHarm?.pb]||_p2):(PEN[_topHarm?.pb]||_p2);
+    const _pnt1=_lang==="es"?(PES[_topTense?.pa]||_p1):(PEN[_topTense?.pa]||_p1);
     const _phrases={
       high:[
         `${_pn1} entiende tu ${_pn2}. Raro, pero existe.`,
