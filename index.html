@@ -824,21 +824,37 @@ function generateCard(){
     ctx.letterSpacing="8px";
     ctx.fillText(_lang==="es"?"compatibilidad":"compatibility",cx,H*0.285);
     ctx.letterSpacing="0px";
-
-     // ── NOMBRES A LOS LADOS ──
+// ── NOMBRES A LOS LADOS ──
     ctx.textBaseline="middle";
-    let nameFontSize=96;
-    ctx.font=`200 ${nameFontSize}px "Montserrat", sans-serif`;
-    while((ctx.measureText(nA.toUpperCase()).width>W*0.4||ctx.measureText(nB.toUpperCase()).width>W*0.4)&&nameFontSize>48){
-      nameFontSize-=4;ctx.font=`200 ${nameFontSize}px "Montserrat", sans-serif`;
-    }
-    ctx.fillStyle="rgba(242,238,249,0.92)";
-    ctx.save();ctx.textAlign="left";
-    ctx.fillText(nA.toUpperCase(),W*0.22,H*0.375);
-    ctx.restore();
-    ctx.save();ctx.textAlign="right";
-    ctx.fillText(nB.toUpperCase(),W*0.78,H*0.375);
-    ctx.restore();
+    const nameY=H*0.375;
+    const maxNameW=W*0.42;
+
+    const drawName=(name, side)=>{
+      let fontSize=88;
+      ctx.font=`200 ${fontSize}px "Montserrat", sans-serif`;
+      while(ctx.measureText(name).width>maxNameW&&fontSize>40){
+        fontSize-=4;ctx.font=`200 ${fontSize}px "Montserrat", sans-serif`;
+      }
+      const nameW=ctx.measureText(name).width;
+      const isShort=name.length<=4;
+      ctx.fillStyle="rgba(242,238,249,0.92)";
+      ctx.save();
+      if(isShort){
+        // nombre corto: centrado en su mitad de la tarjeta
+        ctx.textAlign="center";
+        const centerX=side==="left"?W*0.25:W*0.75;
+        ctx.fillText(name,centerX,nameY);
+      } else {
+        // nombre largo: pegado al borde
+        ctx.textAlign=side==="left"?"left":"right";
+        const x=side==="left"?W*0.05:W*0.95;
+        ctx.fillText(name,x,nameY);
+      }
+      ctx.restore();
+    };
+
+    drawName(nA.toUpperCase(),"left");
+    drawName(nB.toUpperCase(),"right");
 
    // ── PLANETAS KAWAII (centro) ──
     const planetY=H*0.57;
