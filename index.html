@@ -247,6 +247,14 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .push-banner-btn{padding:7px 14px;background:var(--plum);border:none;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:500;color:#fff;cursor:pointer;}
 .push-banner-dismiss{background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
 .card-preview-overlay{position:fixed;inset:0;background:rgba(5,3,14,0.93);z-index:200;display:none;flex-direction:column;align-items:center;backdrop-filter:blur(12px);}
+.review-overlay{position:fixed;inset:0;background:rgba(5,3,14,0.85);z-index:250;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);}
+.review-overlay.open{display:flex;}
+.review-sheet{width:100%;max-width:430px;background:#13101F;border:0.5px solid rgba(242,238,249,0.12);border-radius:24px 24px 0 0;padding:28px 24px calc(env(safe-area-inset-bottom,0px)+28px);text-align:center;}
+.review-stars{font-size:36px;letter-spacing:6px;margin-bottom:14px;}
+.review-title{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:300;color:var(--txt);margin-bottom:8px;}
+.review-sub{font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:22px;}
+.review-cta{width:100%;padding:15px;background:linear-gradient(135deg,var(--rose),var(--plum));border:none;border-radius:var(--r-lg);font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;margin-bottom:10px;}
+.review-skip{width:100%;padding:10px;background:none;border:none;font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt3);cursor:pointer;}
 .card-preview-overlay.open{display:flex;}
 .card-preview-header{width:100%;display:flex;justify-content:space-between;align-items:center;padding:env(safe-area-inset-top,16px) 20px 10px;flex-shrink:0;}
 .card-preview-title{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:400;color:var(--txt2);}
@@ -540,6 +548,15 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 </div>
 
 </div>
+<div class="review-overlay" id="reviewOverlay">
+  <div class="review-sheet">
+    <div class="review-stars">⭐⭐⭐⭐⭐</div>
+    <div class="review-title" id="reviewTitle">¿Te está gustando Duual?</div>
+    <div class="review-sub" id="reviewSub">Tu opinión ayuda a que más personas encuentren la app. Solo toma 30 segundos.</div>
+    <button class="review-cta" onclick="goToReview()" id="reviewCta">Dejar reseña ✦</button>
+    <button class="review-skip" onclick="dismissReview()" id="reviewSkip">Ahora no</button>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <div id="tutorialOverlay" style="position:fixed;inset:0;background:rgba(5,3,14,0.92);z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;backdrop-filter:blur(16px);">
@@ -674,6 +691,7 @@ function startCalc(){
     try{localStorage.setItem('duual_last',JSON.stringify(lastResult));}catch(e){}
     try{renderResults(lastResult);}catch(e){console.error("Render error:",e);}
     goScreen("results");
+    maybeAskReview();
   },2600);
 }
 function renderResults(r){
@@ -1420,6 +1438,47 @@ function getAspectInterp(aspect, lang){
       </div>
     </div>
   `;
+}
+// ── IN-APP REVIEW PROMPT ──
+function maybeAskReview(){
+  if(localStorage.getItem('duual_review_done')) return;
+  // Registrar días únicos de uso
+  const today = todayKey();
+  let days = JSON.parse(localStorage.getItem('duual_use_days')||'[]');
+  if(!days.includes(today)) days.push(today);
+  if(days.length > 10) days = days.slice(-10);
+  localStorage.setItem('duual_use_days', JSON.stringify(days));
+  // Mostrar en el 2º día distinto de uso (ya completó al menos 1 lectura hoy)
+  if(days.length < 2) return;
+  // Solo mostrar 1 vez por sesión
+  if(sessionStorage.getItem('duual_review_shown')) return;
+  sessionStorage.setItem('duual_review_shown','1');
+  setTimeout(showReviewPrompt, 2000);
+}
+function showReviewPrompt(){
+  const l = lang;
+  document.getElementById('reviewTitle').textContent = l==='es' ? '¿Te está gustando Duual?' : 'Enjoying Duual?';
+  document.getElementById('reviewSub').textContent = l==='es'
+    ? 'Tu opinión ayuda a que más personas encuentren la app. Solo toma 30 segundos.'
+    : 'Your review helps more people discover the app. It only takes 30 seconds.';
+  document.getElementById('reviewCta').textContent = l==='es' ? 'Dejar reseña ✦' : 'Leave a review ✦';
+  document.getElementById('reviewSkip').textContent = l==='es' ? 'Ahora no' : 'Not now';
+  document.getElementById('reviewOverlay').classList.add('open');
+  posthog.capture('review_prompt_shown');
+}
+function goToReview(){
+  posthog.capture('review_prompt_accepted');
+  localStorage.setItem('duual_review_done','1');
+  document.getElementById('reviewOverlay').classList.remove('open');
+  const pkg = 'com.duual.app';
+  const marketUrl = 'market://details?id=' + pkg;
+  const webUrl = 'https://play.google.com/store/apps/details?id=' + pkg;
+  window.location.href = marketUrl;
+  setTimeout(() => window.open(webUrl, '_blank'), 1500);
+}
+function dismissReview(){
+  posthog.capture('review_prompt_dismissed');
+  document.getElementById('reviewOverlay').classList.remove('open');
 }
 </script>
 </body>
