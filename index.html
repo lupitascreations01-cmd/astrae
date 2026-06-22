@@ -255,6 +255,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .review-sub{font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:22px;}
 .review-cta{width:100%;padding:15px;background:linear-gradient(135deg,var(--rose),var(--plum));border:none;border-radius:var(--r-lg);font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;margin-bottom:10px;}
 .review-skip{width:100%;padding:10px;background:none;border:none;font-family:"DM Sans",sans-serif;font-size:13px;color:var(--txt3);cursor:pointer;}
+.rstar{font-size:44px;cursor:pointer;color:rgba(242,238,249,0.2);transition:color 0.15s,transform 0.15s;line-height:1;}
+.rstar.lit{color:#F5C842;transform:scale(1.18);}
 .card-preview-overlay.open{display:flex;}
 .card-preview-header{width:100%;display:flex;justify-content:space-between;align-items:center;padding:env(safe-area-inset-top,16px) 20px 10px;flex-shrink:0;}
 .card-preview-title{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:400;color:var(--txt2);}
@@ -550,16 +552,38 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 </div>
 <div class="review-overlay" id="reviewOverlay">
   <div class="review-sheet">
-    <div class="review-title" id="reviewTitle">¿Te está gustando Duual?</div>
-    <div class="review-sub" id="reviewSub">Toca las estrellas para calificar</div>
-    <div class="review-stars" id="reviewStars" style="display:flex;justify-content:center;gap:10px;margin:16px 0 20px;">
-      <span class="rstar" data-val="1" onclick="selectStar(1)" style="font-size:40px;cursor:pointer;opacity:0.3;transition:all 0.15s;">⭐</span>
-      <span class="rstar" data-val="2" onclick="selectStar(2)" style="font-size:40px;cursor:pointer;opacity:0.3;transition:all 0.15s;">⭐</span>
-      <span class="rstar" data-val="3" onclick="selectStar(3)" style="font-size:40px;cursor:pointer;opacity:0.3;transition:all 0.15s;">⭐</span>
-      <span class="rstar" data-val="4" onclick="selectStar(4)" style="font-size:40px;cursor:pointer;opacity:0.3;transition:all 0.15s;">⭐</span>
-      <span class="rstar" data-val="5" onclick="selectStar(5)" style="font-size:40px;cursor:pointer;opacity:0.3;transition:all 0.15s;">⭐</span>
+    <!-- Paso 1: Pre-prompt -->
+    <div id="reviewStep1">
+      <div style="font-size:32px;margin-bottom:14px;">✦</div>
+      <div class="review-title" id="reviewTitle">¿Estás disfrutando Duual?</div>
+      <div class="review-sub" id="reviewSub">Queremos saber cómo ha sido tu experiencia</div>
+      <div style="display:flex;gap:10px;margin-bottom:16px;">
+        <button onclick="reviewAnswer(true)" style="flex:1;padding:14px;background:linear-gradient(135deg,var(--rose),var(--plum));border:none;border-radius:var(--r-lg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#fff;cursor:pointer;" id="reviewYesBtn">Sí, me encanta ✦</button>
+        <button onclick="reviewAnswer(false)" style="flex:1;padding:14px;background:var(--surf2);border:0.5px solid var(--bord2);border-radius:var(--r-lg);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--txt2);cursor:pointer;" id="reviewNoBtn">No mucho</button>
+      </div>
+      <button class="review-skip" onclick="dismissReview()">Ahora no</button>
     </div>
-    <button class="review-skip" onclick="dismissReview()" id="reviewSkip">Ahora no</button>
+    <!-- Paso 2a: Estrellas (respondió Sí) -->
+    <div id="reviewStep2Yes" style="display:none;">
+      <div class="review-title">¡Gracias! ¿Nos dejas una reseña?</div>
+      <div class="review-sub">Toca las estrellas para calificar en Play Store</div>
+      <div style="display:flex;justify-content:center;gap:12px;margin:18px 0 22px;">
+        <span class="rstar" data-val="1" onclick="selectStar(1)">★</span>
+        <span class="rstar" data-val="2" onclick="selectStar(2)">★</span>
+        <span class="rstar" data-val="3" onclick="selectStar(3)">★</span>
+        <span class="rstar" data-val="4" onclick="selectStar(4)">★</span>
+        <span class="rstar" data-val="5" onclick="selectStar(5)">★</span>
+      </div>
+      <button class="review-skip" onclick="dismissReview()">Ahora no</button>
+    </div>
+    <!-- Paso 2b: Feedback (respondió No) -->
+    <div id="reviewStep2No" style="display:none;">
+      <div class="review-title">¿Qué podríamos mejorar?</div>
+      <div class="review-sub">Tu feedback nos ayuda a hacer Duual mejor</div>
+      <textarea id="reviewFeedbackText" style="width:100%;background:var(--surf2);border:0.5px solid var(--bord);border-radius:var(--r-md);padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--txt);outline:none;resize:none;min-height:90px;margin-bottom:12px;-webkit-appearance:none;" placeholder="Cuéntanos qué mejorarías..."></textarea>
+      <button onclick="sendNegativeFeedback()" style="width:100%;padding:14px;background:var(--surf2);border:0.5px solid var(--bord2);border-radius:var(--r-lg);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--txt2);cursor:pointer;margin-bottom:10px;">Enviar feedback</button>
+      <button class="review-skip" onclick="dismissReview()">Cerrar</button>
+    </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -1447,37 +1471,54 @@ function getAspectInterp(aspect, lang){
 // ── IN-APP REVIEW PROMPT ──
 function maybeAskReview(){
   if(localStorage.getItem('duual_review_done')) return;
-  // Registrar días únicos de uso
   const today = todayKey();
   let days = JSON.parse(localStorage.getItem('duual_use_days')||'[]');
   if(!days.includes(today)) days.push(today);
   if(days.length > 10) days = days.slice(-10);
   localStorage.setItem('duual_use_days', JSON.stringify(days));
-  // Mostrar en el 2º día distinto de uso (ya completó al menos 1 lectura hoy)
   if(days.length < 2) return;
-  // Solo mostrar 1 vez por sesión
   if(sessionStorage.getItem('duual_review_shown')) return;
   sessionStorage.setItem('duual_review_shown','1');
   setTimeout(showReviewPrompt, 8000);
 }
 function showReviewPrompt(){
   const l = lang;
-  document.getElementById('reviewTitle').textContent = l==='es' ? '¿Te está gustando Duual?' : 'Enjoying Duual?';
-  document.getElementById('reviewSub').textContent = l==='es' ? 'Toca las estrellas para calificar' : 'Tap the stars to rate';
-  document.getElementById('reviewSkip').textContent = l==='es' ? 'Ahora no' : 'Not now';
-  // Reset estrellas
-  document.querySelectorAll('.rstar').forEach(s => s.style.opacity='0.3');
+  // Textos según idioma
+  document.getElementById('reviewTitle').textContent = l==='es' ? '¿Estás disfrutando Duual?' : 'Enjoying Duual?';
+  document.getElementById('reviewSub').textContent = l==='es' ? 'Queremos saber cómo ha sido tu experiencia' : 'We\'d love to know how it\'s going';
+  document.getElementById('reviewYesBtn').textContent = l==='es' ? 'Sí, me encanta ✦' : 'Yes, I love it ✦';
+  document.getElementById('reviewNoBtn').textContent = l==='es' ? 'No mucho' : 'Not really';
+  // Mostrar solo paso 1
+  document.getElementById('reviewStep1').style.display='block';
+  document.getElementById('reviewStep2Yes').style.display='none';
+  document.getElementById('reviewStep2No').style.display='none';
   document.getElementById('reviewOverlay').classList.add('open');
   posthog.capture('review_prompt_shown');
 }
+function reviewAnswer(positive){
+  const l = lang;
+  document.getElementById('reviewStep1').style.display='none';
+  if(positive){
+    // Flujo positivo → estrellas
+    document.getElementById('reviewStep2Yes').style.display='block';
+    document.querySelectorAll('.rstar').forEach(s => s.classList.remove('lit'));
+    posthog.capture('review_answer', {answer: 'positive'});
+  } else {
+    // Flujo negativo → feedback interno
+    document.getElementById('reviewStep2No').style.display='block';
+    document.getElementById('reviewFeedbackText').placeholder = l==='es' ? 'Cuéntanos qué mejorarías...' : 'Tell us what you\'d improve...';
+    posthog.capture('review_answer', {answer: 'negative'});
+    // No volver a molestar si respondió negativo — esperar 30 días
+    const next = Date.now() + 30*24*60*60*1000;
+    localStorage.setItem('duual_review_next', next);
+  }
+}
 function selectStar(val){
-  // Iluminar estrellas hasta la seleccionada
   document.querySelectorAll('.rstar').forEach(s => {
-    s.style.opacity = parseInt(s.dataset.val) <= val ? '1' : '0.25';
-    s.style.transform = parseInt(s.dataset.val) <= val ? 'scale(1.15)' : 'scale(1)';
+    if(parseInt(s.dataset.val) <= val) s.classList.add('lit');
+    else s.classList.remove('lit');
   });
   posthog.capture('review_star_selected', {stars: val});
-  // Redirigir a Play Store después de un momento
   setTimeout(() => goToReview(), 600);
 }
 function goToReview(){
@@ -1485,10 +1526,25 @@ function goToReview(){
   localStorage.setItem('duual_review_done','1');
   document.getElementById('reviewOverlay').classList.remove('open');
   const pkg = 'com.duual.app';
-  const marketUrl = 'market://details?id=' + pkg;
-  const webUrl = 'https://play.google.com/store/apps/details?id=' + pkg;
-  window.location.href = marketUrl;
-  setTimeout(() => window.open(webUrl, '_blank'), 1500);
+  window.location.href = 'market://details?id=' + pkg;
+  setTimeout(() => window.open('https://play.google.com/store/apps/details?id=' + pkg, '_blank'), 1500);
+}
+async function sendNegativeFeedback(){
+  const text = document.getElementById('reviewFeedbackText').value.trim();
+  if(!text){ showToast(lang==='es'?'Escribe tu comentario primero':'Write your comment first'); return; }
+  const btn = document.querySelector('#reviewStep2No button');
+  btn.textContent = lang==='es' ? 'Enviando...' : 'Sending...';
+  btn.disabled = true;
+  try{
+    await fetch('/api/feedback', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({feedback: text, lang, ts: new Date().toISOString()})
+    });
+  }catch(e){}
+  posthog.capture('review_negative_feedback', {text});
+  document.getElementById('reviewOverlay').classList.remove('open');
+  showToast(lang==='es'?'Gracias por tu feedback ✦':'Thanks for your feedback ✦');
 }
 function dismissReview(){
   posthog.capture('review_prompt_dismissed');
