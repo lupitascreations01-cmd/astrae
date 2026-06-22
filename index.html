@@ -1471,6 +1471,8 @@ function getAspectInterp(aspect, lang){
 // ── IN-APP REVIEW PROMPT ──
 function maybeAskReview(){
   if(localStorage.getItem('duual_review_done')) return;
+  const next = localStorage.getItem('duual_review_next');
+  if(next && Date.now() < parseInt(next)) return;
   const today = todayKey();
   let days = JSON.parse(localStorage.getItem('duual_use_days')||'[]');
   if(!days.includes(today)) days.push(today);
