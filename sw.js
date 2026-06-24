@@ -1,4 +1,4 @@
-const CACHE = 'duual-v3';
+const CACHE = 'duual-v4';
 const ASSETS = ['/manifest.json', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', e => {
