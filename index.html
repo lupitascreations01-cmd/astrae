@@ -356,53 +356,63 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 <div class="screen" id="s-results">
   <div class="status">
     <button onclick="goScreen('input')" style="background:none;border:none;color:var(--txt3);font-size:28px;cursor:pointer;font-family:'Cormorant Garamond',serif;padding:8px 12px 8px 0;">← <span data-es="Nueva" data-en="New">Nueva</span></button>
-   
   </div>
   <div class="scroll">
+
+    <!-- 1. HERO: Score + nombres + veredicto -->
     <div class="rhero">
-    <div class="score-wrap">
-  <svg class="score-svg" viewBox="0 0 200 200">
-    <defs>
-      <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#C94B72"/>
-        <stop offset="50%" stop-color="#ED93B1"/>
-        <stop offset="100%" stop-color="#6B63CC"/>
-      </linearGradient>
-    </defs>
-    <circle class="score-track" cx="100" cy="100" r="85"/>
-    <circle class="score-progress" id="scoreProgress" cx="100" cy="100" r="85" stroke-dasharray="534.07" stroke-dashoffset="534.07"/>
-  </svg>
-  <div class="big-score" id="bigScore">—<span class="pct">%</span></div>
-</div>
+      <div class="score-wrap">
+        <svg class="score-svg" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#C94B72"/>
+              <stop offset="50%" stop-color="#ED93B1"/>
+              <stop offset="100%" stop-color="#6B63CC"/>
+            </linearGradient>
+          </defs>
+          <circle class="score-track" cx="100" cy="100" r="85"/>
+          <circle class="score-progress" id="scoreProgress" cx="100" cy="100" r="85" stroke-dasharray="534.07" stroke-dashoffset="534.07"/>
+        </svg>
+        <div class="big-score" id="bigScore">—<span class="pct">%</span></div>
+      </div>
       <div class="slabel" data-es="COMPATIBILIDAD" data-en="COMPATIBILITY">COMPATIBILIDAD</div>
       <div class="rpair" id="rpair">A <span class="ramp">&</span> B</div>
       <div class="verdict-badge" id="verdictBadge">✦</div>
       <div class="const-row" id="constRow"></div>
     </div>
-    <div style="height:14px;"></div>
+
+    <!-- 2. VEREDICTO -->
     <div class="verdict-card"><div class="vtitle" id="verdictTitle"></div><div class="vtext" id="verdictText"></div></div>
-    <div class="section"><div class="section-title" data-es="CARTAS NATALES" data-en="NATAL CHARTS">CARTAS NATALES</div></div>
-    <div style="margin:0 14px 8px;font-size:10px;color:var(--txt3);opacity:0.75;line-height:1.5;"><span data-es="✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna." data-en="✦ Add birth time for better accuracy, especially for the Moon.">✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna.</span></div>
-    <div class="natal-mini" id="natalMini"></div>
-    <div style="margin:-2px 14px 12px;font-size:10px;color:var(--txt3);opacity:0.6;line-height:1.55;"><span data-es="✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente." data-en="✎ Any planet off? Tap the icon to correct it — the score recalculates automatically.">✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente.</span></div>
-    <div class="share-row">
-      <button class="share-btn" onclick="shareResult()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg><span data-es="Compartir ↗" data-en="Share ↗">Compartir ↗</span></button>
-      <button class="share-btn" onclick="saveToHistory()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span data-es="Guardar" data-en="Save">Guardar</span></button>
+
+    <!-- 3. ACCIONES RÁPIDAS -->
+    <div style="display:flex;gap:8px;margin:0 14px 8px;">
+      <button onclick="openNatalScreen()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,var(--plum),#9B6FD4);border:none;border-radius:var(--r-lg);padding:13px 10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#fff;cursor:pointer;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+        <span data-es="Carta natal IA" data-en="AI Natal Chart">Carta natal IA</span>
+      </button>
+      <button onclick="generateCard()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,var(--rose),var(--plum));border:none;border-radius:var(--r-lg);padding:13px 10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#fff;cursor:pointer;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+        <span data-es="Crear tarjeta" data-en="Create card">Crear tarjeta</span>
+      </button>
     </div>
-    <button class="card-btn" onclick="openNatalScreen()" style="background:linear-gradient(135deg,var(--plum),#9B6FD4);">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
-      <span data-es="✦ Ver carta natal con IA" data-en="✦ View natal chart with AI">✦ Ver carta natal con IA</span>
+    <button onclick="saveToHistory()" style="display:flex;align-items:center;justify-content:center;gap:7px;margin:0 14px 14px;width:calc(100% - 28px);padding:11px;background:var(--surf);border:0.5px solid var(--bord2);border-radius:var(--r-lg);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--txt3);cursor:pointer;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span data-es="Guardar en historial" data-en="Save to history">Guardar en historial</span>
     </button>
-    <button class="card-btn" onclick="generateCard()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-      <span data-es="✦ Crear tarjeta para Instagram / TikTok" data-en="✦ Create card for Instagram / TikTok">✦ Crear tarjeta para Instagram / TikTok</span>
-    </button>
+
+    <!-- 5. MATCH vs DESAFÍO -->
     <div class="section"><div class="section-title" data-es="MATCH vs. DESAFÍO" data-en="MATCH vs. CHALLENGE">MATCH vs. DESAFÍO</div></div>
-<div id="compassDial" style="margin:0 14px 14px;background:linear-gradient(180deg,#110C24,#0A0716);border:0.5px solid rgba(242,238,249,0.10);border-radius:18px;padding:16px;"></div>
+    <div id="compassDial" style="margin:0 14px 14px;background:linear-gradient(180deg,#110C24,#0A0716);border:0.5px solid rgba(242,238,249,0.10);border-radius:18px;padding:16px;"></div>
+
+    <!-- 6. CONEXIÓN POR ÁREA -->
     <div class="section"><div class="section-title" data-es="TU CONEXIÓN POR ÁREA" data-en="YOUR CONNECTION BY AREA">TU CONEXIÓN POR ÁREA</div></div>
     <div class="areas" id="areasGrid"></div>
+
+    <!-- 7. ASPECTOS PLANETARIOS -->
     <div class="section"><div class="section-title" data-es="ASPECTOS PLANETARIOS" data-en="PLANETARY ASPECTS">ASPECTOS PLANETARIOS</div></div>
     <div class="asp-list" id="aspList"></div>
+
+    <!-- 8. PREMIUM: análisis profundo -->
     <div id="premiumResults" style="display:none;">
       <div class="section"><div class="section-title">✦ <span data-es="ANÁLISIS DE ELEMENTOS" data-en="ELEMENT ANALYSIS">ANÁLISIS DE ELEMENTOS</span></div></div>
       <div id="elemSection"></div>
@@ -429,7 +439,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
         </div>
       </div>
     </div>
-    <div id="compatSection" class="compat-section" style="display:none;"></div>
+
+    <!-- 9. UNLOCK CTA -->
     <div id="unlockCard" class="unlock-card">
       <div class="utitle" data-es="¿Quieres el cuadro completo? ✦" data-en="Want the full picture? ✦">¿Quieres el cuadro completo? ✦</div>
       <ul class="ulist">
@@ -441,6 +452,14 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
       <button class="unlock-btn" onclick="goScreen('paywall')" data-es="Ver planes · desde $4.99/mes" data-en="See plans · from $4.99/mo">Ver planes · desde $4.99/mes</button>
       <div class="uprice" data-es="Cancela cuando quieras" data-en="Cancel anytime">Cancela cuando quieras</div>
     </div>
+
+    <!-- 10. CARTAS NATALES — al final, para quien quiere profundizar -->
+    <div class="section"><div class="section-title" data-es="CARTAS NATALES" data-en="NATAL CHARTS">CARTAS NATALES</div></div>
+    <div style="margin:0 14px 8px;font-size:10px;color:var(--txt3);opacity:0.75;line-height:1.5;"><span data-es="✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna." data-en="✦ Add birth time for better accuracy, especially for the Moon.">✦ Agrega la hora de nacimiento para mayor precisión, especialmente en la Luna.</span></div>
+    <div class="natal-mini" id="natalMini"></div>
+    <div style="margin:-2px 14px 20px;font-size:10px;color:var(--txt3);opacity:0.6;line-height:1.55;"><span data-es="✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente." data-en="✎ Any planet off? Tap the icon to correct it — the score recalculates automatically.">✎ ¿Algún planeta no coincide? Toca el ícono para corregirlo — el score se recalcula automáticamente.</span></div>
+
+    <div id="compatSection" class="compat-section" style="display:none;"></div>
   </div>
   <div class="bnav">
     <button class="bitem" onclick="goScreen('input')"><span class="bico">✦</span><span data-es="Descubrir" data-en="Discover">Descubrir</span></button>
