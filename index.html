@@ -1416,6 +1416,7 @@ function getAspectInterp(aspect, lang){
   const topHarm=aspects.filter(x=>x.a.t==="harmonious").slice(0,2);
   const topTense=aspects.filter(x=>x.a.t==="tense").slice(0,2);
   const fmt=x=>{
+  try{
   const interp = getAspectInterp(x, lang);
   const aspName = lang==="es" ? x.a.es : x.a.en;
   const orbeLabel = lang==="es" ? "orbe" : "orb";
@@ -1434,6 +1435,7 @@ function getAspectInterp(aspect, lang){
       <div style="font-size:9px;color:rgba(242,238,249,0.35);letter-spacing:0.3px">${aspName} · ${x.a.orbe}° ${orbeLabel}</div>
     </div>
   `;
+  }catch(e){return "";}
 };
   const emptyMsg=msg=>`<div style="font-size:10px;color:rgba(242,238,249,0.3);text-align:center;padding:8px;font-style:italic">${msg}</div>`;
   const harmList=topHarm.length?topHarm.map(fmt).join(""):emptyMsg(lang==="es"?"Sin aspectos armónicos":"No harmonious aspects");
@@ -1547,8 +1549,14 @@ function goToReview(){
   localStorage.setItem('duual_review_done','1');
   document.getElementById('reviewOverlay').classList.remove('open');
   const pkg = 'com.duual.app';
-  window.location.href = 'market://details?id=' + pkg;
-  setTimeout(() => window.open('https://play.google.com/store/apps/details?id=' + pkg, '_blank'), 1500);
+  const webUrl = 'https://play.google.com/store/apps/details?id=' + pkg;
+  const isAndroid = /android/i.test(navigator.userAgent);
+  if(isAndroid){
+    window.location.href = 'market://details?id=' + pkg;
+    setTimeout(() => window.open(webUrl, '_blank'), 1500);
+  } else {
+    window.open(webUrl, '_blank');
+  }
 }
 async function sendNegativeFeedback(){
   const text = document.getElementById('reviewFeedbackText').value.trim();
