@@ -650,7 +650,7 @@ async function handleGooglePlayPayment(){
     const NP=window.Capacitor.Plugins.NativePurchases;
     const planId=selPlan==='annual'?'duual-yearly':'duual-monthly';
     showToast(lang==='es'?'Abriendo pago…':'Opening payment…');
-    await NP.purchaseProduct({productId:'duual_premium',planIdentifier:planId,productType:'SUBS'});
+   await NP.purchaseProduct({productIdentifier:'duual_premium',planIdentifier:planId,productType:'SUBS'});
     setPremium(selPlan);
     posthog.capture('pago_completado',{plan:selPlan,method:'google_play'});
     showToast(lang==='es'?'✦ Premium activado':'✦ Premium activated');
