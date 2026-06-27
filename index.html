@@ -659,7 +659,7 @@ async function handleGooglePlayPayment(){
     console.error('GP Billing error:',e);
     if(e.message&&(e.message.includes('cancel')||e.message.includes('Cancel')))return;
     if(e.code===1)return;
-    showToast(lang==='es'?'Error en el pago — intenta de nuevo':'Payment error — try again');
+   showToast('Error: '+(e.message||e.code||JSON.stringify(e)));
   }
 }
 async function restoreGooglePlay(){
