@@ -511,7 +511,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
     </button>
     <div class="pay-note" data-es="Sin sorpresas · Cancela cuando quieras · ES / EN" data-en="No surprises · Cancel anytime · ES / EN">Sin sorpresas · Cancela cuando quieras · ES / EN</div>
     <div style="text-align:center;padding:0 16px 8px;display:flex;align-items:center;justify-content:center;gap:7px;">
-      <span style="font-size:11px;color:var(--txt3);" data-es="Pago seguro vía PayPal" data-en="Secure payment via PayPal">Pago seguro vía PayPal</span>
+      <span style="font-size:11px;color:var(--txt3);" id="payMethodLabel" data-es="Pago seguro vía PayPal" data-en="Secure payment via PayPal">Pago seguro vía PayPal</span>
     </div>
     <button class="restore-btn" onclick="restorePurchase()" data-es="¿Ya pagaste? Restaurar acceso" data-en="Already paid? Restore access">¿Ya pagaste? Restaurar acceso</button>
   </div>
@@ -643,6 +643,46 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 <script>
 const LS_MONTHLY="https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-6F661779KV227304XNH7YFEQ";
 const LS_ANNUAL="https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-7CA0395000503905FNH7YFEY";
+// ── GOOGLE PLAY BILLING ──
+function isNativeApp(){try{return !!window.Capacitor&&!!window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform();}catch(e){return false;}}
+async function handleGooglePlayPayment(){
+  try{
+    const NP=window.Capacitor.Plugins.NativePurchases;
+    const planId=selPlan==='annual'?'duual-yearly':'duual-monthly';
+    showToast(lang==='es'?'Abriendo pago…':'Opening payment…');
+    await NP.purchaseProduct({productId:'duual_premium',planIdentifier:planId,productType:'SUBS'});
+    setPremium(selPlan);
+    posthog.capture('pago_completado',{plan:selPlan,method:'google_play'});
+    showToast(lang==='es'?'✦ Premium activado':'✦ Premium activated');
+    setTimeout(()=>goBack(),1500);
+  }catch(e){
+    console.error('GP Billing error:',e);
+    if(e.message&&(e.message.includes('cancel')||e.message.includes('Cancel')))return;
+    if(e.code===1)return;
+    showToast(lang==='es'?'Error en el pago — intenta de nuevo':'Payment error — try again');
+  }
+}
+async function restoreGooglePlay(){
+  try{
+    const NP=window.Capacitor.Plugins.NativePurchases;
+    showToast(lang==='es'?'Verificando…':'Verifying…');
+    const{purchases}=await NP.getPurchases({productType:'SUBS'});
+    const active=purchases.find(p=>p.productIdentifier==='duual_premium');
+    if(active){setPremium('annual');showToast(lang==='es'?'✦ Acceso restaurado':'✦ Access restored');setTimeout(()=>goBack(),1000);}
+    else{showToast(lang==='es'?'No se encontró suscripción activa':'No active subscription found');}
+  }catch(e){console.error('GP restore error:',e);showToast(lang==='es'?'Error al verificar — intenta de nuevo':'Error verifying — try again');}
+}
+async function checkGooglePlayOnLaunch(){
+  if(!isNativeApp())return;
+  try{
+    const NP=window.Capacitor.Plugins.NativePurchases;
+    const{isBillingSupported}=await NP.isBillingSupported();
+    if(!isBillingSupported)return;
+    const{purchases}=await NP.getPurchases({productType:'SUBS'});
+    const active=purchases.find(p=>p.productIdentifier==='duual_premium');
+    if(active&&!isPremium()){setPremium('annual');console.log('✅ Premium restaurado desde Google Play');}
+  }catch(e){console.log('GP launch check skip:',e);}
+}
 const ACCESS_CODES=["lupitascreations.01@gmail.com"];
 const DEG=Math.PI/180;
 const SIGN_ELEM=["fire","earth","air","water","fire","earth","air","water","fire","earth","air","water"];
@@ -832,8 +872,9 @@ function renderPremium(pA,pB,nA,nB){
 }
 function selectPlan(p){selPlan=p;document.getElementById("cardMonthly").classList.toggle("featured",p==="monthly");document.getElementById("cardAnnual").classList.toggle("featured",p==="annual");updatePayBtn();}
 function updatePayBtn(){const btn=document.getElementById("payBtn");if(selPlan==="monthly"){btn.className="pay-btn pay-btn-monthly";btn.innerHTML=`<span>${lang==="es"?"Empezar plan mensual · $4.99":"Start monthly plan · $4.99"}</span>`;}else{btn.className="pay-btn pay-btn-annual";btn.innerHTML=`<span>${lang==="es"?"Empezar plan anual · $29.99":"Start annual plan · $29.99"}</span>`;}}
-function handlePayment(){const url=selPlan==="annual"?LS_ANNUAL:LS_MONTHLY;if(url.includes("YOUR_STORE_PLACEHOLDER")){setPremium(selPlan);showToast(lang==="es"?"✦ Demo activado":"✦ Demo activated");setTimeout(()=>goBack(),1500);return;}posthog.capture('iniciar_pago',{plan:selPlan});window.open(url,"_blank");setTimeout(()=>showToast(lang==="es"?"¿Completaste el pago? Toca 'Restaurar acceso'":"Payment complete? Tap 'Restore access'"),3000);}
+function handlePayment(){if(isNativeApp()){handleGooglePlayPayment();return;}const url=selPlan==="annual"?LS_ANNUAL:LS_MONTHLY;posthog.capture('iniciar_pago',{plan:selPlan,method:'paypal'});window.open(url,"_blank");setTimeout(()=>showToast(lang==="es"?"¿Completaste el pago? Toca 'Restaurar acceso'":"Payment complete? Tap 'Restore access'"),3000);}
 async function restorePurchase(){
+  if(isNativeApp()){restoreGooglePlay();return;}
   posthog.capture('restaurar_acceso');
   const email=prompt(lang==="es"?"Ingresa el email con que pagaste:":"Enter the email you used to pay:");
   if(!email||!email.includes("@")){showToast(lang==="es"?"Email no válido":"Invalid email");return;}
@@ -1579,6 +1620,8 @@ function dismissReview(){
   posthog.capture('review_prompt_dismissed');
   document.getElementById('reviewOverlay').classList.remove('open');
 }
+checkGooglePlayOnLaunch();
+if(isNativeApp()){setTimeout(()=>{const el=document.getElementById('payMethodLabel');if(el){el.dataset.es='Pago seguro vía Google Play';el.dataset.en='Secure payment via Google Play';el.textContent=lang==='es'?'Pago seguro vía Google Play':'Secure payment via Google Play';}},100);}
 </script>
 </body>
 </html>
