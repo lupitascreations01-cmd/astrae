@@ -650,34 +650,38 @@ async function handleGooglePlayPayment(){
   function dlog(m){var d=document.createElement("div");d.style.cssText="margin-bottom:4px;border-bottom:1px solid #333;padding-bottom:4px";d.textContent=m;dp.appendChild(d);dp.scrollTop=dp.scrollHeight;}
   try{
     var NP=window.Capacitor.Plugins.NativePurchases;
-    if(!NP){dlog("ERROR: NativePurchases no existe");return;}
-    var billing=await NP.isBillingSupported();
-    if(!billing||!billing.isBillingSupported){dlog("ERROR: Billing no soportado");return;}
-    dlog("Billing OK. Buscando productos...");
-    var result=await NP.getProducts({productIdentifiers:['duual_premium'],productType:'SUBS'});
-    if(!result||!result.products||!result.products.length){dlog("ERROR: 0 productos");return;}
-    dlog("Productos encontrados: "+result.products.length);
-    result.products.forEach(function(prod,i){dlog("  ["+i+"] identifier="+prod.identifier+" price="+prod.priceString+" hasToken="+(!!prod.offerToken));});
     var targetPlanId=selPlan==='annual'?'duual-yearly':'duual-monthly';
-    dlog("Target plan: "+targetPlanId);
-    var targetProduct=result.products.find(function(prod){return prod.identifier===targetPlanId;});
-    if(!targetProduct){dlog("No match por identifier, usando primero");targetProduct=result.products[0];}
-    dlog("Producto seleccionado: "+targetProduct.identifier+" | "+targetProduct.priceString);
-    dlog("offerToken: "+(targetProduct.offerToken||"NINGUNO").substring(0,60)+"...");
-    if(!targetProduct.offerToken){dlog("ERROR: Sin offerToken");return;}
-    var params={productIdentifier:'duual_premium',planIdentifier:targetPlanId,productType:'SUBS',quantity:1,offerToken:targetProduct.offerToken};
-    dlog("purchaseProduct params: "+JSON.stringify(params).substring(0,300));
-    dlog("Llamando purchaseProduct...");
-    var tx=await NP.purchaseProduct(params);
-    dlog("EXITO! state="+(tx?tx.purchaseState:"?")+" id="+(tx?tx.transactionId:"?"));
-    dlog("Full tx: "+JSON.stringify(tx).substring(0,400));
-    setPremium(selPlan);showToast('Premium activado');
+    dlog("Plan: "+targetPlanId);
+    dlog("Intentando getProduct (singular)...");
+    var single;
+    try{single=await NP.getProduct({productIdentifier:'duual_premium',productType:'SUBS'});dlog("getProduct OK: "+JSON.stringify(single).substring(0,300));}catch(e1){dlog("getProduct fallo: "+e1.message);}
+    dlog("--- INTENTO 1: productId + planId ---");
+    try{
+      var tx1=await NP.purchaseProduct({productIdentifier:'duual_premium',planIdentifier:targetPlanId,productType:'SUBS'});
+      dlog("EXITO intento 1! state="+tx1.purchaseState);
+      setPremium(selPlan);showToast("Premium activado");return;
+    }catch(e1){dlog("Intento 1 fallo: "+e1.message);}
+    dlog("--- INTENTO 2: solo productId sin planId ---");
+    try{
+      var tx2=await NP.purchaseProduct({productIdentifier:'duual_premium',productType:'SUBS'});
+      dlog("EXITO intento 2! state="+tx2.purchaseState);
+      setPremium(selPlan);showToast("Premium activado");return;
+    }catch(e2){dlog("Intento 2 fallo: "+e2.message);}
+    dlog("--- INTENTO 3: identifier como productId ---");
+    try{
+      var tx3=await NP.purchaseProduct({productIdentifier:targetPlanId,productType:'SUBS'});
+      dlog("EXITO intento 3! state="+tx3.purchaseState);
+      setPremium(selPlan);showToast("Premium activado");return;
+    }catch(e3){dlog("Intento 3 fallo: "+e3.message);}
+    dlog("--- INTENTO 4: identifier + planId invertidos ---");
+    try{
+      var tx4=await NP.purchaseProduct({productIdentifier:targetPlanId,planIdentifier:'duual_premium',productType:'SUBS'});
+      dlog("EXITO intento 4! state="+tx4.purchaseState);
+      setPremium(selPlan);showToast("Premium activado");return;
+    }catch(e4){dlog("Intento 4 fallo: "+e4.message);}
+    dlog("Todos los intentos fallaron.");
   }catch(e){
-    dlog("=== ERROR ===");
-    dlog("message: "+(e.message||""));
-    dlog("code: "+(e.code||"none"));
-    try{dlog("JSON: "+JSON.stringify(e));}catch(x){}
-    for(var ek in e){try{dlog("e."+ek+"="+JSON.stringify(e[ek]));}catch(x){}}
+    dlog("ERROR GENERAL: "+e.message);
   }
 }
 async function restoreGooglePlay(){
