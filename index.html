@@ -646,49 +646,27 @@ const LS_ANNUAL="https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=
 // ── GOOGLE PLAY BILLING ──
 function isNativeApp(){try{return !!window.Capacitor&&!!window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform();}catch(e){return false;}}
 async function handleGooglePlayPayment(){
-  var dp=document.getElementById("dbg");if(!dp){dp=document.createElement("div");dp.id="dbg";dp.style.cssText="position:fixed;inset:0;z-index:99999;background:#0a0a0e;color:#0f0;font:11px monospace;padding:16px;overflow-y:auto;white-space:pre-wrap";dp.innerHTML='<button onclick="this.parentElement.remove()" style="position:sticky;top:0;background:#ff6fa0;color:#000;border:none;padding:8px 16px;border-radius:8px;font-size:14px;cursor:pointer;display:block;margin-bottom:12px">X Cerrar</button>';document.body.appendChild(dp);}
-  function dlog(m){var d=document.createElement("div");d.style.cssText="margin-bottom:4px;border-bottom:1px solid #333;padding-bottom:4px";d.textContent=m;dp.appendChild(d);dp.scrollTop=dp.scrollHeight;}
   try{
     var NP=window.Capacitor.Plugins.NativePurchases;
+    var billing=await NP.isBillingSupported();
+    if(!billing||!billing.isBillingSupported){showToast(lang==='es'?'Error: billing no soportado':'Error: billing not supported');return;}
+    var result=await NP.getProducts({productIdentifiers:['duual_premium'],productType:'subs'});
+    if(!result||!result.products||!result.products.length){showToast(lang==='es'?'Error: productos no disponibles':'Error: products unavailable');return;}
     var targetPlanId=selPlan==='annual'?'duual-yearly':'duual-monthly';
-    dlog("Plan: "+targetPlanId);
-    dlog("Intentando getProduct (singular)...");
-    var single;
-    try{single=await NP.getProduct({productIdentifier:'duual_premium',productType:'SUBS'});dlog("getProduct OK: "+JSON.stringify(single).substring(0,300));}catch(e1){dlog("getProduct fallo: "+e1.message);}
-    dlog("--- INTENTO 1: productId + planId ---");
-    try{
-      var tx1=await NP.purchaseProduct({productIdentifier:'duual_premium',planIdentifier:targetPlanId,productType:'SUBS'});
-      dlog("EXITO intento 1! state="+tx1.purchaseState);
-      setPremium(selPlan);showToast("Premium activado");return;
-    }catch(e1){dlog("Intento 1 fallo: "+e1.message);}
-    dlog("--- INTENTO 2: solo productId sin planId ---");
-    try{
-      var tx2=await NP.purchaseProduct({productIdentifier:'duual_premium',productType:'SUBS'});
-      dlog("EXITO intento 2! state="+tx2.purchaseState);
-      setPremium(selPlan);showToast("Premium activado");return;
-    }catch(e2){dlog("Intento 2 fallo: "+e2.message);}
-    dlog("--- INTENTO 3: identifier como productId ---");
-    try{
-      var tx3=await NP.purchaseProduct({productIdentifier:targetPlanId,productType:'SUBS'});
-      dlog("EXITO intento 3! state="+tx3.purchaseState);
-      setPremium(selPlan);showToast("Premium activado");return;
-    }catch(e3){dlog("Intento 3 fallo: "+e3.message);}
-    dlog("--- INTENTO 4: identifier + planId invertidos ---");
-    try{
-      var tx4=await NP.purchaseProduct({productIdentifier:targetPlanId,planIdentifier:'duual_premium',productType:'SUBS'});
-      dlog("EXITO intento 4! state="+tx4.purchaseState);
-      setPremium(selPlan);showToast("Premium activado");return;
-    }catch(e4){dlog("Intento 4 fallo: "+e4.message);}
-    dlog("Todos los intentos fallaron.");
+    var targetProduct=result.products.find(function(prod){return prod.identifier===targetPlanId;});
+    if(!targetProduct)targetProduct=result.products[0];
+    var tx=await NP.purchaseProduct({productIdentifier:'duual_premium',planIdentifier:targetPlanId,productType:'subs'});
+    if(tx){setPremium(selPlan);showToast(lang==='es'?'✦ Premium activado':'✦ Premium activated');setTimeout(function(){goBack();},1500);}
   }catch(e){
-    dlog("ERROR GENERAL: "+e.message);
+    if(e.message&&(e.message.indexOf('cancel')>-1||e.message.indexOf('Cancel')>-1||e.message.indexOf('USER_CANCELED')>-1)){return;}
+    showToast('Error: '+(e.message||JSON.stringify(e)));
   }
 }
 async function restoreGooglePlay(){
   try{
     const NP=window.Capacitor.Plugins.NativePurchases;
     showToast(lang==='es'?'Verificando…':'Verifying…');
-    const{purchases}=await NP.getPurchases({productType:'SUBS'});
+    const{purchases}=await NP.getPurchases({productType:'subs'});
     const active=purchases.find(p=>p.productIdentifier==='duual_premium');
     if(active){setPremium('annual');showToast(lang==='es'?'✦ Acceso restaurado':'✦ Access restored');setTimeout(()=>goBack(),1000);}
     else{showToast(lang==='es'?'No se encontró suscripción activa':'No active subscription found');}
@@ -700,7 +678,7 @@ async function checkGooglePlayOnLaunch(){
     const NP=window.Capacitor.Plugins.NativePurchases;
     const{isBillingSupported}=await NP.isBillingSupported();
     if(!isBillingSupported)return;
-    const{purchases}=await NP.getPurchases({productType:'SUBS'});
+    const{purchases}=await NP.getPurchases({productType:'subs'});
     const active=purchases.find(p=>p.productIdentifier==='duual_premium');
     if(active&&!isPremium()){setPremium('annual');console.log('✅ Premium restaurado desde Google Play');}
   }catch(e){console.log('GP launch check skip:',e);}
