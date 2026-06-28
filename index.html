@@ -648,29 +648,29 @@ function isNativeApp(){try{return !!window.Capacitor&&!!window.Capacitor.isNativ
 async function handleGooglePlayPayment(){
   try{
     const NP=window.Capacitor.Plugins.NativePurchases;
-    showToast(lang==='es'?'Abriendo pago…':'Opening payment…');
-    const{products}=await NP.getProducts({productIdentifiers:['duual_premium'],productType:'SUBS'});
-    if(!products||!products.length){showToast('Error: producto no encontrado');return;}
-    const product=products[0];
-    const targetPlanId=selPlan==='annual'?'duual-yearly':'duual-monthly';
-    let offerToken=null;
-    if(product.offers&&product.offers.length){
-      const match=product.offers.find(o=>o.basePlanId===targetPlanId);
-      offerToken=match?match.offerToken:product.offers[0].offerToken;
+    const billing=await NP.isBillingSupported();
+    if(!billing.isBillingSupported){showToast('Error: billing no soportado');return;}
+    showToast('Paso 1 OK. Buscando productos…');
+    const result=await NP.getProducts({productIdentifiers:['duual_premium'],productType:'SUBS'});
+    if(!result.products||!result.products.length){
+      showToast('Error: no se encontraron productos. Total: '+(result.products?result.products.length:0));
+      return;
     }
-    const purchaseParams={productIdentifier:'duual_premium',productType:'SUBS'};
-    if(offerToken)purchaseParams.offerToken=offerToken;
-    if(!offerToken)purchaseParams.planIdentifier=targetPlanId;
-    await NP.purchaseProduct(purchaseParams);
+    const p=result.products[0];
+    showToast('Producto: '+p.title+' | Planes: '+(p.offers?p.offers.length:'sin ofertas'));
+    await new Promise(r=>setTimeout(r,3000));
+    const targetPlanId=selPlan==='annual'?'duual-yearly':'duual-monthly';
+    const transaction=await NP.purchaseProduct({
+      productIdentifier:'duual_premium',
+      planIdentifier:targetPlanId,
+      productType:'SUBS',
+      quantity:1
+    });
+    showToast('Transaction: '+JSON.stringify(transaction).substring(0,100));
     setPremium(selPlan);
-    posthog.capture('pago_completado',{plan:selPlan,method:'google_play'});
-    showToast(lang==='es'?'✦ Premium activado':'✦ Premium activated');
-    setTimeout(()=>goBack(),1500);
+    setTimeout(()=>goBack(),2000);
   }catch(e){
-    console.error('GP Billing error:',e);
-    if(e.message&&(e.message.includes('cancel')||e.message.includes('Cancel')))return;
-    if(e.code===1)return;
-    showToast('Error: '+(e.message||e.code||JSON.stringify(e)));
+    showToast('Error paso final: '+(e.message||e.code||JSON.stringify(e)));
   }
 }
 async function restoreGooglePlay(){
