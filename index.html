@@ -1072,7 +1072,7 @@ if(_pImg){const targetH=900;const targetW=1000;const ratio=Math.min(targetH/_pIm
     previewImg.src=_cardDataURL;
     document.getElementById("cardPreviewOverlay").classList.add("open");
   };
-  const logoImg=new Image();logoImg.crossOrigin="anonymous";logoImg.onload=drawAll;logoImg.onerror=drawAll;logoImg.src="icon-192.png";
+  const logoImg=new Image();logoImg.crossOrigin="anonymous";logoImg.onload=drawAll;logoImg.onerror=drawAll;logoImg.src="icon-192.png?v=3";
 }
 let _cardDataURL=null,_cardFileName="duual-card.png",_lastAspects=[];
 function closeCardPreview(){document.getElementById("cardPreviewOverlay").classList.remove("open");}
