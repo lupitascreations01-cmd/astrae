@@ -1063,8 +1063,15 @@ async function restorePurchase(){
 }
 (function checkReturn(){const p=new URLSearchParams(window.location.search);if(p.get("paid")){showToast(lang==="es"?"✦ Pago recibido · Activa tu acceso abajo":"✦ Payment received · Activate access below");history.replaceState({},document.title,window.location.pathname);setTimeout(()=>goScreen("paywall"),1500);}})();
 function saveToHistory(){if(!lastResult)return;const h=JSON.parse(localStorage.getItem("duual_history")||"[]");h.unshift({nA:lastResult.nA,nB:lastResult.nB,score:document.getElementById("bigScore").textContent.replace("%","").trim(),verdict:document.getElementById("verdictBadge").textContent,saved:Date.now()});if(h.length>30)h.pop();localStorage.setItem("duual_history",JSON.stringify(h));showToast(lang==="es"?"Guardado ✦":"Saved ✦");const fav=document.getElementById("rheroFav");if(fav){fav.classList.add("saved");setTimeout(()=>fav.classList.remove("saved"),1400);}}
-function generateConstellationCard(){
+async function ensureSatisfyFont(){
+  if(!document.getElementById('satisfyFontLink')){
+    const link=document.createElement('link');link.id='satisfyFontLink';link.rel='stylesheet';link.href='https://fonts.googleapis.com/css2?family=Satisfy&display=swap';document.head.appendChild(link);
+  }
+  try{await document.fonts.load('64px Satisfy');await document.fonts.ready;}catch(e){}
+}
+async function generateConstellationCard(){
   if(!lastResult){showToast(lang==="es"?"Primero calcula una compatibilidad":"Calculate a compatibility first");return;}
+  await ensureSatisfyFont();
   const _lang=lang;
   const{pA,pB,nA,nB}=lastResult;
   const W=1080,H=1350;
@@ -1124,8 +1131,8 @@ function generateConstellationCard(){
 
   // ── textos ──
   ctx.textAlign="center";ctx.textBaseline="middle";
-  ctx.font="300 62px 'Georgia', serif";ctx.fillStyle="rgba(242,238,249,0.95)";
-  ctx.fillText(`${nA} & ${nB}`,cx,H*0.83);
+  ctx.font="76px 'Satisfy', cursive";ctx.fillStyle="rgba(242,238,249,0.95)";
+  ctx.fillText(`${nA} & ${nB}`,cx,H*0.835);
 
   ctx.font="italic 30px 'Georgia', serif";ctx.fillStyle="rgba(200,230,238,0.8)";
   ctx.fillText(_lang==="es"?"✦ su constelación única ✦":"✦ their unique constellation ✦",cx,H*0.878);
