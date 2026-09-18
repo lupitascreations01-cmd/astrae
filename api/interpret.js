@@ -55,6 +55,14 @@ module.exports = async function handler(req, res) {
       ? `Eres una astróloga experta. Escribe una interpretación personal de ${planetA} en ${signA} para ${nameA}.\n\nEscribe 2 párrafos cortos (2-3 oraciones cada uno). Habla sobre cómo esta posición se expresa en su personalidad y relaciones, con fortalezas específicas y áreas de crecimiento. Tono cálido y personal. Solo párrafos. Segunda persona singular (tú). Máximo 80 palabras.`
       : `You are an expert astrologer. Write a personal interpretation of ${planetA} in ${signA} for ${nameA}.\n\nWrite 2 short paragraphs (2-3 sentences each). Cover how this position expresses itself in their personality and relationships, with specific strengths and growth areas. Warm and personal tone. Paragraphs only. Second person singular (you). Maximum 80 words.`;
 
+  } else if (type === 'monthForecast') {
+    maxTokens = 320;
+    const bestWindows = chartSummary || '';
+    const tenseWindow = question || '';
+    prompt = isES
+      ? `Eres una astróloga experta en sinastría, escribiendo una predicción mensual para la pareja formada por ${nameA} y ${nameB}.\n\nDatos de tránsitos calculados para los próximos 30 días:\n- Ventanas favorables (Luna/Venus en buen aspecto con la carta de alguno de los dos): ${bestWindows || 'ninguna destacada'}\n- Ventana de tensión a cuidar: ${tenseWindow || 'ninguna relevante'}\n\nEscribe una predicción de vínculo para los próximos 30 días, en 3 párrafos cortos (2-3 oraciones cada uno):\n1) Tono general del mes para la relación.\n2) Menciona de forma natural (sin listas, dentro de la prosa) las fechas favorables y qué las hace especiales para ellos como pareja.\n3) Si hay ventana de tensión, menciónala con un consejo concreto y breve; si no hay, cierra con una recomendación general para aprovechar el mes.\n\nTono cálido, cercano, como una carta astral personal. Segunda persona plural (ustedes). Solo párrafos, sin listas ni títulos. Máximo 150 palabras.`
+      : `You are an expert synastry astrologer writing a monthly forecast for the couple formed by ${nameA} and ${nameB}.\n\nTransit data calculated for the next 30 days:\n- Favorable windows (Moon/Venus in good aspect to either natal chart): ${bestWindows || 'none standout'}\n- Tension window to watch: ${tenseWindow || 'none relevant'}\n\nWrite a bond forecast for the next 30 days, in 3 short paragraphs (2-3 sentences each):\n1) General mood of the month for the relationship.\n2) Naturally mention (no lists, within the prose) the favorable dates and what makes them special for them as a couple.\n3) If there's a tension window, mention it with one concrete, brief piece of advice; if not, close with a general recommendation to make the most of the month.\n\nWarm, close tone, like a personal astrology letter. Second person plural (you both). Paragraphs only, no lists or headings. Maximum 150 words.`;
+
   } else if (type === 'freeQuestion') {
     maxTokens = 400;
     prompt = isES
