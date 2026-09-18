@@ -95,7 +95,11 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 .ld{width:6px;height:6px;border-radius:50%;background:var(--rose-m);animation:lpulse 1.4s ease-in-out infinite;}
 .ld:nth-child(2){animation-delay:.22s;}.ld:nth-child(3){animation-delay:.44s;}
 @keyframes lpulse{0%,80%,100%{opacity:.2;transform:scale(.7);}40%{opacity:1;transform:scale(1);}}
-.rhero{text-align:center;padding:20px 20px 16px;border-bottom:0.5px solid var(--bord);}
+.rhero{position:relative;text-align:center;padding:20px 20px 16px;border-bottom:0.5px solid var(--bord);}
+.rhero-fav{position:absolute;top:14px;right:16px;background:var(--surf);border:0.5px solid var(--bord2);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--rose-m);}
+.rhero-fav svg{width:17px;height:17px;}
+.rhero-fav.saved{color:var(--rose);}
+.rhero-fav.saved svg{fill:var(--rose);}
 .score-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;width:200px;height:200px;}
 .score-wrap::before{content:'';position:absolute;inset:-22px;background:radial-gradient(circle,rgba(201,75,114,0.5) 0%,rgba(232,169,74,0.3) 35%,rgba(107,99,204,0.28) 55%,transparent 75%);filter:blur(26px);z-index:0;animation:score-glow 3s ease-in-out infinite;}
 @keyframes score-glow{0%,100%{opacity:0.6;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
@@ -406,6 +410,9 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 
     <!-- 1. HERO: Score + nombres + veredicto -->
     <div class="rhero">
+      <button class="rhero-fav" id="rheroFav" onclick="saveToHistory()" title="Guardar en historial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </button>
       <div class="score-wrap">
         <svg class="score-svg" viewBox="0 0 200 200">
           <defs>
@@ -431,18 +438,18 @@ body{font-family:"DM Sans",sans-serif;color:var(--txt);-webkit-font-smoothing:an
 
     <!-- 3. ACCIONES RÁPIDAS -->
     <div style="display:flex;gap:8px;margin:0 14px 8px;">
-      <button onclick="openNatalScreen()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,var(--plum),#9B6FD4);border:none;border-radius:var(--r-lg);padding:13px 10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#fff;cursor:pointer;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
-        <span data-es="Carta natal IA" data-en="AI Natal Chart">Carta natal IA</span>
-      </button>
       <button onclick="generateCard()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,var(--rose),var(--plum));border:none;border-radius:var(--r-lg);padding:13px 10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#fff;cursor:pointer;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-        <span data-es="Crear tarjeta" data-en="Create card">Crear tarjeta</span>
+        <span data-es="Tarjeta Compatib." data-en="Compatibility card">Tarjeta Compatib.</span>
+      </button>
+      <button onclick="generateConstellationCard()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,#2DB4CC,#1E78BE);border:none;border-radius:var(--r-lg);padding:13px 10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#fff;cursor:pointer;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+        <span data-es="Tarjeta Constelación" data-en="Constellation card">Tarjeta Constelación</span>
       </button>
     </div>
-    <button onclick="saveToHistory()" style="display:flex;align-items:center;justify-content:center;gap:7px;margin:0 14px 14px;width:calc(100% - 28px);padding:11px;background:var(--surf);border:0.5px solid var(--bord2);border-radius:var(--r-lg);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--txt3);cursor:pointer;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-      <span data-es="Guardar en historial" data-en="Save to history">Guardar en historial</span>
+    <button onclick="openNatalScreen()" style="display:flex;align-items:center;justify-content:center;gap:7px;margin:0 14px 14px;width:calc(100% - 28px);padding:12px;background:linear-gradient(135deg,rgba(155,111,212,0.22),rgba(45,180,204,0.16));border:1px solid rgba(155,111,212,0.55);border-radius:var(--r-lg);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#F2EEF9;cursor:pointer;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B98CE8" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+      <span data-es="✦ Carta natal IA" data-en="✦ AI Natal Chart">✦ Carta natal IA</span>
     </button>
 
     <!-- PREDICCIÓN DE VÍNCULO 30 DÍAS — pago único -->
@@ -1055,7 +1062,92 @@ async function restorePurchase(){
   try{const res=await fetch("/api/verify-premium",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email.toLowerCase().trim()})});const data=await res.json();if(data.premium){setPremium(data.plan||"annual");showToast(lang==="es"?"✦ Acceso restaurado":"✦ Access restored");setTimeout(()=>goBack(),1000);}else if(data.reason==="expired"){showToast(lang==="es"?"Suscripción vencida · Renueva tu plan":"Subscription expired · Renew your plan");}else{showToast(lang==="es"?"Email no encontrado · Escríbenos":"Email not found · Contact support");}}catch(e){showToast(lang==="es"?"Error de conexión · Intenta de nuevo":"Connection error · Try again");}
 }
 (function checkReturn(){const p=new URLSearchParams(window.location.search);if(p.get("paid")){showToast(lang==="es"?"✦ Pago recibido · Activa tu acceso abajo":"✦ Payment received · Activate access below");history.replaceState({},document.title,window.location.pathname);setTimeout(()=>goScreen("paywall"),1500);}})();
-function saveToHistory(){if(!lastResult)return;const h=JSON.parse(localStorage.getItem("duual_history")||"[]");h.unshift({nA:lastResult.nA,nB:lastResult.nB,score:document.getElementById("bigScore").textContent.replace("%","").trim(),verdict:document.getElementById("verdictBadge").textContent,saved:Date.now()});if(h.length>30)h.pop();localStorage.setItem("duual_history",JSON.stringify(h));showToast(lang==="es"?"Guardado ✦":"Saved ✦");}
+function saveToHistory(){if(!lastResult)return;const h=JSON.parse(localStorage.getItem("duual_history")||"[]");h.unshift({nA:lastResult.nA,nB:lastResult.nB,score:document.getElementById("bigScore").textContent.replace("%","").trim(),verdict:document.getElementById("verdictBadge").textContent,saved:Date.now()});if(h.length>30)h.pop();localStorage.setItem("duual_history",JSON.stringify(h));showToast(lang==="es"?"Guardado ✦":"Saved ✦");const fav=document.getElementById("rheroFav");if(fav){fav.classList.add("saved");setTimeout(()=>fav.classList.remove("saved"),1400);}}
+function generateConstellationCard(){
+  if(!lastResult){showToast(lang==="es"?"Primero calcula una compatibilidad":"Calculate a compatibility first");return;}
+  const _lang=lang;
+  const{pA,pB,nA,nB}=lastResult;
+  const W=1080,H=1350;
+  const cv=document.createElement("canvas");cv.width=W;cv.height=H;
+  const ctx=cv.getContext("2d");
+  const cx=W/2,cy=H*0.44;
+
+  // ── fondo: nebulosa teal/azul (mismo estilo de la app) ──
+  const maxR=Math.max(W,H)*0.62;
+  const inkC=[13,10,24],tealC=[45,180,204],plumC=[30,90,150];
+  for(let r=maxR;r>0;r-=3){
+    const t=r/maxR;let col;
+    if(t>0.55){const f=(t-0.55)/0.45;col=[0,1,2].map(i=>Math.round(tealC[i]*(1-f)+plumC[i]*f));}
+    else{const f=t/0.55;col=[0,1,2].map(i=>Math.round(inkC[i]*(1-f)+tealC[i]*f*0.45+inkC[i]*f*0.55));}
+    ctx.beginPath();ctx.ellipse(cx,cy,r,r*1.18,0,0,Math.PI*2);ctx.fillStyle=`rgb(${col[0]},${col[1]},${col[2]})`;ctx.fill();
+  }
+  // estrellas de fondo
+  let _seed=42;const rnd=()=>{_seed=(_seed*9301+49297)%233280;return _seed/233280;};
+  for(let i=0;i<70;i++){const x=rnd()*W,y=rnd()*H*0.86,r=1+rnd()*2.2,a=0.25+rnd()*0.45;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fill();}
+
+  // ── puntos de la constelación: posiciones planetarias REALES ──
+  const ORDER=["Sun","Moon","Venus","Mars","Mercury"];
+  const baseUnit=Math.min(W,H)*0.30;
+  const radiiA=[0.36,0.5,0.64,0.78,0.92].map(v=>v*baseUnit);
+  const radiiB=[0.5,0.64,0.78,0.92,1.06].map(v=>v*baseUnit);
+  const toXY=(lon,radius)=>{const ang=(lon-90)*DEG;return{x:cx+radius*Math.cos(ang),y:cy+radius*Math.sin(ang)};};
+  const ptsA=ORDER.map((k,i)=>({...toXY(pA[k],radiiA[i]),k,person:"A"}));
+  const ptsB=ORDER.map((k,i)=>({...toXY(pB[k],radiiB[i]),k,person:"B"}));
+
+  // líneas propias de cada persona (su "figura" personal)
+  ctx.lineWidth=2;
+  const drawPath=(pts,color)=>{ctx.strokeStyle=color;ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);ctx.stroke();};
+  drawPath(ptsA,"rgba(237,147,177,0.32)");
+  drawPath(ptsB,"rgba(140,225,240,0.32)");
+
+  // ── aspecto más fuerte entre A y B: el "puente" del vínculo ──
+  let best=null;
+  ptsA.forEach(pa=>{ptsB.forEach(pb=>{const a=asp(pA[pa.k],pB[pb.k]);if(a&&(!best||parseFloat(a.orbe)<parseFloat(best.a.orbe))){best={a,pa,pb};}});});
+  if(best){
+    ctx.strokeStyle="rgba(233,120,155,0.85)";ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(best.pa.x,best.pa.y);ctx.lineTo(best.pb.x,best.pb.y);ctx.stroke();
+  }
+
+  // ── estrellas en cada punto ──
+  const drawStar=(x,y,r,color,glow)=>{
+    ctx.save();
+    if(glow){ctx.shadowBlur=r*2.2;ctx.shadowColor=color;}
+    ctx.fillStyle=color;
+    ctx.beginPath();
+    ctx.moveTo(x,y-r);ctx.quadraticCurveTo(x+r*0.12,y-r*0.12,x+r,y);ctx.quadraticCurveTo(x+r*0.12,y+r*0.12,x,y+r);ctx.quadraticCurveTo(x-r*0.12,y+r*0.12,x-r,y);ctx.quadraticCurveTo(x-r*0.12,y-r*0.12,x,y-r);
+    ctx.fill();ctx.restore();
+  };
+  [...ptsA,...ptsB].forEach(p=>{
+    const isBridge=best&&(p===best.pa||p===best.pb);
+    drawStar(p.x,p.y,isBridge?15:9,isBridge?"#ED93B1":(p.person==="A"?"#F2EEF9":"#B8E8F0"),true);
+  });
+
+  // ── textos ──
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.font="300 62px 'Georgia', serif";ctx.fillStyle="rgba(242,238,249,0.95)";
+  ctx.fillText(`${nA} & ${nB}`,cx,H*0.83);
+
+  ctx.font="italic 30px 'Georgia', serif";ctx.fillStyle="rgba(200,230,238,0.8)";
+  ctx.fillText(_lang==="es"?"✦ su constelación única ✦":"✦ their unique constellation ✦",cx,H*0.878);
+
+  if(best){
+    const pn=_lang==="es"?PES:PEN;
+    const label=`${pn[best.pa.k]} ${_lang==="es"?"de":"of"} ${nA} ${best.a.s} ${pn[best.pb.k]} ${_lang==="es"?"de":"of"} ${nB}`;
+    ctx.font="26px 'DM Sans', sans-serif";ctx.fillStyle="rgba(233,120,155,0.9)";
+    ctx.fillText(label,cx,H*0.918);
+  }
+
+  ctx.font="24px 'DM Sans', sans-serif";ctx.fillStyle="rgba(242,238,249,0.5)";
+  ctx.fillText("duual.app",cx,H*0.965);
+
+  _cardDataURL=cv.toDataURL("image/png");
+  _cardFileName=`duual-constelacion-${nA}-${nB}.png`;
+  const previewImg=document.getElementById("cardPreviewImg");
+  previewImg.style.opacity="0";
+  previewImg.onload=()=>{previewImg.style.transition="opacity 0.3s";previewImg.style.opacity="1";};
+  previewImg.src=_cardDataURL;
+  document.getElementById("cardPreviewOverlay").classList.add("open");
+}
 function renderHistory(){const h=JSON.parse(localStorage.getItem("duual_history")||"[]");const el=document.getElementById("historyScroll");if(!h.length){el.innerHTML=`<div class="hempty">${lang==="es"?"Tu historial aparecerá aquí.<br>Haz tu primera lectura ✦":"Your history will appear here.<br>Make your first reading ✦"}</div>`;return;}el.innerHTML=h.map((x,i)=>`<div class="hcard"><div class="hcard-top"><div class="hnames">${x.nA} <span style="color:var(--rose-m)">&</span> ${x.nB}</div><div style="display:flex;align-items:center;gap:10px;"><div class="hscore">${x.score}%</div><button onclick="deleteHistory(${i})" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;padding:4px;opacity:0.6;" title="${lang==='es'?'Borrar':'Delete'}">✕</button></div></div><div class="hdate">${x.verdict} · ${new Date(x.saved).toLocaleDateString(lang==="es"?"es-CL":"en-US")}</div></div>`).join("");}
 async function shareResult(){const nA=lastResult?.nA||"A",nB=lastResult?.nB||"B";const score=document.getElementById("bigScore").textContent;const text=lang==="es"?`✦ ${nA} & ${nB} tienen ${score} de compatibilidad según Duual\nDescúbrelo en duual.app`:`✦ ${nA} & ${nB} have ${score} compatibility on Duual\nDiscover yours at duual.app`;if(navigator.share)try{await navigator.share({title:"Duual",text});}catch(e){}else navigator.clipboard.writeText(text).then(()=>showToast(lang==="es"?"Copiado ✦":"Copied ✦"));}
 function fallbackCopy(text,msg){const ta=document.createElement("textarea");ta.value=text;ta.style.cssText="position:fixed;top:0;left:0;opacity:0;";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy");showToast(msg);}catch(e){showToast(lang==="es"?"Copia el texto manualmente":"Copy text manually");}document.body.removeChild(ta);}
